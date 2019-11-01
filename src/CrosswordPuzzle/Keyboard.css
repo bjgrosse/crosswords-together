@@ -1,0 +1,46 @@
+.Keyboard__AppBar {
+    top: auto !important;
+    bottom: 0;
+}
+
+.Keyboard__Toolbar {
+    display: flex;
+    flex-flow: nowrap row;
+    min-height: 0px !important;
+}
+
+.Keyboard__LetterButton {
+    padding: 0px !important;
+    min-height: 32px !important;
+    min-width: 30px !important;
+}
+
+.Keyboard__Panel {
+    display: flex;
+    flex-flow: nowrap row;
+    align-items: center;
+    padding-bottom: 10px;
+    z-index: 1;
+    margin-top: 1px;
+}
+
+@media all and (orientation:landscape) {
+    .Keyboard__Panel {
+        margin: auto;
+    }
+}
+
+.Keyboard__Container {
+    flex-grow: 1;
+    display: flex;
+    flex-flow: nowrap column;
+    width: 350px;
+    min-width: 350px;
+    align-items: center;
+    justify-content: center;
+}
+
+.Keyboard__CloseButton {
+    margin-left: -25px !important;
+    margin-right: 10px !important;
+}

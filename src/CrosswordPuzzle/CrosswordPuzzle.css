@@ -1,0 +1,84 @@
+
+.PuzzlePageContainer {
+    flex-grow: 1;
+    display: flex;
+    height: calc(100vh - 64px);
+    flex-flow: nowrap column;
+    overflow:hidden;
+    position: relative;
+}
+.PuzzleBoardContainer {
+    flex-grow:1;
+    display:flex;
+    flex-flow:column nowrap;
+    overflow-x: auto;
+    position: relative;
+}
+
+
+.PuzzleClueImage {
+    width:100%;
+}
+.PuzzleClueBar {
+    flex-grow: 1;
+    overflow:hidden;
+    min-height: 100px;
+    display:flex;
+    flex-flow: row nowrap;
+    z-index: 1;
+    border-top: 1px solid #ccc;
+    padding-bottom: 10px;
+    align-items: stretch;
+    box-sizing: border-box;
+}
+
+@media all and (orientation:landscape) { 
+    /* .PuzzleContainer {
+        position: relative;
+        width: 65vw;
+        height: 65vw;
+    } */
+
+    .PuzzleClueBar {
+        /* width: 35vw; */
+        min-width: 300px;
+        height: calc(100vh - 64px);
+        overflow-y:auto;
+        flex-grow: 1;
+    }
+
+    .PuzzlePageContainer {
+        flex-grow: 1;
+        display: flex;
+        flex-flow: nowrap row;
+    }
+ }
+
+ 
+@media all and (orientation:portrait) { 
+    .PuzzleClueBar {
+        
+    }
+}
+
+
+.ResizeBarHorizontal {
+    width: 12px;
+    margin-left: -6px;
+    margin-right: -6px;
+
+}
+
+.KeyboardButton {
+    position: absolute !important;
+    right: 20px;
+    bottom: 20px;
+    z-index: 2;
+}
+
+/* @media only screen and (max-width: 850px) {
+    .Square__Number {font-size:  calc(6px + (12 - 6) * ((100vw - 300px) / (800 - 300)));}
+}
+@media only screen and (min-width: 850px) {
+    .Square__Number {font-size:  12px;}
+} */

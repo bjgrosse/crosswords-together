@@ -1,0 +1,23 @@
+
+.container {
+    flex-grow: 1;
+    display: flex;
+    overflow:hidden;
+        flex-flow: column nowrap;
+    align-content: stretch;
+    align-items: stretch;
+    background: #eee;
+}
+
+.containerLandscape {
+    flex-flow: row nowrap;
+}
+
+.puzzleContainer {
+    flex-grow:1;
+    overflow:hidden;
+}
+
+.section {
+    min-width: 150px;
+}

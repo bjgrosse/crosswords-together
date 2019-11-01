@@ -1,0 +1,12 @@
+.LoadingContainer {
+    padding: 50px;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-items: center;
+}
+.LoadingText {
+    margin-bottom: 15px;
+    font-weight: bold;
+    color: gray;
+}

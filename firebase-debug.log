@@ -1,0 +1,398 @@
+[debug] [2019-11-01T09:40:18.725Z] ----------------------------------------------------------------------
+[debug] [2019-11-01T09:40:18.729Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\bgros\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js functions:shell
+[debug] [2019-11-01T09:40:18.730Z] CLI Version:   7.6.1
+[debug] [2019-11-01T09:40:18.730Z] Platform:      win32
+[debug] [2019-11-01T09:40:18.730Z] Node Version:  v10.16.3
+[debug] [2019-11-01T09:40:18.731Z] Time:          Fri Nov 01 2019 04:40:18 GMT-0500 (Central Daylight Time)
+[debug] [2019-11-01T09:40:18.731Z] ----------------------------------------------------------------------
+[debug] [2019-11-01T09:40:18.731Z] 
+[debug] [2019-11-01T09:40:18.748Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2019-11-01T09:40:18.749Z] > authorizing via signed-in user
+[debug] [2019-11-01T09:40:18.749Z] [iam] checking project crosswords-1e9f0 for permissions ["firebase.projects.get"]
+[debug] [2019-11-01T09:40:18.752Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/crosswords-1e9f0:testIamPermissions  
+
+[debug] [2019-11-01T09:40:19.699Z] <<< HTTP RESPONSE 200
+[warn] !  Your requested "node" version "8" doesn't match your global version "10"
+[info] +  functions: Emulator started at http://localhost:5000
+[debug] [2019-11-01T09:40:22.329Z] [functions] Watching "F:\dev\crosswords\functions" for Cloud Functions...
+[debug] [2019-11-01T09:40:23.165Z] DEBUG: [runtime-status] Functions runtime initialized. {"cwd":"F:\\dev\\crosswords\\functions","node_version":"10.16.3"}
+[debug] [2019-11-01T09:40:23.165Z] DEBUG: [runtime-status] Disabled runtime features: {"functions_config_helper":true,"network_filtering":true,"timeout":true,"memory_limiting":true,"admin_stubs":true} {}
+[debug] [2019-11-01T09:40:23.172Z] DEBUG: [runtime-status] Resolved module firebase-admin {"declared":true,"installed":true,"version":"8.6.1","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-admin\\lib\\index.js"}
+[debug] [2019-11-01T09:40:23.178Z] DEBUG: [runtime-status] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.3.0","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-functions\\lib\\index.js"}
+[warn] !  functions: Your GOOGLE_APPLICATION_CREDENTIALS environment variable points to ./.credentials.json. Non-emulated services will access production using these credentials. Be careful!
+[debug] [2019-11-01T09:40:23.181Z] DEBUG: [runtime-status] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.3.0","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-functions\\lib\\index.js"}
+[debug] [2019-11-01T09:40:24.018Z] DEBUG: Unsupported trigger: {"eventTrigger":{"resource":"projects/crosswords-1e9f0","eventType":"providers/firebase.auth/eventTypes/user.create","service":"firebaseauth.googleapis.com"},"name":"authOnCreate","entryPoint":"authOnCreate"}
+[debug] [2019-11-01T09:40:24.018Z] [functions[authOnCreate]] function ignored because the firebaseauth.googleapis.com emulator does not exist or is not running.
+[debug] [2019-11-01T09:40:24.018Z] [functions[sendPuzzleInvitation]] function ignored because the firestore emulator does not exist or is not running.
+[info] i  functions: Loaded functions: authOnCreate, sendPuzzleInvitation
+[debug] [2019-11-01T09:40:33.608Z] shell:sendPuzzleInvitation: trigger={"eventTrigger":{"resource":"projects/crosswords-1e9f0/databases/(default)/documents/invitations/{uid}","eventType":"providers/cloud.firestore/eventTypes/document.create","service":"firestore.googleapis.com"},"name":"sendPuzzleInvitation","entryPoint":"sendPuzzleInvitation"}
+[debug] [2019-11-01T09:40:33.608Z] shell:sendPuzzleInvitation: opts={"resource":"projects/crosswords-1e9f0/databases/(default)/documents/invitations/uid2"}, data={"value":{"fields":{"id":{"stringValue":"inviteID"},"recipientEmail":{"stringValue":"bjgrosse@gmail.com"},"puzzleId":{"stringValue":"15SuJ684gpB4vjrkiSBr"}},"createTime":"2019-11-01T09:40:33.607Z","updateTime":"2019-11-01T09:40:33.607Z"},"oldValue":{}}
+[debug] [2019-11-01T09:40:34.858Z] DEBUG: [runtime-status] Functions runtime initialized. {"cwd":"F:\\dev\\crosswords\\functions","node_version":"10.16.3"}
+[debug] [2019-11-01T09:40:34.859Z] [functions] Beginning execution of "sendPuzzleInvitation"
+[debug] [2019-11-01T09:40:34.859Z] DEBUG: [runtime-status] Disabled runtime features: {"functions_config_helper":true,"network_filtering":true,"timeout":true,"memory_limiting":true,"admin_stubs":true} {}
+[debug] [2019-11-01T09:40:34.871Z] DEBUG: [runtime-status] Resolved module firebase-admin {"declared":true,"installed":true,"version":"8.6.1","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-admin\\lib\\index.js"}
+[debug] [2019-11-01T09:40:34.878Z] DEBUG: [runtime-status] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.3.0","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-functions\\lib\\index.js"}
+[warn] !  functions: Your GOOGLE_APPLICATION_CREDENTIALS environment variable points to ./.credentials.json. Non-emulated services will access production using these credentials. Be careful!
+[debug] [2019-11-01T09:40:34.881Z] DEBUG: [runtime-status] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.3.0","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-functions\\lib\\index.js"}
+[debug] [2019-11-01T09:40:35.887Z] DEBUG: [runtime-status] Trigger "sendPuzzleInvitation" has been found, beginning invocation! {}
+[debug] [2019-11-01T09:40:35.887Z] DEBUG: [runtime-status]  {"eventTrigger":{"resource":"projects/crosswords-1e9f0/databases/(default)/documents/invitations/{uid}","eventType":"providers/cloud.firestore/eventTypes/document.create","service":"firestore.googleapis.com"},"name":"sendPuzzleInvitation","entryPoint":"sendPuzzleInvitation"}
+[debug] [2019-11-01T09:40:35.888Z] DEBUG: [runtime-status] Running sendPuzzleInvitation in mode BACKGROUND {}
+[debug] [2019-11-01T09:40:35.889Z] DEBUG: [runtime-status] ProcessBackground {"eventId":"587584ee-fe6b-49ea-906a-b0832b5e6077","timestamp":"2019-11-01T09:40:33.608Z","eventType":"providers/cloud.firestore/eventTypes/document.create","resource":"projects/crosswords-1e9f0/databases/(default)/documents/invitations/uid2","data":{"value":{"fields":{"id":{"stringValue":"inviteID"},"recipientEmail":{"stringValue":"bjgrosse@gmail.com"},"puzzleId":{"stringValue":"15SuJ684gpB4vjrkiSBr"}},"createTime":"2019-11-01T09:40:33.607Z","updateTime":"2019-11-01T09:40:33.607Z"},"oldValue":{}}}
+[debug] [2019-11-01T09:40:35.890Z] DEBUG: [runtime-status] RunBackground {"data":{"value":{"fields":{"id":{"stringValue":"inviteID"},"recipientEmail":{"stringValue":"bjgrosse@gmail.com"},"puzzleId":{"stringValue":"15SuJ684gpB4vjrkiSBr"}},"createTime":"2019-11-01T09:40:33.607Z","updateTime":"2019-11-01T09:40:33.607Z"},"oldValue":{}},"context":{"eventId":"587584ee-fe6b-49ea-906a-b0832b5e6077","timestamp":"2019-11-01T09:40:33.608Z","eventType":"providers/cloud.firestore/eventTypes/document.create","resource":"projects/crosswords-1e9f0/databases/(default)/documents/invitations/uid2"}}
+[debug] [2019-11-01T09:40:38.524Z] DEBUG: [runtime-status] Ephemeral server survived. {}
+[warn] !  functions: ReferenceError: firebase is not defined
+    at createInvitation (F:\dev\crosswords\functions\index.js:57:37)
+    at process._tickCallback (internal/process/next_tick.js:68:7)
+[warn] !  Your function was killed because it raised an unhandled error.
+[debug] [2019-11-01T09:41:10.592Z] DEBUG: File F:\dev\crosswords\functions\index.js changed, reloading triggers
+[debug] [2019-11-01T09:41:12.970Z] DEBUG: [runtime-status] Functions runtime initialized. {"cwd":"F:\\dev\\crosswords\\functions","node_version":"10.16.3"}
+[debug] [2019-11-01T09:41:12.971Z] DEBUG: [runtime-status] Disabled runtime features: {"functions_config_helper":true,"network_filtering":true,"timeout":true,"memory_limiting":true,"admin_stubs":true} {}
+[debug] [2019-11-01T09:41:12.986Z] DEBUG: [runtime-status] Resolved module firebase-admin {"declared":true,"installed":true,"version":"8.6.1","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-admin\\lib\\index.js"}
+[debug] [2019-11-01T09:41:12.995Z] DEBUG: [runtime-status] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.3.0","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-functions\\lib\\index.js"}
+[warn] !  functions: Your GOOGLE_APPLICATION_CREDENTIALS environment variable points to ./.credentials.json. Non-emulated services will access production using these credentials. Be careful!
+[debug] [2019-11-01T09:41:12.998Z] DEBUG: [runtime-status] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.3.0","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-functions\\lib\\index.js"}
+[debug] [2019-11-01T09:41:19.185Z] shell:sendPuzzleInvitation: trigger={"eventTrigger":{"resource":"projects/crosswords-1e9f0/databases/(default)/documents/invitations/{uid}","eventType":"providers/cloud.firestore/eventTypes/document.create","service":"firestore.googleapis.com"},"name":"sendPuzzleInvitation","entryPoint":"sendPuzzleInvitation"}
+[debug] [2019-11-01T09:41:19.185Z] shell:sendPuzzleInvitation: opts={"resource":"projects/crosswords-1e9f0/databases/(default)/documents/invitations/uid6"}, data={"value":{"fields":{"id":{"stringValue":"inviteID"},"recipientEmail":{"stringValue":"bjgrosse@gmail.com"},"puzzleId":{"stringValue":"15SuJ684gpB4vjrkiSBr"}},"createTime":"2019-11-01T09:41:19.185Z","updateTime":"2019-11-01T09:41:19.185Z"},"oldValue":{}}
+[debug] [2019-11-01T09:41:20.951Z] DEBUG: [runtime-status] Functions runtime initialized. {"cwd":"F:\\dev\\crosswords\\functions","node_version":"10.16.3"}
+[debug] [2019-11-01T09:41:20.951Z] [functions] Beginning execution of "sendPuzzleInvitation"
+[debug] [2019-11-01T09:41:20.951Z] DEBUG: [runtime-status] Disabled runtime features: {"functions_config_helper":true,"network_filtering":true,"timeout":true,"memory_limiting":true,"admin_stubs":true} {}
+[debug] [2019-11-01T09:41:20.960Z] DEBUG: [runtime-status] Resolved module firebase-admin {"declared":true,"installed":true,"version":"8.6.1","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-admin\\lib\\index.js"}
+[debug] [2019-11-01T09:41:20.965Z] DEBUG: [runtime-status] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.3.0","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-functions\\lib\\index.js"}
+[warn] !  functions: Your GOOGLE_APPLICATION_CREDENTIALS environment variable points to ./.credentials.json. Non-emulated services will access production using these credentials. Be careful!
+[debug] [2019-11-01T09:41:20.968Z] DEBUG: [runtime-status] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.3.0","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-functions\\lib\\index.js"}
+[debug] [2019-11-01T09:41:24.398Z] DEBUG: [runtime-status] Trigger "sendPuzzleInvitation" has been found, beginning invocation! {}
+[debug] [2019-11-01T09:41:24.399Z] DEBUG: [runtime-status]  {"eventTrigger":{"resource":"projects/crosswords-1e9f0/databases/(default)/documents/invitations/{uid}","eventType":"providers/cloud.firestore/eventTypes/document.create","service":"firestore.googleapis.com"},"name":"sendPuzzleInvitation","entryPoint":"sendPuzzleInvitation"}
+[debug] [2019-11-01T09:41:24.400Z] DEBUG: [runtime-status] Running sendPuzzleInvitation in mode BACKGROUND {}
+[debug] [2019-11-01T09:41:24.401Z] DEBUG: [runtime-status] ProcessBackground {"eventId":"3f872369-56cd-4939-b15e-8a769d7507f3","timestamp":"2019-11-01T09:41:19.185Z","eventType":"providers/cloud.firestore/eventTypes/document.create","resource":"projects/crosswords-1e9f0/databases/(default)/documents/invitations/uid6","data":{"value":{"fields":{"id":{"stringValue":"inviteID"},"recipientEmail":{"stringValue":"bjgrosse@gmail.com"},"puzzleId":{"stringValue":"15SuJ684gpB4vjrkiSBr"}},"createTime":"2019-11-01T09:41:19.185Z","updateTime":"2019-11-01T09:41:19.185Z"},"oldValue":{}}}
+[debug] [2019-11-01T09:41:24.405Z] DEBUG: [runtime-status] RunBackground {"data":{"value":{"fields":{"id":{"stringValue":"inviteID"},"recipientEmail":{"stringValue":"bjgrosse@gmail.com"},"puzzleId":{"stringValue":"15SuJ684gpB4vjrkiSBr"}},"createTime":"2019-11-01T09:41:19.185Z","updateTime":"2019-11-01T09:41:19.185Z"},"oldValue":{}},"context":{"eventId":"3f872369-56cd-4939-b15e-8a769d7507f3","timestamp":"2019-11-01T09:41:19.185Z","eventType":"providers/cloud.firestore/eventTypes/document.create","resource":"projects/crosswords-1e9f0/databases/(default)/documents/invitations/uid6"}}
+[debug] [2019-11-01T09:41:27.170Z] DEBUG: [runtime-status] Ephemeral server survived. {}
+[warn] !  functions: Error: Update() requires either a single JavaScript object or an alternating list of field/value pairs that can be followed by an optional precondition. Value for argument "dataOrField" is not a valid Firestore document. Couldn't serialize object of type "FieldValueImpl" (found in field players). Firestore doesn't support JavaScript objects with custom prototypes (i.e. objects that were created via the "new" operator).
+    at WriteBatch.update (F:\dev\crosswords\functions\node_modules\@google-cloud\firestore\build\src\write-batch.js:358:23)
+    at DocumentReference.update (F:\dev\crosswords\functions\node_modules\@google-cloud\firestore\build\src\reference.js:368:14)
+    at createInvitation (F:\dev\crosswords\functions\index.js:58:19)
+    at process._tickCallback (internal/process/next_tick.js:68:7)
+[warn] !  Your function was killed because it raised an unhandled error.
+[debug] [2019-11-01T09:50:10.551Z] DEBUG: File F:\dev\crosswords\functions\index.js changed, reloading triggers
+[debug] [2019-11-01T09:50:12.651Z] DEBUG: [runtime-status] Functions runtime initialized. {"cwd":"F:\\dev\\crosswords\\functions","node_version":"10.16.3"}
+[debug] [2019-11-01T09:50:12.652Z] DEBUG: [runtime-status] Disabled runtime features: {"functions_config_helper":true,"network_filtering":true,"timeout":true,"memory_limiting":true,"admin_stubs":true} {}
+[debug] [2019-11-01T09:50:12.659Z] DEBUG: [runtime-status] Resolved module firebase-admin {"declared":true,"installed":true,"version":"8.6.1","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-admin\\lib\\index.js"}
+[debug] [2019-11-01T09:50:12.665Z] DEBUG: [runtime-status] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.3.0","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-functions\\lib\\index.js"}
+[warn] !  functions: Your GOOGLE_APPLICATION_CREDENTIALS environment variable points to ./.credentials.json. Non-emulated services will access production using these credentials. Be careful!
+[debug] [2019-11-01T09:50:12.667Z] DEBUG: [runtime-status] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.3.0","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-functions\\lib\\index.js"}
+[debug] [2019-11-01T09:50:16.035Z] shell:sendPuzzleInvitation: trigger={"eventTrigger":{"resource":"projects/crosswords-1e9f0/databases/(default)/documents/invitations/{uid}","eventType":"providers/cloud.firestore/eventTypes/document.create","service":"firestore.googleapis.com"},"name":"sendPuzzleInvitation","entryPoint":"sendPuzzleInvitation"}
+[debug] [2019-11-01T09:50:16.036Z] shell:sendPuzzleInvitation: opts={"resource":"projects/crosswords-1e9f0/databases/(default)/documents/invitations/uid5"}, data={"value":{"fields":{"id":{"stringValue":"inviteID"},"recipientEmail":{"stringValue":"bjgrosse@gmail.com"},"puzzleId":{"stringValue":"15SuJ684gpB4vjrkiSBr"}},"createTime":"2019-11-01T09:50:16.035Z","updateTime":"2019-11-01T09:50:16.035Z"},"oldValue":{}}
+[debug] [2019-11-01T09:50:17.352Z] DEBUG: [runtime-status] Functions runtime initialized. {"cwd":"F:\\dev\\crosswords\\functions","node_version":"10.16.3"}
+[debug] [2019-11-01T09:50:17.352Z] [functions] Beginning execution of "sendPuzzleInvitation"
+[debug] [2019-11-01T09:50:17.352Z] DEBUG: [runtime-status] Disabled runtime features: {"functions_config_helper":true,"network_filtering":true,"timeout":true,"memory_limiting":true,"admin_stubs":true} {}
+[debug] [2019-11-01T09:50:17.361Z] DEBUG: [runtime-status] Resolved module firebase-admin {"declared":true,"installed":true,"version":"8.6.1","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-admin\\lib\\index.js"}
+[debug] [2019-11-01T09:50:17.366Z] DEBUG: [runtime-status] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.3.0","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-functions\\lib\\index.js"}
+[warn] !  functions: Your GOOGLE_APPLICATION_CREDENTIALS environment variable points to ./.credentials.json. Non-emulated services will access production using these credentials. Be careful!
+[debug] [2019-11-01T09:50:17.368Z] DEBUG: [runtime-status] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.3.0","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-functions\\lib\\index.js"}
+[debug] [2019-11-01T09:50:19.609Z] DEBUG: [runtime-status] Trigger "sendPuzzleInvitation" has been found, beginning invocation! {}
+[debug] [2019-11-01T09:50:19.610Z] DEBUG: [runtime-status]  {"eventTrigger":{"resource":"projects/crosswords-1e9f0/databases/(default)/documents/invitations/{uid}","eventType":"providers/cloud.firestore/eventTypes/document.create","service":"firestore.googleapis.com"},"name":"sendPuzzleInvitation","entryPoint":"sendPuzzleInvitation"}
+[debug] [2019-11-01T09:50:19.610Z] DEBUG: [runtime-status] Running sendPuzzleInvitation in mode BACKGROUND {}
+[debug] [2019-11-01T09:50:19.610Z] DEBUG: [runtime-status] ProcessBackground {"eventId":"fcf47a0a-35a9-448a-8336-611eebd8c5e6","timestamp":"2019-11-01T09:50:16.036Z","eventType":"providers/cloud.firestore/eventTypes/document.create","resource":"projects/crosswords-1e9f0/databases/(default)/documents/invitations/uid5","data":{"value":{"fields":{"id":{"stringValue":"inviteID"},"recipientEmail":{"stringValue":"bjgrosse@gmail.com"},"puzzleId":{"stringValue":"15SuJ684gpB4vjrkiSBr"}},"createTime":"2019-11-01T09:50:16.035Z","updateTime":"2019-11-01T09:50:16.035Z"},"oldValue":{}}}
+[debug] [2019-11-01T09:50:19.611Z] DEBUG: [runtime-status] RunBackground {"data":{"value":{"fields":{"id":{"stringValue":"inviteID"},"recipientEmail":{"stringValue":"bjgrosse@gmail.com"},"puzzleId":{"stringValue":"15SuJ684gpB4vjrkiSBr"}},"createTime":"2019-11-01T09:50:16.035Z","updateTime":"2019-11-01T09:50:16.035Z"},"oldValue":{}},"context":{"eventId":"fcf47a0a-35a9-448a-8336-611eebd8c5e6","timestamp":"2019-11-01T09:50:16.036Z","eventType":"providers/cloud.firestore/eventTypes/document.create","resource":"projects/crosswords-1e9f0/databases/(default)/documents/invitations/uid5"}}
+[debug] [2019-11-01T09:50:21.082Z] DEBUG: [runtime-status] Ephemeral server survived. {}
+[warn] !  functions: Error: Element at index 0 is not a valid array element. Cannot use "undefined" as a Firestore value (found in field name).
+    at validateUserInput (F:\dev\crosswords\functions\node_modules\@google-cloud\firestore\build\src\serializer.js:273:15)
+    at Object.validateUserInput (F:\dev\crosswords\functions\node_modules\@google-cloud\firestore\build\src\serializer.js:269:13)
+    at validateArrayElement (F:\dev\crosswords\functions\node_modules\@google-cloud\firestore\build\src\field-value.js:423:18)
+    at ArrayUnionTransform.validate (F:\dev\crosswords\functions\node_modules\@google-cloud\firestore\build\src\field-value.js:353:13)
+    at transforms.forEach.transform (F:\dev\crosswords\functions\node_modules\@google-cloud\firestore\build\src\document.js:803:56)
+    at Map.forEach (<anonymous>)
+    at DocumentTransform.validate (F:\dev\crosswords\functions\node_modules\@google-cloud\firestore\build\src\document.js:803:25)
+    at WriteBatch.update (F:\dev\crosswords\functions\node_modules\@google-cloud\firestore\build\src\write-batch.js:363:19)
+    at DocumentReference.update (F:\dev\crosswords\functions\node_modules\@google-cloud\firestore\build\src\reference.js:368:14)
+    at createInvitation (F:\dev\crosswords\functions\index.js:58:19)
+[warn] !  Your function was killed because it raised an unhandled error.
+[debug] [2019-11-01T09:51:58.235Z] DEBUG: File F:\dev\crosswords\functions\index.js changed, reloading triggers
+[debug] [2019-11-01T09:52:00.276Z] DEBUG: [runtime-status] Functions runtime initialized. {"cwd":"F:\\dev\\crosswords\\functions","node_version":"10.16.3"}
+[debug] [2019-11-01T09:52:00.276Z] DEBUG: [runtime-status] Disabled runtime features: {"functions_config_helper":true,"network_filtering":true,"timeout":true,"memory_limiting":true,"admin_stubs":true} {}
+[debug] [2019-11-01T09:52:00.287Z] DEBUG: [runtime-status] Resolved module firebase-admin {"declared":true,"installed":true,"version":"8.6.1","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-admin\\lib\\index.js"}
+[debug] [2019-11-01T09:52:00.295Z] DEBUG: [runtime-status] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.3.0","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-functions\\lib\\index.js"}
+[warn] !  functions: Your GOOGLE_APPLICATION_CREDENTIALS environment variable points to ./.credentials.json. Non-emulated services will access production using these credentials. Be careful!
+[debug] [2019-11-01T09:52:00.297Z] DEBUG: [runtime-status] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.3.0","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-functions\\lib\\index.js"}
+[debug] [2019-11-01T09:52:01.915Z] shell:sendPuzzleInvitation: trigger={"eventTrigger":{"resource":"projects/crosswords-1e9f0/databases/(default)/documents/invitations/{uid}","eventType":"providers/cloud.firestore/eventTypes/document.create","service":"firestore.googleapis.com"},"name":"sendPuzzleInvitation","entryPoint":"sendPuzzleInvitation"}
+[debug] [2019-11-01T09:52:01.915Z] shell:sendPuzzleInvitation: opts={"resource":"projects/crosswords-1e9f0/databases/(default)/documents/invitations/uid9"}, data={"value":{"fields":{"id":{"stringValue":"inviteID"},"recipientEmail":{"stringValue":"bjgrosse@gmail.com"},"puzzleId":{"stringValue":"15SuJ684gpB4vjrkiSBr"}},"createTime":"2019-11-01T09:52:01.915Z","updateTime":"2019-11-01T09:52:01.915Z"},"oldValue":{}}
+[debug] [2019-11-01T09:52:02.754Z] DEBUG: [runtime-status] Functions runtime initialized. {"cwd":"F:\\dev\\crosswords\\functions","node_version":"10.16.3"}
+[debug] [2019-11-01T09:52:02.754Z] [functions] Beginning execution of "sendPuzzleInvitation"
+[debug] [2019-11-01T09:52:02.754Z] DEBUG: [runtime-status] Disabled runtime features: {"functions_config_helper":true,"network_filtering":true,"timeout":true,"memory_limiting":true,"admin_stubs":true} {}
+[debug] [2019-11-01T09:52:02.764Z] DEBUG: [runtime-status] Resolved module firebase-admin {"declared":true,"installed":true,"version":"8.6.1","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-admin\\lib\\index.js"}
+[debug] [2019-11-01T09:52:02.768Z] DEBUG: [runtime-status] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.3.0","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-functions\\lib\\index.js"}
+[warn] !  functions: Your GOOGLE_APPLICATION_CREDENTIALS environment variable points to ./.credentials.json. Non-emulated services will access production using these credentials. Be careful!
+[debug] [2019-11-01T09:52:02.770Z] DEBUG: [runtime-status] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.3.0","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-functions\\lib\\index.js"}
+[debug] [2019-11-01T09:52:04.253Z] DEBUG: [runtime-status] Trigger "sendPuzzleInvitation" has been found, beginning invocation! {}
+[debug] [2019-11-01T09:52:04.253Z] DEBUG: [runtime-status]  {"eventTrigger":{"resource":"projects/crosswords-1e9f0/databases/(default)/documents/invitations/{uid}","eventType":"providers/cloud.firestore/eventTypes/document.create","service":"firestore.googleapis.com"},"name":"sendPuzzleInvitation","entryPoint":"sendPuzzleInvitation"}
+[debug] [2019-11-01T09:52:04.254Z] DEBUG: [runtime-status] Running sendPuzzleInvitation in mode BACKGROUND {}
+[debug] [2019-11-01T09:52:04.254Z] DEBUG: [runtime-status] ProcessBackground {"eventId":"8e745041-1b0b-4f5e-a92c-868286278825","timestamp":"2019-11-01T09:52:01.915Z","eventType":"providers/cloud.firestore/eventTypes/document.create","resource":"projects/crosswords-1e9f0/databases/(default)/documents/invitations/uid9","data":{"value":{"fields":{"id":{"stringValue":"inviteID"},"recipientEmail":{"stringValue":"bjgrosse@gmail.com"},"puzzleId":{"stringValue":"15SuJ684gpB4vjrkiSBr"}},"createTime":"2019-11-01T09:52:01.915Z","updateTime":"2019-11-01T09:52:01.915Z"},"oldValue":{}}}
+[debug] [2019-11-01T09:52:04.255Z] DEBUG: [runtime-status] RunBackground {"data":{"value":{"fields":{"id":{"stringValue":"inviteID"},"recipientEmail":{"stringValue":"bjgrosse@gmail.com"},"puzzleId":{"stringValue":"15SuJ684gpB4vjrkiSBr"}},"createTime":"2019-11-01T09:52:01.915Z","updateTime":"2019-11-01T09:52:01.915Z"},"oldValue":{}},"context":{"eventId":"8e745041-1b0b-4f5e-a92c-868286278825","timestamp":"2019-11-01T09:52:01.915Z","eventType":"providers/cloud.firestore/eventTypes/document.create","resource":"projects/crosswords-1e9f0/databases/(default)/documents/invitations/uid9"}}
+[info] >  [object Object]
+[debug] [2019-11-01T09:52:05.859Z] DEBUG: [runtime-status] Ephemeral server survived. {}
+[warn] !  functions: Error: Element at index 0 is not a valid array element. Cannot use "undefined" as a Firestore value (found in field name).
+    at validateUserInput (F:\dev\crosswords\functions\node_modules\@google-cloud\firestore\build\src\serializer.js:273:15)
+    at Object.validateUserInput (F:\dev\crosswords\functions\node_modules\@google-cloud\firestore\build\src\serializer.js:269:13)
+    at validateArrayElement (F:\dev\crosswords\functions\node_modules\@google-cloud\firestore\build\src\field-value.js:423:18)
+    at ArrayUnionTransform.validate (F:\dev\crosswords\functions\node_modules\@google-cloud\firestore\build\src\field-value.js:353:13)
+    at transforms.forEach.transform (F:\dev\crosswords\functions\node_modules\@google-cloud\firestore\build\src\document.js:803:56)
+    at Map.forEach (<anonymous>)
+    at DocumentTransform.validate (F:\dev\crosswords\functions\node_modules\@google-cloud\firestore\build\src\document.js:803:25)
+    at WriteBatch.update (F:\dev\crosswords\functions\node_modules\@google-cloud\firestore\build\src\write-batch.js:363:19)
+    at DocumentReference.update (F:\dev\crosswords\functions\node_modules\@google-cloud\firestore\build\src\reference.js:368:14)
+    at createInvitation (F:\dev\crosswords\functions\index.js:60:19)
+[warn] !  Your function was killed because it raised an unhandled error.
+[debug] [2019-11-01T09:52:13.857Z] DEBUG: File F:\dev\crosswords\functions\index.js changed, reloading triggers
+[debug] [2019-11-01T09:52:15.861Z] DEBUG: [runtime-status] Functions runtime initialized. {"cwd":"F:\\dev\\crosswords\\functions","node_version":"10.16.3"}
+[debug] [2019-11-01T09:52:15.861Z] DEBUG: [runtime-status] Disabled runtime features: {"functions_config_helper":true,"network_filtering":true,"timeout":true,"memory_limiting":true,"admin_stubs":true} {}
+[debug] [2019-11-01T09:52:15.869Z] DEBUG: [runtime-status] Resolved module firebase-admin {"declared":true,"installed":true,"version":"8.6.1","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-admin\\lib\\index.js"}
+[debug] [2019-11-01T09:52:15.874Z] DEBUG: [runtime-status] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.3.0","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-functions\\lib\\index.js"}
+[warn] !  functions: Your GOOGLE_APPLICATION_CREDENTIALS environment variable points to ./.credentials.json. Non-emulated services will access production using these credentials. Be careful!
+[debug] [2019-11-01T09:52:15.876Z] DEBUG: [runtime-status] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.3.0","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-functions\\lib\\index.js"}
+[debug] [2019-11-01T09:52:19.485Z] shell:sendPuzzleInvitation: trigger={"eventTrigger":{"resource":"projects/crosswords-1e9f0/databases/(default)/documents/invitations/{uid}","eventType":"providers/cloud.firestore/eventTypes/document.create","service":"firestore.googleapis.com"},"name":"sendPuzzleInvitation","entryPoint":"sendPuzzleInvitation"}
+[debug] [2019-11-01T09:52:19.485Z] shell:sendPuzzleInvitation: opts={"resource":"projects/crosswords-1e9f0/databases/(default)/documents/invitations/uid5"}, data={"value":{"fields":{"id":{"stringValue":"inviteID"},"recipientEmail":{"stringValue":"bjgrosse@gmail.com"},"puzzleId":{"stringValue":"15SuJ684gpB4vjrkiSBr"}},"createTime":"2019-11-01T09:52:19.485Z","updateTime":"2019-11-01T09:52:19.485Z"},"oldValue":{}}
+[debug] [2019-11-01T09:52:21.048Z] DEBUG: [runtime-status] Functions runtime initialized. {"cwd":"F:\\dev\\crosswords\\functions","node_version":"10.16.3"}
+[debug] [2019-11-01T09:52:21.049Z] [functions] Beginning execution of "sendPuzzleInvitation"
+[debug] [2019-11-01T09:52:21.050Z] DEBUG: [runtime-status] Disabled runtime features: {"functions_config_helper":true,"network_filtering":true,"timeout":true,"memory_limiting":true,"admin_stubs":true} {}
+[debug] [2019-11-01T09:52:21.077Z] DEBUG: [runtime-status] Resolved module firebase-admin {"declared":true,"installed":true,"version":"8.6.1","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-admin\\lib\\index.js"}
+[debug] [2019-11-01T09:52:21.094Z] DEBUG: [runtime-status] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.3.0","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-functions\\lib\\index.js"}
+[warn] !  functions: Your GOOGLE_APPLICATION_CREDENTIALS environment variable points to ./.credentials.json. Non-emulated services will access production using these credentials. Be careful!
+[debug] [2019-11-01T09:52:21.102Z] DEBUG: [runtime-status] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.3.0","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-functions\\lib\\index.js"}
+[debug] [2019-11-01T09:52:22.672Z] DEBUG: [runtime-status] Trigger "sendPuzzleInvitation" has been found, beginning invocation! {}
+[debug] [2019-11-01T09:52:22.673Z] DEBUG: [runtime-status]  {"eventTrigger":{"resource":"projects/crosswords-1e9f0/databases/(default)/documents/invitations/{uid}","eventType":"providers/cloud.firestore/eventTypes/document.create","service":"firestore.googleapis.com"},"name":"sendPuzzleInvitation","entryPoint":"sendPuzzleInvitation"}
+[debug] [2019-11-01T09:52:22.673Z] DEBUG: [runtime-status] Running sendPuzzleInvitation in mode BACKGROUND {}
+[debug] [2019-11-01T09:52:22.673Z] DEBUG: [runtime-status] ProcessBackground {"eventId":"88f7b87d-5e51-4f6b-9b37-cc5e6c6bba6d","timestamp":"2019-11-01T09:52:19.485Z","eventType":"providers/cloud.firestore/eventTypes/document.create","resource":"projects/crosswords-1e9f0/databases/(default)/documents/invitations/uid5","data":{"value":{"fields":{"id":{"stringValue":"inviteID"},"recipientEmail":{"stringValue":"bjgrosse@gmail.com"},"puzzleId":{"stringValue":"15SuJ684gpB4vjrkiSBr"}},"createTime":"2019-11-01T09:52:19.485Z","updateTime":"2019-11-01T09:52:19.485Z"},"oldValue":{}}}
+[debug] [2019-11-01T09:52:22.674Z] DEBUG: [runtime-status] RunBackground {"data":{"value":{"fields":{"id":{"stringValue":"inviteID"},"recipientEmail":{"stringValue":"bjgrosse@gmail.com"},"puzzleId":{"stringValue":"15SuJ684gpB4vjrkiSBr"}},"createTime":"2019-11-01T09:52:19.485Z","updateTime":"2019-11-01T09:52:19.485Z"},"oldValue":{}},"context":{"eventId":"88f7b87d-5e51-4f6b-9b37-cc5e6c6bba6d","timestamp":"2019-11-01T09:52:19.485Z","eventType":"providers/cloud.firestore/eventTypes/document.create","resource":"projects/crosswords-1e9f0/databases/(default)/documents/invitations/uid5"}}
+[info] >  
+[debug] [2019-11-01T09:52:23.965Z] DEBUG: [runtime-status] Ephemeral server survived. {}
+[warn] !  functions: Error: Element at index 0 is not a valid array element. Cannot use "undefined" as a Firestore value (found in field name).
+    at validateUserInput (F:\dev\crosswords\functions\node_modules\@google-cloud\firestore\build\src\serializer.js:273:15)
+    at Object.validateUserInput (F:\dev\crosswords\functions\node_modules\@google-cloud\firestore\build\src\serializer.js:269:13)
+    at validateArrayElement (F:\dev\crosswords\functions\node_modules\@google-cloud\firestore\build\src\field-value.js:423:18)
+    at ArrayUnionTransform.validate (F:\dev\crosswords\functions\node_modules\@google-cloud\firestore\build\src\field-value.js:353:13)
+    at transforms.forEach.transform (F:\dev\crosswords\functions\node_modules\@google-cloud\firestore\build\src\document.js:803:56)
+    at Map.forEach (<anonymous>)
+    at DocumentTransform.validate (F:\dev\crosswords\functions\node_modules\@google-cloud\firestore\build\src\document.js:803:25)
+    at WriteBatch.update (F:\dev\crosswords\functions\node_modules\@google-cloud\firestore\build\src\write-batch.js:363:19)
+    at DocumentReference.update (F:\dev\crosswords\functions\node_modules\@google-cloud\firestore\build\src\reference.js:368:14)
+    at createInvitation (F:\dev\crosswords\functions\index.js:60:19)
+[warn] !  Your function was killed because it raised an unhandled error.
+[debug] [2019-11-01T09:52:37.338Z] DEBUG: File F:\dev\crosswords\functions\index.js changed, reloading triggers
+[debug] [2019-11-01T09:52:39.298Z] DEBUG: [runtime-status] Functions runtime initialized. {"cwd":"F:\\dev\\crosswords\\functions","node_version":"10.16.3"}
+[debug] [2019-11-01T09:52:39.299Z] DEBUG: [runtime-status] Disabled runtime features: {"functions_config_helper":true,"network_filtering":true,"timeout":true,"memory_limiting":true,"admin_stubs":true} {}
+[debug] [2019-11-01T09:52:39.309Z] DEBUG: [runtime-status] Resolved module firebase-admin {"declared":true,"installed":true,"version":"8.6.1","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-admin\\lib\\index.js"}
+[debug] [2019-11-01T09:52:39.316Z] DEBUG: [runtime-status] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.3.0","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-functions\\lib\\index.js"}
+[warn] !  functions: Your GOOGLE_APPLICATION_CREDENTIALS environment variable points to ./.credentials.json. Non-emulated services will access production using these credentials. Be careful!
+[debug] [2019-11-01T09:52:39.318Z] DEBUG: [runtime-status] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.3.0","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-functions\\lib\\index.js"}
+[debug] [2019-11-01T09:52:42.819Z] shell:sendPuzzleInvitation: trigger={"eventTrigger":{"resource":"projects/crosswords-1e9f0/databases/(default)/documents/invitations/{uid}","eventType":"providers/cloud.firestore/eventTypes/document.create","service":"firestore.googleapis.com"},"name":"sendPuzzleInvitation","entryPoint":"sendPuzzleInvitation"}
+[debug] [2019-11-01T09:52:42.819Z] shell:sendPuzzleInvitation: opts={"resource":"projects/crosswords-1e9f0/databases/(default)/documents/invitations/uid5"}, data={"value":{"fields":{"id":{"stringValue":"inviteID"},"recipientEmail":{"stringValue":"bjgrosse@gmail.com"},"puzzleId":{"stringValue":"15SuJ684gpB4vjrkiSBr"}},"createTime":"2019-11-01T09:52:42.819Z","updateTime":"2019-11-01T09:52:42.819Z"},"oldValue":{}}
+[debug] [2019-11-01T09:52:44.654Z] DEBUG: [runtime-status] Functions runtime initialized. {"cwd":"F:\\dev\\crosswords\\functions","node_version":"10.16.3"}
+[debug] [2019-11-01T09:52:44.655Z] [functions] Beginning execution of "sendPuzzleInvitation"
+[debug] [2019-11-01T09:52:44.656Z] DEBUG: [runtime-status] Disabled runtime features: {"functions_config_helper":true,"network_filtering":true,"timeout":true,"memory_limiting":true,"admin_stubs":true} {}
+[debug] [2019-11-01T09:52:44.668Z] DEBUG: [runtime-status] Resolved module firebase-admin {"declared":true,"installed":true,"version":"8.6.1","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-admin\\lib\\index.js"}
+[debug] [2019-11-01T09:52:44.675Z] DEBUG: [runtime-status] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.3.0","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-functions\\lib\\index.js"}
+[warn] !  functions: Your GOOGLE_APPLICATION_CREDENTIALS environment variable points to ./.credentials.json. Non-emulated services will access production using these credentials. Be careful!
+[debug] [2019-11-01T09:52:44.678Z] DEBUG: [runtime-status] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.3.0","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-functions\\lib\\index.js"}
+[debug] [2019-11-01T09:52:48.122Z] DEBUG: [runtime-status] Trigger "sendPuzzleInvitation" has been found, beginning invocation! {}
+[debug] [2019-11-01T09:52:48.123Z] DEBUG: [runtime-status]  {"eventTrigger":{"resource":"projects/crosswords-1e9f0/databases/(default)/documents/invitations/{uid}","eventType":"providers/cloud.firestore/eventTypes/document.create","service":"firestore.googleapis.com"},"name":"sendPuzzleInvitation","entryPoint":"sendPuzzleInvitation"}
+[debug] [2019-11-01T09:52:48.124Z] DEBUG: [runtime-status] Running sendPuzzleInvitation in mode BACKGROUND {}
+[debug] [2019-11-01T09:52:48.125Z] DEBUG: [runtime-status] ProcessBackground {"eventId":"a7590b2f-aae4-4bb2-92be-e82e28dabab5","timestamp":"2019-11-01T09:52:42.820Z","eventType":"providers/cloud.firestore/eventTypes/document.create","resource":"projects/crosswords-1e9f0/databases/(default)/documents/invitations/uid5","data":{"value":{"fields":{"id":{"stringValue":"inviteID"},"recipientEmail":{"stringValue":"bjgrosse@gmail.com"},"puzzleId":{"stringValue":"15SuJ684gpB4vjrkiSBr"}},"createTime":"2019-11-01T09:52:42.819Z","updateTime":"2019-11-01T09:52:42.819Z"},"oldValue":{}}}
+[debug] [2019-11-01T09:52:48.127Z] DEBUG: [runtime-status] RunBackground {"data":{"value":{"fields":{"id":{"stringValue":"inviteID"},"recipientEmail":{"stringValue":"bjgrosse@gmail.com"},"puzzleId":{"stringValue":"15SuJ684gpB4vjrkiSBr"}},"createTime":"2019-11-01T09:52:42.819Z","updateTime":"2019-11-01T09:52:42.819Z"},"oldValue":{}},"context":{"eventId":"a7590b2f-aae4-4bb2-92be-e82e28dabab5","timestamp":"2019-11-01T09:52:42.820Z","eventType":"providers/cloud.firestore/eventTypes/document.create","resource":"projects/crosswords-1e9f0/databases/(default)/documents/invitations/uid5"}}
+[info] >  inviteID
+[debug] [2019-11-01T09:52:50.880Z] DEBUG: [runtime-status] Ephemeral server survived. {}
+[warn] !  functions: Error: Element at index 0 is not a valid array element. Cannot use "undefined" as a Firestore value (found in field name).
+    at validateUserInput (F:\dev\crosswords\functions\node_modules\@google-cloud\firestore\build\src\serializer.js:273:15)
+    at Object.validateUserInput (F:\dev\crosswords\functions\node_modules\@google-cloud\firestore\build\src\serializer.js:269:13)
+    at validateArrayElement (F:\dev\crosswords\functions\node_modules\@google-cloud\firestore\build\src\field-value.js:423:18)
+    at ArrayUnionTransform.validate (F:\dev\crosswords\functions\node_modules\@google-cloud\firestore\build\src\field-value.js:353:13)
+    at transforms.forEach.transform (F:\dev\crosswords\functions\node_modules\@google-cloud\firestore\build\src\document.js:803:56)
+    at Map.forEach (<anonymous>)
+    at DocumentTransform.validate (F:\dev\crosswords\functions\node_modules\@google-cloud\firestore\build\src\document.js:803:25)
+    at WriteBatch.update (F:\dev\crosswords\functions\node_modules\@google-cloud\firestore\build\src\write-batch.js:363:19)
+    at DocumentReference.update (F:\dev\crosswords\functions\node_modules\@google-cloud\firestore\build\src\reference.js:368:14)
+    at createInvitation (F:\dev\crosswords\functions\index.js:60:19)
+[warn] !  Your function was killed because it raised an unhandled error.
+[debug] [2019-11-01T09:53:26.303Z] DEBUG: File F:\dev\crosswords\functions\index.js changed, reloading triggers
+[debug] [2019-11-01T09:53:28.560Z] DEBUG: [runtime-status] Functions runtime initialized. {"cwd":"F:\\dev\\crosswords\\functions","node_version":"10.16.3"}
+[debug] [2019-11-01T09:53:28.561Z] DEBUG: [runtime-status] Disabled runtime features: {"functions_config_helper":true,"network_filtering":true,"timeout":true,"memory_limiting":true,"admin_stubs":true} {}
+[debug] [2019-11-01T09:53:28.580Z] DEBUG: [runtime-status] Resolved module firebase-admin {"declared":true,"installed":true,"version":"8.6.1","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-admin\\lib\\index.js"}
+[debug] [2019-11-01T09:53:28.591Z] DEBUG: [runtime-status] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.3.0","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-functions\\lib\\index.js"}
+[warn] !  functions: Your GOOGLE_APPLICATION_CREDENTIALS environment variable points to ./.credentials.json. Non-emulated services will access production using these credentials. Be careful!
+[debug] [2019-11-01T09:53:28.595Z] DEBUG: [runtime-status] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.3.0","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-functions\\lib\\index.js"}
+[debug] [2019-11-01T09:53:32.394Z] shell:sendPuzzleInvitation: trigger={"eventTrigger":{"resource":"projects/crosswords-1e9f0/databases/(default)/documents/invitations/{uid}","eventType":"providers/cloud.firestore/eventTypes/document.create","service":"firestore.googleapis.com"},"name":"sendPuzzleInvitation","entryPoint":"sendPuzzleInvitation"}
+[debug] [2019-11-01T09:53:32.394Z] shell:sendPuzzleInvitation: opts={"resource":"projects/crosswords-1e9f0/databases/(default)/documents/invitations/uid8"}, data={"value":{"fields":{"id":{"stringValue":"inviteID"},"recipientEmail":{"stringValue":"bjgrosse@gmail.com"},"puzzleId":{"stringValue":"15SuJ684gpB4vjrkiSBr"}},"createTime":"2019-11-01T09:53:32.394Z","updateTime":"2019-11-01T09:53:32.394Z"},"oldValue":{}}
+[debug] [2019-11-01T09:53:34.264Z] DEBUG: [runtime-status] Functions runtime initialized. {"cwd":"F:\\dev\\crosswords\\functions","node_version":"10.16.3"}
+[debug] [2019-11-01T09:53:34.265Z] [functions] Beginning execution of "sendPuzzleInvitation"
+[debug] [2019-11-01T09:53:34.266Z] DEBUG: [runtime-status] Disabled runtime features: {"functions_config_helper":true,"network_filtering":true,"timeout":true,"memory_limiting":true,"admin_stubs":true} {}
+[debug] [2019-11-01T09:53:34.295Z] DEBUG: [runtime-status] Resolved module firebase-admin {"declared":true,"installed":true,"version":"8.6.1","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-admin\\lib\\index.js"}
+[debug] [2019-11-01T09:53:34.311Z] DEBUG: [runtime-status] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.3.0","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-functions\\lib\\index.js"}
+[warn] !  functions: Your GOOGLE_APPLICATION_CREDENTIALS environment variable points to ./.credentials.json. Non-emulated services will access production using these credentials. Be careful!
+[debug] [2019-11-01T09:53:34.317Z] DEBUG: [runtime-status] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.3.0","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-functions\\lib\\index.js"}
+[debug] [2019-11-01T09:53:36.317Z] DEBUG: [runtime-status] Trigger "sendPuzzleInvitation" has been found, beginning invocation! {}
+[debug] [2019-11-01T09:53:36.318Z] DEBUG: [runtime-status]  {"eventTrigger":{"resource":"projects/crosswords-1e9f0/databases/(default)/documents/invitations/{uid}","eventType":"providers/cloud.firestore/eventTypes/document.create","service":"firestore.googleapis.com"},"name":"sendPuzzleInvitation","entryPoint":"sendPuzzleInvitation"}
+[debug] [2019-11-01T09:53:36.318Z] DEBUG: [runtime-status] Running sendPuzzleInvitation in mode BACKGROUND {}
+[debug] [2019-11-01T09:53:36.318Z] DEBUG: [runtime-status] ProcessBackground {"eventId":"5d3027d6-7f10-4d13-bc9e-b45a4037500c","timestamp":"2019-11-01T09:53:32.394Z","eventType":"providers/cloud.firestore/eventTypes/document.create","resource":"projects/crosswords-1e9f0/databases/(default)/documents/invitations/uid8","data":{"value":{"fields":{"id":{"stringValue":"inviteID"},"recipientEmail":{"stringValue":"bjgrosse@gmail.com"},"puzzleId":{"stringValue":"15SuJ684gpB4vjrkiSBr"}},"createTime":"2019-11-01T09:53:32.394Z","updateTime":"2019-11-01T09:53:32.394Z"},"oldValue":{}}}
+[debug] [2019-11-01T09:53:36.320Z] DEBUG: [runtime-status] RunBackground {"data":{"value":{"fields":{"id":{"stringValue":"inviteID"},"recipientEmail":{"stringValue":"bjgrosse@gmail.com"},"puzzleId":{"stringValue":"15SuJ684gpB4vjrkiSBr"}},"createTime":"2019-11-01T09:53:32.394Z","updateTime":"2019-11-01T09:53:32.394Z"},"oldValue":{}},"context":{"eventId":"5d3027d6-7f10-4d13-bc9e-b45a4037500c","timestamp":"2019-11-01T09:53:32.394Z","eventType":"providers/cloud.firestore/eventTypes/document.create","resource":"projects/crosswords-1e9f0/databases/(default)/documents/invitations/uid8"}}
+[info] >  inviteID bjgrosse@gmail.com
+[debug] [2019-11-01T09:53:37.676Z] DEBUG: [runtime-status] Ephemeral server survived. {}
+[warn] !  functions: Error: Element at index 0 is not a valid array element. Cannot use "undefined" as a Firestore value (found in field name).
+    at validateUserInput (F:\dev\crosswords\functions\node_modules\@google-cloud\firestore\build\src\serializer.js:273:15)
+    at Object.validateUserInput (F:\dev\crosswords\functions\node_modules\@google-cloud\firestore\build\src\serializer.js:269:13)
+    at validateArrayElement (F:\dev\crosswords\functions\node_modules\@google-cloud\firestore\build\src\field-value.js:423:18)
+    at ArrayUnionTransform.validate (F:\dev\crosswords\functions\node_modules\@google-cloud\firestore\build\src\field-value.js:353:13)
+    at transforms.forEach.transform (F:\dev\crosswords\functions\node_modules\@google-cloud\firestore\build\src\document.js:803:56)
+    at Map.forEach (<anonymous>)
+    at DocumentTransform.validate (F:\dev\crosswords\functions\node_modules\@google-cloud\firestore\build\src\document.js:803:25)
+    at WriteBatch.update (F:\dev\crosswords\functions\node_modules\@google-cloud\firestore\build\src\write-batch.js:363:19)
+    at DocumentReference.update (F:\dev\crosswords\functions\node_modules\@google-cloud\firestore\build\src\reference.js:368:14)
+    at createInvitation (F:\dev\crosswords\functions\index.js:60:19)
+[warn] !  Your function was killed because it raised an unhandled error.
+[debug] [2019-11-01T09:54:14.888Z] DEBUG: File F:\dev\crosswords\functions\index.js changed, reloading triggers
+[debug] [2019-11-01T09:54:16.924Z] DEBUG: [runtime-status] Functions runtime initialized. {"cwd":"F:\\dev\\crosswords\\functions","node_version":"10.16.3"}
+[debug] [2019-11-01T09:54:16.924Z] DEBUG: [runtime-status] Disabled runtime features: {"functions_config_helper":true,"network_filtering":true,"timeout":true,"memory_limiting":true,"admin_stubs":true} {}
+[debug] [2019-11-01T09:54:16.938Z] DEBUG: [runtime-status] Resolved module firebase-admin {"declared":true,"installed":true,"version":"8.6.1","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-admin\\lib\\index.js"}
+[debug] [2019-11-01T09:54:16.947Z] DEBUG: [runtime-status] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.3.0","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-functions\\lib\\index.js"}
+[warn] !  functions: Your GOOGLE_APPLICATION_CREDENTIALS environment variable points to ./.credentials.json. Non-emulated services will access production using these credentials. Be careful!
+[debug] [2019-11-01T09:54:16.952Z] DEBUG: [runtime-status] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.3.0","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-functions\\lib\\index.js"}
+[debug] [2019-11-01T09:54:18.790Z] shell:sendPuzzleInvitation: trigger={"eventTrigger":{"resource":"projects/crosswords-1e9f0/databases/(default)/documents/invitations/{uid}","eventType":"providers/cloud.firestore/eventTypes/document.create","service":"firestore.googleapis.com"},"name":"sendPuzzleInvitation","entryPoint":"sendPuzzleInvitation"}
+[debug] [2019-11-01T09:54:18.790Z] shell:sendPuzzleInvitation: opts={"resource":"projects/crosswords-1e9f0/databases/(default)/documents/invitations/uid2"}, data={"value":{"fields":{"id":{"stringValue":"inviteID"},"recipientEmail":{"stringValue":"bjgrosse@gmail.com"},"puzzleId":{"stringValue":"15SuJ684gpB4vjrkiSBr"}},"createTime":"2019-11-01T09:54:18.790Z","updateTime":"2019-11-01T09:54:18.790Z"},"oldValue":{}}
+[debug] [2019-11-01T09:54:20.026Z] DEBUG: [runtime-status] Functions runtime initialized. {"cwd":"F:\\dev\\crosswords\\functions","node_version":"10.16.3"}
+[debug] [2019-11-01T09:54:20.026Z] [functions] Beginning execution of "sendPuzzleInvitation"
+[debug] [2019-11-01T09:54:20.027Z] DEBUG: [runtime-status] Disabled runtime features: {"functions_config_helper":true,"network_filtering":true,"timeout":true,"memory_limiting":true,"admin_stubs":true} {}
+[debug] [2019-11-01T09:54:20.037Z] DEBUG: [runtime-status] Resolved module firebase-admin {"declared":true,"installed":true,"version":"8.6.1","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-admin\\lib\\index.js"}
+[debug] [2019-11-01T09:54:20.042Z] DEBUG: [runtime-status] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.3.0","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-functions\\lib\\index.js"}
+[warn] !  functions: Your GOOGLE_APPLICATION_CREDENTIALS environment variable points to ./.credentials.json. Non-emulated services will access production using these credentials. Be careful!
+[debug] [2019-11-01T09:54:20.043Z] DEBUG: [runtime-status] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.3.0","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-functions\\lib\\index.js"}
+[debug] [2019-11-01T09:54:22.564Z] DEBUG: [runtime-status] Trigger "sendPuzzleInvitation" has been found, beginning invocation! {}
+[debug] [2019-11-01T09:54:22.565Z] DEBUG: [runtime-status]  {"eventTrigger":{"resource":"projects/crosswords-1e9f0/databases/(default)/documents/invitations/{uid}","eventType":"providers/cloud.firestore/eventTypes/document.create","service":"firestore.googleapis.com"},"name":"sendPuzzleInvitation","entryPoint":"sendPuzzleInvitation"}
+[debug] [2019-11-01T09:54:22.566Z] DEBUG: [runtime-status] Running sendPuzzleInvitation in mode BACKGROUND {}
+[debug] [2019-11-01T09:54:22.568Z] DEBUG: [runtime-status] ProcessBackground {"eventId":"94b9bdd4-e20f-45c4-8803-6c241abafd8f","timestamp":"2019-11-01T09:54:18.790Z","eventType":"providers/cloud.firestore/eventTypes/document.create","resource":"projects/crosswords-1e9f0/databases/(default)/documents/invitations/uid2","data":{"value":{"fields":{"id":{"stringValue":"inviteID"},"recipientEmail":{"stringValue":"bjgrosse@gmail.com"},"puzzleId":{"stringValue":"15SuJ684gpB4vjrkiSBr"}},"createTime":"2019-11-01T09:54:18.790Z","updateTime":"2019-11-01T09:54:18.790Z"},"oldValue":{}}}
+[debug] [2019-11-01T09:54:22.573Z] DEBUG: [runtime-status] RunBackground {"data":{"value":{"fields":{"id":{"stringValue":"inviteID"},"recipientEmail":{"stringValue":"bjgrosse@gmail.com"},"puzzleId":{"stringValue":"15SuJ684gpB4vjrkiSBr"}},"createTime":"2019-11-01T09:54:18.790Z","updateTime":"2019-11-01T09:54:18.790Z"},"oldValue":{}},"context":{"eventId":"94b9bdd4-e20f-45c4-8803-6c241abafd8f","timestamp":"2019-11-01T09:54:18.790Z","eventType":"providers/cloud.firestore/eventTypes/document.create","resource":"projects/crosswords-1e9f0/databases/(default)/documents/invitations/uid2"}}
+[info] >  inviteID bjgrosse@gmail.com
+[info] >   
+[debug] [2019-11-01T09:54:25.595Z] DEBUG: [runtime-status] Ephemeral server survived. {}
+[warn] !  functions: Error: Element at index 0 is not a valid array element. Cannot use "undefined" as a Firestore value (found in field name).
+    at validateUserInput (F:\dev\crosswords\functions\node_modules\@google-cloud\firestore\build\src\serializer.js:273:15)
+    at Object.validateUserInput (F:\dev\crosswords\functions\node_modules\@google-cloud\firestore\build\src\serializer.js:269:13)
+    at validateArrayElement (F:\dev\crosswords\functions\node_modules\@google-cloud\firestore\build\src\field-value.js:423:18)
+    at ArrayUnionTransform.validate (F:\dev\crosswords\functions\node_modules\@google-cloud\firestore\build\src\field-value.js:353:13)
+    at transforms.forEach.transform (F:\dev\crosswords\functions\node_modules\@google-cloud\firestore\build\src\document.js:803:56)
+    at Map.forEach (<anonymous>)
+    at DocumentTransform.validate (F:\dev\crosswords\functions\node_modules\@google-cloud\firestore\build\src\document.js:803:25)
+    at WriteBatch.update (F:\dev\crosswords\functions\node_modules\@google-cloud\firestore\build\src\write-batch.js:363:19)
+    at DocumentReference.update (F:\dev\crosswords\functions\node_modules\@google-cloud\firestore\build\src\reference.js:368:14)
+    at createInvitation (F:\dev\crosswords\functions\index.js:64:19)
+[warn] !  Your function was killed because it raised an unhandled error.
+[debug] [2019-11-01T09:56:16.730Z] DEBUG: File F:\dev\crosswords\functions\index.js changed, reloading triggers
+[debug] [2019-11-01T09:56:18.708Z] DEBUG: [runtime-status] Functions runtime initialized. {"cwd":"F:\\dev\\crosswords\\functions","node_version":"10.16.3"}
+[debug] [2019-11-01T09:56:18.708Z] DEBUG: [runtime-status] Disabled runtime features: {"functions_config_helper":true,"network_filtering":true,"timeout":true,"memory_limiting":true,"admin_stubs":true} {}
+[debug] [2019-11-01T09:56:18.721Z] DEBUG: [runtime-status] Resolved module firebase-admin {"declared":true,"installed":true,"version":"8.6.1","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-admin\\lib\\index.js"}
+[debug] [2019-11-01T09:56:18.727Z] DEBUG: [runtime-status] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.3.0","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-functions\\lib\\index.js"}
+[warn] !  functions: Your GOOGLE_APPLICATION_CREDENTIALS environment variable points to ./.credentials.json. Non-emulated services will access production using these credentials. Be careful!
+[debug] [2019-11-01T09:56:18.729Z] DEBUG: [runtime-status] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.3.0","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-functions\\lib\\index.js"}
+[debug] [2019-11-01T09:56:21.390Z] shell:sendPuzzleInvitation: trigger={"eventTrigger":{"resource":"projects/crosswords-1e9f0/databases/(default)/documents/invitations/{uid}","eventType":"providers/cloud.firestore/eventTypes/document.create","service":"firestore.googleapis.com"},"name":"sendPuzzleInvitation","entryPoint":"sendPuzzleInvitation"}
+[debug] [2019-11-01T09:56:21.391Z] shell:sendPuzzleInvitation: opts={"resource":"projects/crosswords-1e9f0/databases/(default)/documents/invitations/uid5"}, data={"value":{"fields":{"id":{"stringValue":"inviteID"},"recipientEmail":{"stringValue":"bjgrosse@gmail.com"},"puzzleId":{"stringValue":"15SuJ684gpB4vjrkiSBr"}},"createTime":"2019-11-01T09:56:21.390Z","updateTime":"2019-11-01T09:56:21.390Z"},"oldValue":{}}
+[debug] [2019-11-01T09:56:23.255Z] DEBUG: [runtime-status] Functions runtime initialized. {"cwd":"F:\\dev\\crosswords\\functions","node_version":"10.16.3"}
+[debug] [2019-11-01T09:56:23.256Z] [functions] Beginning execution of "sendPuzzleInvitation"
+[debug] [2019-11-01T09:56:23.257Z] DEBUG: [runtime-status] Disabled runtime features: {"functions_config_helper":true,"network_filtering":true,"timeout":true,"memory_limiting":true,"admin_stubs":true} {}
+[debug] [2019-11-01T09:56:23.288Z] DEBUG: [runtime-status] Resolved module firebase-admin {"declared":true,"installed":true,"version":"8.6.1","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-admin\\lib\\index.js"}
+[debug] [2019-11-01T09:56:23.308Z] DEBUG: [runtime-status] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.3.0","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-functions\\lib\\index.js"}
+[warn] !  functions: Your GOOGLE_APPLICATION_CREDENTIALS environment variable points to ./.credentials.json. Non-emulated services will access production using these credentials. Be careful!
+[debug] [2019-11-01T09:56:23.315Z] DEBUG: [runtime-status] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.3.0","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-functions\\lib\\index.js"}
+[debug] [2019-11-01T09:56:26.933Z] DEBUG: [runtime-status] Trigger "sendPuzzleInvitation" has been found, beginning invocation! {}
+[debug] [2019-11-01T09:56:26.933Z] DEBUG: [runtime-status]  {"eventTrigger":{"resource":"projects/crosswords-1e9f0/databases/(default)/documents/invitations/{uid}","eventType":"providers/cloud.firestore/eventTypes/document.create","service":"firestore.googleapis.com"},"name":"sendPuzzleInvitation","entryPoint":"sendPuzzleInvitation"}
+[debug] [2019-11-01T09:56:26.934Z] DEBUG: [runtime-status] Running sendPuzzleInvitation in mode BACKGROUND {}
+[debug] [2019-11-01T09:56:26.934Z] DEBUG: [runtime-status] ProcessBackground {"eventId":"5dd5d0bd-c821-418d-b5ab-ee608832b9c4","timestamp":"2019-11-01T09:56:21.391Z","eventType":"providers/cloud.firestore/eventTypes/document.create","resource":"projects/crosswords-1e9f0/databases/(default)/documents/invitations/uid5","data":{"value":{"fields":{"id":{"stringValue":"inviteID"},"recipientEmail":{"stringValue":"bjgrosse@gmail.com"},"puzzleId":{"stringValue":"15SuJ684gpB4vjrkiSBr"}},"createTime":"2019-11-01T09:56:21.390Z","updateTime":"2019-11-01T09:56:21.390Z"},"oldValue":{}}}
+[debug] [2019-11-01T09:56:26.936Z] DEBUG: [runtime-status] RunBackground {"data":{"value":{"fields":{"id":{"stringValue":"inviteID"},"recipientEmail":{"stringValue":"bjgrosse@gmail.com"},"puzzleId":{"stringValue":"15SuJ684gpB4vjrkiSBr"}},"createTime":"2019-11-01T09:56:21.390Z","updateTime":"2019-11-01T09:56:21.390Z"},"oldValue":{}},"context":{"eventId":"5dd5d0bd-c821-418d-b5ab-ee608832b9c4","timestamp":"2019-11-01T09:56:21.391Z","eventType":"providers/cloud.firestore/eventTypes/document.create","resource":"projects/crosswords-1e9f0/databases/(default)/documents/invitations/uid5"}}
+[info] >  inviteID bjgrosse@gmail.com
+[info] >  bjgrosse@gmail.com 
+[info] >  Invitation email sent to: bjgrosse@gmail.com
+[debug] [2019-11-01T09:56:31.496Z] DEBUG: [runtime-status] Ephemeral server survived. {}
+[debug] [2019-11-01T09:56:31.497Z] [functions] Finished "sendPuzzleInvitation" in ~3s
+[debug] [2019-11-01T10:32:50.307Z] DEBUG: File F:\dev\crosswords\functions\index.js changed, reloading triggers
+[debug] [2019-11-01T10:32:51.876Z] DEBUG: [runtime-status] Functions runtime initialized. {"cwd":"F:\\dev\\crosswords\\functions","node_version":"10.16.3"}
+[debug] [2019-11-01T10:32:51.877Z] DEBUG: [runtime-status] Disabled runtime features: {"functions_config_helper":true,"network_filtering":true,"timeout":true,"memory_limiting":true,"admin_stubs":true} {}
+[debug] [2019-11-01T10:32:51.883Z] DEBUG: [runtime-status] Resolved module firebase-admin {"declared":true,"installed":true,"version":"8.6.1","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-admin\\lib\\index.js"}
+[debug] [2019-11-01T10:32:51.886Z] DEBUG: [runtime-status] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.3.0","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-functions\\lib\\index.js"}
+[warn] !  functions: Your GOOGLE_APPLICATION_CREDENTIALS environment variable points to ./.credentials.json. Non-emulated services will access production using these credentials. Be careful!
+[debug] [2019-11-01T10:32:51.887Z] DEBUG: [runtime-status] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.3.0","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-functions\\lib\\index.js"}
+[debug] [2019-11-01T10:32:54.915Z] shell:sendPuzzleInvitation: trigger={"eventTrigger":{"resource":"projects/crosswords-1e9f0/databases/(default)/documents/invitations/{uid}","eventType":"providers/cloud.firestore/eventTypes/document.create","service":"firestore.googleapis.com"},"name":"sendPuzzleInvitation","entryPoint":"sendPuzzleInvitation"}
+[debug] [2019-11-01T10:32:54.915Z] shell:sendPuzzleInvitation: opts={"resource":"projects/crosswords-1e9f0/databases/(default)/documents/invitations/uid6"}, data={"value":{"fields":{"id":{"stringValue":"inviteID"},"recipientEmail":{"stringValue":"bjgrosse@gmail.com"},"puzzleId":{"stringValue":"15SuJ684gpB4vjrkiSBr"}},"createTime":"2019-11-01T10:32:54.915Z","updateTime":"2019-11-01T10:32:54.915Z"},"oldValue":{}}
+[debug] [2019-11-01T10:32:55.373Z] DEBUG: [runtime-status] Functions runtime initialized. {"cwd":"F:\\dev\\crosswords\\functions","node_version":"10.16.3"}
+[debug] [2019-11-01T10:32:55.373Z] [functions] Beginning execution of "sendPuzzleInvitation"
+[debug] [2019-11-01T10:32:55.373Z] DEBUG: [runtime-status] Disabled runtime features: {"functions_config_helper":true,"network_filtering":true,"timeout":true,"memory_limiting":true,"admin_stubs":true} {}
+[debug] [2019-11-01T10:32:55.379Z] DEBUG: [runtime-status] Resolved module firebase-admin {"declared":true,"installed":true,"version":"8.6.1","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-admin\\lib\\index.js"}
+[debug] [2019-11-01T10:32:55.382Z] DEBUG: [runtime-status] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.3.0","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-functions\\lib\\index.js"}
+[warn] !  functions: Your GOOGLE_APPLICATION_CREDENTIALS environment variable points to ./.credentials.json. Non-emulated services will access production using these credentials. Be careful!
+[debug] [2019-11-01T10:32:55.383Z] DEBUG: [runtime-status] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.3.0","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-functions\\lib\\index.js"}
+[debug] [2019-11-01T10:32:56.256Z] DEBUG: [runtime-status] Trigger "sendPuzzleInvitation" has been found, beginning invocation! {}
+[debug] [2019-11-01T10:32:56.256Z] DEBUG: [runtime-status]  {"eventTrigger":{"resource":"projects/crosswords-1e9f0/databases/(default)/documents/invitations/{uid}","eventType":"providers/cloud.firestore/eventTypes/document.create","service":"firestore.googleapis.com"},"name":"sendPuzzleInvitation","entryPoint":"sendPuzzleInvitation"}
+[debug] [2019-11-01T10:32:56.256Z] DEBUG: [runtime-status] Running sendPuzzleInvitation in mode BACKGROUND {}
+[debug] [2019-11-01T10:32:56.257Z] DEBUG: [runtime-status] ProcessBackground {"eventId":"e3f4537c-e5c7-4ff3-9ac3-41755354f01f","timestamp":"2019-11-01T10:32:54.915Z","eventType":"providers/cloud.firestore/eventTypes/document.create","resource":"projects/crosswords-1e9f0/databases/(default)/documents/invitations/uid6","data":{"value":{"fields":{"id":{"stringValue":"inviteID"},"recipientEmail":{"stringValue":"bjgrosse@gmail.com"},"puzzleId":{"stringValue":"15SuJ684gpB4vjrkiSBr"}},"createTime":"2019-11-01T10:32:54.915Z","updateTime":"2019-11-01T10:32:54.915Z"},"oldValue":{}}}
+[debug] [2019-11-01T10:32:56.257Z] DEBUG: [runtime-status] RunBackground {"data":{"value":{"fields":{"id":{"stringValue":"inviteID"},"recipientEmail":{"stringValue":"bjgrosse@gmail.com"},"puzzleId":{"stringValue":"15SuJ684gpB4vjrkiSBr"}},"createTime":"2019-11-01T10:32:54.915Z","updateTime":"2019-11-01T10:32:54.915Z"},"oldValue":{}},"context":{"eventId":"e3f4537c-e5c7-4ff3-9ac3-41755354f01f","timestamp":"2019-11-01T10:32:54.915Z","eventType":"providers/cloud.firestore/eventTypes/document.create","resource":"projects/crosswords-1e9f0/databases/(default)/documents/invitations/uid6"}}
+[info] >  inviteID bjgrosse@gmail.com
+[info] >  Benjamin Grosse 
+[debug] [2019-11-01T10:32:57.186Z] DEBUG: [runtime-status] Ephemeral server survived. {}
+[warn] !  functions: Error: Element at index 0 is not a valid array element. Cannot use "undefined" as a Firestore value (found in field id).
+    at validateUserInput (F:\dev\crosswords\functions\node_modules\@google-cloud\firestore\build\src\serializer.js:273:15)
+    at Object.validateUserInput (F:\dev\crosswords\functions\node_modules\@google-cloud\firestore\build\src\serializer.js:269:13)
+    at validateArrayElement (F:\dev\crosswords\functions\node_modules\@google-cloud\firestore\build\src\field-value.js:423:18)
+    at ArrayUnionTransform.validate (F:\dev\crosswords\functions\node_modules\@google-cloud\firestore\build\src\field-value.js:353:13)
+    at transforms.forEach.transform (F:\dev\crosswords\functions\node_modules\@google-cloud\firestore\build\src\document.js:803:56)
+    at Map.forEach (<anonymous>)
+    at DocumentTransform.validate (F:\dev\crosswords\functions\node_modules\@google-cloud\firestore\build\src\document.js:803:25)
+    at WriteBatch.update (F:\dev\crosswords\functions\node_modules\@google-cloud\firestore\build\src\write-batch.js:363:19)
+    at DocumentReference.update (F:\dev\crosswords\functions\node_modules\@google-cloud\firestore\build\src\reference.js:368:14)
+    at createInvitation (F:\dev\crosswords\functions\index.js:64:19)
+[warn] !  Your function was killed because it raised an unhandled error.
+[debug] [2019-11-01T10:34:45.663Z] DEBUG: File F:\dev\crosswords\functions\index.js changed, reloading triggers
+[debug] [2019-11-01T10:34:47.270Z] DEBUG: [runtime-status] Functions runtime initialized. {"cwd":"F:\\dev\\crosswords\\functions","node_version":"10.16.3"}
+[debug] [2019-11-01T10:34:47.270Z] DEBUG: [runtime-status] Disabled runtime features: {"functions_config_helper":true,"network_filtering":true,"timeout":true,"memory_limiting":true,"admin_stubs":true} {}
+[debug] [2019-11-01T10:34:47.276Z] DEBUG: [runtime-status] Resolved module firebase-admin {"declared":true,"installed":true,"version":"8.6.1","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-admin\\lib\\index.js"}
+[debug] [2019-11-01T10:34:47.280Z] DEBUG: [runtime-status] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.3.0","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-functions\\lib\\index.js"}
+[warn] !  functions: Your GOOGLE_APPLICATION_CREDENTIALS environment variable points to ./.credentials.json. Non-emulated services will access production using these credentials. Be careful!
+[debug] [2019-11-01T10:34:47.282Z] DEBUG: [runtime-status] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.3.0","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-functions\\lib\\index.js"}
+[debug] [2019-11-01T10:34:55.615Z] shell:sendPuzzleInvitation: trigger={"eventTrigger":{"resource":"projects/crosswords-1e9f0/databases/(default)/documents/invitations/{uid}","eventType":"providers/cloud.firestore/eventTypes/document.create","service":"firestore.googleapis.com"},"name":"sendPuzzleInvitation","entryPoint":"sendPuzzleInvitation"}
+[debug] [2019-11-01T10:34:55.615Z] shell:sendPuzzleInvitation: opts={"resource":"projects/crosswords-1e9f0/databases/(default)/documents/invitations/uid9"}, data={"value":{"fields":{"id":{"stringValue":"inviteID"},"recipientEmail":{"stringValue":"bjgrosse@gmail.com"},"puzzleId":{"stringValue":"15SuJ684gpB4vjrkiSBr"}},"createTime":"2019-11-01T10:34:55.615Z","updateTime":"2019-11-01T10:34:55.615Z"},"oldValue":{}}
+[debug] [2019-11-01T10:34:56.098Z] DEBUG: [runtime-status] Functions runtime initialized. {"cwd":"F:\\dev\\crosswords\\functions","node_version":"10.16.3"}
+[debug] [2019-11-01T10:34:56.098Z] [functions] Beginning execution of "sendPuzzleInvitation"
+[debug] [2019-11-01T10:34:56.098Z] DEBUG: [runtime-status] Disabled runtime features: {"functions_config_helper":true,"network_filtering":true,"timeout":true,"memory_limiting":true,"admin_stubs":true} {}
+[debug] [2019-11-01T10:34:56.104Z] DEBUG: [runtime-status] Resolved module firebase-admin {"declared":true,"installed":true,"version":"8.6.1","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-admin\\lib\\index.js"}
+[debug] [2019-11-01T10:34:56.107Z] DEBUG: [runtime-status] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.3.0","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-functions\\lib\\index.js"}
+[warn] !  functions: Your GOOGLE_APPLICATION_CREDENTIALS environment variable points to ./.credentials.json. Non-emulated services will access production using these credentials. Be careful!
+[debug] [2019-11-01T10:34:56.108Z] DEBUG: [runtime-status] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.3.0","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-functions\\lib\\index.js"}
+[debug] [2019-11-01T10:34:57.020Z] DEBUG: [runtime-status] Trigger "sendPuzzleInvitation" has been found, beginning invocation! {}
+[debug] [2019-11-01T10:34:57.020Z] DEBUG: [runtime-status]  {"eventTrigger":{"resource":"projects/crosswords-1e9f0/databases/(default)/documents/invitations/{uid}","eventType":"providers/cloud.firestore/eventTypes/document.create","service":"firestore.googleapis.com"},"name":"sendPuzzleInvitation","entryPoint":"sendPuzzleInvitation"}
+[debug] [2019-11-01T10:34:57.020Z] DEBUG: [runtime-status] Running sendPuzzleInvitation in mode BACKGROUND {}
+[debug] [2019-11-01T10:34:57.020Z] DEBUG: [runtime-status] ProcessBackground {"eventId":"3a8fe010-4918-492a-9154-b687d1918e49","timestamp":"2019-11-01T10:34:55.615Z","eventType":"providers/cloud.firestore/eventTypes/document.create","resource":"projects/crosswords-1e9f0/databases/(default)/documents/invitations/uid9","data":{"value":{"fields":{"id":{"stringValue":"inviteID"},"recipientEmail":{"stringValue":"bjgrosse@gmail.com"},"puzzleId":{"stringValue":"15SuJ684gpB4vjrkiSBr"}},"createTime":"2019-11-01T10:34:55.615Z","updateTime":"2019-11-01T10:34:55.615Z"},"oldValue":{}}}
+[debug] [2019-11-01T10:34:57.021Z] DEBUG: [runtime-status] RunBackground {"data":{"value":{"fields":{"id":{"stringValue":"inviteID"},"recipientEmail":{"stringValue":"bjgrosse@gmail.com"},"puzzleId":{"stringValue":"15SuJ684gpB4vjrkiSBr"}},"createTime":"2019-11-01T10:34:55.615Z","updateTime":"2019-11-01T10:34:55.615Z"},"oldValue":{}},"context":{"eventId":"3a8fe010-4918-492a-9154-b687d1918e49","timestamp":"2019-11-01T10:34:55.615Z","eventType":"providers/cloud.firestore/eventTypes/document.create","resource":"projects/crosswords-1e9f0/databases/(default)/documents/invitations/uid9"}}
+[info] >  inviteID bjgrosse@gmail.com
+[info] >  Benjamin Grosse nkLNJStx36gl6OJlpXAtH41uJOB2
+[info] >  Invitation email sent to: bjgrosse@gmail.com
+[debug] [2019-11-01T10:34:59.895Z] DEBUG: [runtime-status] Ephemeral server survived. {}
+[debug] [2019-11-01T10:34:59.895Z] [functions] Finished "sendPuzzleInvitation" in ~2s
+[debug] [2019-11-01T10:49:31.461Z] DEBUG: File F:\dev\crosswords\functions\index.js changed, reloading triggers
+[debug] [2019-11-01T10:49:33.248Z] DEBUG: [runtime-status] Functions runtime initialized. {"cwd":"F:\\dev\\crosswords\\functions","node_version":"10.16.3"}
+[debug] [2019-11-01T10:49:33.249Z] DEBUG: [runtime-status] Disabled runtime features: {"functions_config_helper":true,"network_filtering":true,"timeout":true,"memory_limiting":true,"admin_stubs":true} {}
+[debug] [2019-11-01T10:49:33.258Z] DEBUG: [runtime-status] Resolved module firebase-admin {"declared":true,"installed":true,"version":"8.6.1","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-admin\\lib\\index.js"}
+[debug] [2019-11-01T10:49:33.263Z] DEBUG: [runtime-status] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.3.0","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-functions\\lib\\index.js"}
+[warn] !  functions: Your GOOGLE_APPLICATION_CREDENTIALS environment variable points to ./.credentials.json. Non-emulated services will access production using these credentials. Be careful!
+[debug] [2019-11-01T10:49:33.267Z] DEBUG: [runtime-status] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.3.0","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-functions\\lib\\index.js"}
+[debug] [2019-11-01T10:49:35.184Z] shell:sendPuzzleInvitation: trigger={"eventTrigger":{"resource":"projects/crosswords-1e9f0/databases/(default)/documents/invitations/{uid}","eventType":"providers/cloud.firestore/eventTypes/document.create","service":"firestore.googleapis.com"},"name":"sendPuzzleInvitation","entryPoint":"sendPuzzleInvitation"}
+[debug] [2019-11-01T10:49:35.184Z] shell:sendPuzzleInvitation: opts={"resource":"projects/crosswords-1e9f0/databases/(default)/documents/invitations/uid6"}, data={"value":{"fields":{"id":{"stringValue":"inviteID"},"recipientEmail":{"stringValue":"bjgrosse@gmail.com"},"puzzleId":{"stringValue":"15SuJ684gpB4vjrkiSBr"}},"createTime":"2019-11-01T10:49:35.184Z","updateTime":"2019-11-01T10:49:35.184Z"},"oldValue":{}}
+[debug] [2019-11-01T10:49:35.729Z] DEBUG: [runtime-status] Functions runtime initialized. {"cwd":"F:\\dev\\crosswords\\functions","node_version":"10.16.3"}
+[debug] [2019-11-01T10:49:35.730Z] [functions] Beginning execution of "sendPuzzleInvitation"
+[debug] [2019-11-01T10:49:35.730Z] DEBUG: [runtime-status] Disabled runtime features: {"functions_config_helper":true,"network_filtering":true,"timeout":true,"memory_limiting":true,"admin_stubs":true} {}
+[debug] [2019-11-01T10:49:35.739Z] DEBUG: [runtime-status] Resolved module firebase-admin {"declared":true,"installed":true,"version":"8.6.1","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-admin\\lib\\index.js"}
+[debug] [2019-11-01T10:49:35.744Z] DEBUG: [runtime-status] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.3.0","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-functions\\lib\\index.js"}
+[warn] !  functions: Your GOOGLE_APPLICATION_CREDENTIALS environment variable points to ./.credentials.json. Non-emulated services will access production using these credentials. Be careful!
+[debug] [2019-11-01T10:49:35.746Z] DEBUG: [runtime-status] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.3.0","resolution":"F:\\dev\\crosswords\\functions\\node_modules\\firebase-functions\\lib\\index.js"}
+[debug] [2019-11-01T10:49:36.691Z] DEBUG: [runtime-status] Trigger "sendPuzzleInvitation" has been found, beginning invocation! {}
+[debug] [2019-11-01T10:49:36.691Z] DEBUG: [runtime-status]  {"eventTrigger":{"resource":"projects/crosswords-1e9f0/databases/(default)/documents/invitations/{uid}","eventType":"providers/cloud.firestore/eventTypes/document.create","service":"firestore.googleapis.com"},"name":"sendPuzzleInvitation","entryPoint":"sendPuzzleInvitation"}
+[debug] [2019-11-01T10:49:36.691Z] DEBUG: [runtime-status] Running sendPuzzleInvitation in mode BACKGROUND {}
+[debug] [2019-11-01T10:49:36.691Z] DEBUG: [runtime-status] ProcessBackground {"eventId":"09c2e4bb-c1da-4745-8b68-91982382442a","timestamp":"2019-11-01T10:49:35.184Z","eventType":"providers/cloud.firestore/eventTypes/document.create","resource":"projects/crosswords-1e9f0/databases/(default)/documents/invitations/uid6","data":{"value":{"fields":{"id":{"stringValue":"inviteID"},"recipientEmail":{"stringValue":"bjgrosse@gmail.com"},"puzzleId":{"stringValue":"15SuJ684gpB4vjrkiSBr"}},"createTime":"2019-11-01T10:49:35.184Z","updateTime":"2019-11-01T10:49:35.184Z"},"oldValue":{}}}
+[debug] [2019-11-01T10:49:36.692Z] DEBUG: [runtime-status] RunBackground {"data":{"value":{"fields":{"id":{"stringValue":"inviteID"},"recipientEmail":{"stringValue":"bjgrosse@gmail.com"},"puzzleId":{"stringValue":"15SuJ684gpB4vjrkiSBr"}},"createTime":"2019-11-01T10:49:35.184Z","updateTime":"2019-11-01T10:49:35.184Z"},"oldValue":{}},"context":{"eventId":"09c2e4bb-c1da-4745-8b68-91982382442a","timestamp":"2019-11-01T10:49:35.184Z","eventType":"providers/cloud.firestore/eventTypes/document.create","resource":"projects/crosswords-1e9f0/databases/(default)/documents/invitations/uid6"}}
+[info] >  inviteID bjgrosse@gmail.com
+[info] >  Benjamin Grosse nkLNJStx36gl6OJlpXAtH41uJOB2
+[info] >  Invitation email sent to: bjgrosse@gmail.com
+[debug] [2019-11-01T10:49:39.481Z] DEBUG: [runtime-status] Ephemeral server survived. {}
+[debug] [2019-11-01T10:49:39.481Z] [functions] Finished "sendPuzzleInvitation" in ~2s
