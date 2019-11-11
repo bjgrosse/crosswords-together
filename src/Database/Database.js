@@ -1,45 +1,106 @@
 import firebase from 'firebase';
-const currentUserId = function () {
-    return firebase.auth().currentUser.uid
+const getCurrentUserId = () => firebase.auth().currentUser.uid
+
+class Deferred {
+    constructor() {
+        this.promise = new Promise((resolve, reject) => {
+            this.reject = reject
+            this.resolve = resolve
+        })
+    }
 }
+
 export default {
+    getCurrentUserId: getCurrentUserId,
+    getCurrentUser: () => firebase.auth().currentUser,
     getPuzzleTemplate: async (id) => {
         console.log("Getting template", id);
         const doc = await firebase.firestore().collection("puzzle-templates").doc(id).get();
-        return doc.data();
+        return { ...doc.data(), ...{ id: doc.id, dateAdded: doc.data().dateAdded.toDate() } };
     },
     getPuzzle: async (id, listenForChanges) => {
         console.log("Getting puzzle", id);
-        let doc = firebase.firestore().collection("puzzles").doc(id);
-        if (listenForChanges) { doc.onSnapshot((doc) => listenForChanges(doc.data())) };
-        const doc_2 = await doc.get();
-        return doc_2.data();
+        let ref = firebase.firestore().collection("puzzles").doc(id);
+        let doc = await ref.get();
+        if (listenForChanges) { ref.onSnapshot((doc) => listenForChanges(doc.data())) };
+        return { ...doc.data(), ...{ id: doc.id } };
     },
+    getInvitation: async (id) => {
+        let doc = await firebase.firestore().collection("invitations").doc(id).get();
+        return { ...doc.data(), ...{ id: doc.id } };
+    },
+    getNewPuzzleId: () => (firebase.firestore().collection("puzzles").doc().id),
     getMyPuzzles: async () => {
+
+        console.log("Getting my puzzles");
         const querySnapshot = await firebase.firestore().collection("puzzles")
-            .where("playerIds", "array-contains", currentUserId()).get();
+            .where("playerIds", "array-contains", getCurrentUserId()).get();
         return querySnapshot.docs.map((doc) => ({ ...doc.data(), ...{ id: doc.id } }));
     },
-    saveSquareValue: (puzzleId, rowIdx, cellIdx, value) => {
+    getMyTemplates: (listenForChanges) => {
+
+        const ref = firebase.firestore().collection("puzzle-templates")
+            .where("ownerId", "==", getCurrentUserId())
+
+        let handle = new Deferred()
+
+        ref.onSnapshot((snapshot) => {            
+            let result = snapshot.docs.map((doc) => ({ ...doc.data(), ...{ id: doc.id, dateAdded: doc.data().dateAdded.toDate() } }));
+
+            if (handle) {
+                console.log("my templates:" , result)
+                handle.resolve(result)
+                handle = null;
+            } else {
+                listenForChanges(result)
+            }
+        }, (error) => {
+            if (handle) {
+                handle.reject(error)
+                handle = null;
+            }
+        })
+
+        return handle.promise
+    },
+    saveSquareValue: (puzzleId, rowIdx, cellIdx, value, percentComplete) => {
         console.log("saving square: ", rowIdx, cellIdx, value);
         let data = {};
-        data[`squares.${rowIdx}|${cellIdx}`] = { value: value, userId: currentUserId() }
+        data[`squares.${rowIdx}|${cellIdx}`] = { value: value, userId: getCurrentUserId() }
+        data.percentComplete = percentComplete;
+        
         return firebase.firestore().collection("puzzles").doc(puzzleId).update(data);
     },
-    saveClueList: (templateId, list, clues) => {
-        console.log("saving clue list: ", templateId, list);
-        let data = {};
-        data[`clues${list}`] = clues;
-        return firebase.firestore().collection("puzzle-templates").doc(templateId).update(data);
+    savePuzzle: (id, data) => {
+        console.log("saving puzzle: ", data);
+        return firebase.firestore().collection("puzzles").doc(id).set(data);
+    },
+    saveTemplate: (templateId, data, onGotId) => {
+        console.log("saving template: ", templateId, data);
+        let ref;
+
+        if (!templateId) {
+            ref = firebase.firestore().collection("puzzle-templates").doc()
+        } else {
+            ref = firebase.firestore().collection("puzzle-templates").doc(templateId)
+        }
+
+        if (ref.id !== templateId && onGotId !== undefined) {
+            onGotId(ref.id)
+        }
+        return ref.set(data);
     },
     addPlayer: (puzzleId, email) => {
         let data = {
             puzzleId: puzzleId,
             recipientEmail: email,
-            senderId: currentUserId(),
+            senderId: getCurrentUserId(),
         };
-       
+
         return firebase.firestore().collection("invitations").add(data);
+    },
+    acceptInvitation: (id) => {
+        return firebase.functions().httpsCallable("acceptInvitation")({ id: id, acceptingUserId: getCurrentUserId() })
     }
 
 };

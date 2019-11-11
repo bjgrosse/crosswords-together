@@ -17,7 +17,7 @@ const MenuItems = function () {
 
     addList(['Add a new puzzle...', 'My Puzzles', 'Settings'],
         [() => <AddIcon />, () => <FolderIcon />, () => <SettingsIcon />],
-        ['/add-puzzle', '/puzzles', '/settings']);
+        ['/add-puzzle', '/', '/settings']);
 
 
     addList(['Log out'],

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ere from 'element-resize-event';
 import ResizeObserver from 'resize-observer-polyfill';
-
+import debounce from 'lodash.debounce'
 
 export default class ScaleBox extends Component {
   static propTypes = {
@@ -26,16 +26,14 @@ export default class ScaleBox extends Component {
       contentSize: { width: 0, height: 0 },
       scale: 1,
     };
+    
+    
+    this.updateState = debounce(this.updateState, 100).bind(this);
   }
 
   sizeChanged = new ResizeObserver((entries, observer) => {
     const { wrapper, content } = this.refs;
     const actualContent = content.children[0];
-
-
-    console.log("content width", actualContent.offsetWidth);
-    console.log("wrapper width", wrapper.offsetWidth);
-
 
     this.updateState({
       ...this.state,
@@ -49,11 +47,8 @@ export default class ScaleBox extends Component {
     const actualContent = content.children[0];
 
 
-    console.log("content width", actualContent.offsetWidth);
-    console.log("wrapper width", wrapper.offsetWidth);
-
     this.sizeChanged.observe(wrapper);
-    this.sizeChanged.observe(actualContent);
+    //this.sizeChanged.observe(actualContent);
     // ere(actualContent, () => {
     //   console.log("content width", actualContent.offsetWidth);
     //   this.updateState({
@@ -84,11 +79,21 @@ export default class ScaleBox extends Component {
   updateState(newState) {
     const { maxScale } = this.props;
     const { wrapperSize, contentSize } = newState;
+    const minIncrement = 0.05;
 
-    let scale = ((wrapperSize.width) / this.props.baseWidth);
+    let scale = ((wrapperSize.width- 5) / this.props.baseWidth);
+    console.log(Math.abs(scale - this.state.scale));
 
-    if (Math.abs(scale - this.state.scale) < 0.05 && this.props.baseWidth * this.state.scale < wrapperSize.width) {
-      return;
+    const increment = Math.abs(this.state.scale - scale);
+
+    if (increment < minIncrement) {
+      if (this.props.baseWidth * this.state.scale < wrapperSize.width) {
+        return;
+      } else {
+        scale = this.state.scale - minIncrement 
+      }
+
+      //scale = this.state.scale - minIncrement 
     }
 
     if (maxScale) {

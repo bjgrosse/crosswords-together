@@ -4,6 +4,7 @@
     flex-flow: column nowrap;
     align-items: center;
     justify-items: center;
+    flex-grow: 1;
 }
 .LoadingText {
     margin-bottom: 15px;

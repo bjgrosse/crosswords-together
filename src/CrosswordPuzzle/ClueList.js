@@ -10,12 +10,12 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
+import Typography from '@material-ui/core/Typography';
 import styled from 'styled-components';
 import { observer } from 'mobx-react';
 
-import PuzzleContext from '../CrosswordPuzzle/CrosswordPuzzleContext';
 import LoadingContainer from '../AppFrame/LoadingContainer';
-import {Paper, Div} from '../StyledComponents';
+import { Paper, Div, SubTitle2 } from '../StyledComponents';
 
 import TextField from '@material-ui/core/TextField';
 
@@ -41,7 +41,6 @@ const WordClue = styled.div`
 `
 const Clue = observer(props => {
 
-    let { puzzle } = useContext(PuzzleContext);
     let ref = useRef(null)
 
     useEffect(() => {
@@ -52,20 +51,18 @@ const Clue = observer(props => {
 
     return (
         <ClueListItem ref={ref} button
+            disableRipple
             selected={props.item.isSelected}
             key={props.item.number}
-            onClick={() => puzzle.selectWord(props.item)}>
+            onClick={() => props.handleSelect(props.item)}>
             <WordNumber>{props.item.number}</WordNumber>
-            <WordClue>{props.item.clue}</WordClue>
+            <Div tableCell fontSize={['0.9rem', '1rem', '1.2rem']}>{props.item.clue}</Div>
         </ClueListItem>
     )
 })
 
 const Container = styled(Div)`
     justify-Items: left;
-    width: 50%;
-    overflow: hidden;
-    margin-right: 10px;
 `
 const ClueList = styled(Paper)`
     position: relative;
@@ -73,7 +70,6 @@ const ClueList = styled(Paper)`
 
 const ScrollBox = styled(Div)`
     overflow-y: auto;
-    padding-bottom: 100px;
     position: absolute;
     left: 3px;
     right: 3px;
@@ -81,45 +77,41 @@ const ScrollBox = styled(Div)`
     top: 3px;
 `
 
-const Header = styled.div`
-    display: flex;
-    flex-flow: row nowrap;
-    padding: 5px 15px;
-    align-items: center;
-    font-weight: bold;
-    text-align: left;
-    color: gray;
-`
-
 export default observer(props => {
-    const [words, updateWords] = useState(props.words);
-    const [dialog, updateDialog] = useState({ isDialogOpen: false });
+    const [dialog, updateDialog] = useState({ isDialogOpen: false, isLoading: false });
 
     const handleClickOpen = () => {
-        let data = Object.entries(words).map((x) => `${x[0]} ${x[1]}`).join('\n');
+        let data = props.words.map((x) => `${x.number} ${x.clue}`).join('\n');
         updateDialog({ isDialogOpen: true, cluesListEdited: data });
 
     };
     const handleSave = () => {
-        let words = {};
+        let lastWord;
         for (const line of dialog.cluesListEdited.split('\n')) {
-            if (line.trim === '') continue;
+            if (line.trim() === '') continue;
 
             let num = line.trim().split(' ', 1)[0];
             if (Number(num) != num) {
-                updateDialog({ ...dialog, ...{ error: 'Invalid word number: ' + num } })
-                return;
+                lastWord.setClue(lastWord.clue + ' ' + line.trim())
             } else {
-                words[num] = line.substr(num.length).trim();
+                let word = props.words.find(x => x.number === Number(num))
+
+                if (!word) {
+                    updateDialog({ ...dialog, error: 'Invalid word number: ' + num })
+                    return;
+                }
+                lastWord = word;
+                word.setClue(line.substr(num.length).trim());
             }
         }
-        updateDialog({ ...dialog, ...{ isLoading: true } });
-        props.handleSave(props.title, words).then(() => {
-            updateDialog({ isDialogOpen: false });
-            updateWords(words);
-        }).catch((err) => {
-            updateDialog({ ...dialog, ...{ isLoading: false, error: 'Failed to save. Please try again.' } })
-        });
+
+        handleClose();
+        // store.handleSave(props.title, words).then(() => {
+        //     updateDialog({ isDialogOpen: false });
+        //     updateWords(words);
+        // }).catch((err) => {
+        //     updateDialog({ ...dialog, ...{ isLoading: false, error: 'Failed to save. Please try again.' } })
+        // });
     };
     const handleClose = () => {
         updateDialog({ isDialogOpen: false });
@@ -129,35 +121,36 @@ export default observer(props => {
         updateDialog({ isDialogOpen: true, cluesListEdited: event.target.value });
     };
 
-    console.log(words)
     return (
         <>
-            <Container column>
-                <Header>
-                    <div>{props.title}</div>
+            <Container column grow >
+                {props.showTitle &&
+                    <SubTitle2>
+                        {props.title}
+                    </SubTitle2>
+                }
+                <ClueList grow relative>
+                    <ScrollBox>
+                        {props.words.map((x) => (
+                            <Clue key={x.number} item={x} handleSelect={props.handleSelectWord} />
+                        ))}
+                    </ScrollBox>
+
                     {props.canEdit ?
-                        <IconButton
-                            aria-label={`edit ${props.title} list`}
-                            className="ClueList__EditButton"
-                            size="small"
-                            onClick={handleClickOpen}>
-                            <EditIcon />
-                        </IconButton>
+                        <Div absolute topRight >
+                            <IconButton
+                                aria-label={`edit ${props.title} list`}
+                                size="small"
+                                onClick={handleClickOpen}>
+                                <EditIcon />
+                            </IconButton>
+                        </Div>
                         :
                         null
                     }
-
-                </Header>
-                <ClueList grow>
-                    <ScrollBox>
-                        {words.map((x) => (
-                            <Clue item={x} />
-                        ))}
-                    </ScrollBox>
                 </ClueList>
             </Container>
             <Dialog
-                fullWidth="true"
                 open={dialog.isDialogOpen}
                 onClose={handleClose}
                 aria-labelledby="dialog-title">
@@ -177,10 +170,10 @@ export default observer(props => {
                         />
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={handleClose} color="primary">
+                        <Button onClick={handleClose} color="secondary">
                             Cancel
                     </Button>
-                        <Button onClick={handleSave} color="primary">
+                        <Button onClick={handleSave} color="secondary">
                             Save
                     </Button>
                     </DialogActions>

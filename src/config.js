@@ -1,4 +1,4 @@
 
 export default  {
-    appName: 'Sample App'
+    appName: 'Crosswords Together'
 }

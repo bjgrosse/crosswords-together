@@ -1,0 +1,35 @@
+import React, { useContext, useState, useEffect } from 'react';
+import ReactDOM from 'react-dom';
+import AppContext from './AppFrameContext'
+import { AppBarTitle } from '../StyledComponents/AppFrameComponents'
+
+const AppBarConfig = props => {
+    const context = useContext(AppContext)
+
+    useEffect(()=> {
+        context.pushContextBar({})
+
+        // Clean-up
+        return function() {
+            context.popContextBar()
+        }
+    }, [])
+
+    if (!context.appBarContentNode || !context.appBarContentNode.current ||
+        !context.appBarActionsNode || !context.appBarActionsNode.current){
+        return <div/>
+    }
+    console.log('rendering content')
+
+    let content = props.content
+    if (typeof content == 'string') {
+        content = <AppBarTitle>{content}</AppBarTitle>
+    }
+    return (
+        <>
+        {ReactDOM.createPortal(content, context.appBarContentNode.current) }
+        {ReactDOM.createPortal(props.actions, context.appBarActionsNode.current)}
+        </>
+    );
+}
+export default AppBarConfig;

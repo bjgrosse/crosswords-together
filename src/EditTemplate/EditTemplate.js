@@ -1,0 +1,156 @@
+import React, { useContext, useState, useEffect, useRef, useCallback } from 'react';
+import { useParams, useHistory } from "react-router-dom";
+import { observer } from 'mobx-react'
+import PuzzleStore from '../Stores/CrosswordPuzzleStore'
+import AppContext from '../AppFrame/AppFrameContext'
+import Button from '@material-ui/core/Button';
+import Puzzle from '../CrosswordPuzzle/CrosswordPuzzle'
+import LoadingContainer from '../AppFrame/LoadingContainer';
+import TextField from '@material-ui/core/TextField';
+import EditIcon from '@material-ui/icons/Edit';
+import AppDialog from '../AppFrame/AppDialog'
+import AppBarConfig from '../AppFrame/AppBarConfig'
+import InputLabel from '@material-ui/core/InputLabel';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import NativeSelect from '@material-ui/core/NativeSelect';
+import { Div } from '../StyledComponents'
+import { IconButton } from '../StyledComponents/MaterialComponents'
+import { AppBarTitle } from '../StyledComponents/AppFrameComponents'
+import debounce from 'lodash.debounce'
+
+const store = PuzzleStore.create();
+
+const EditTemplate = props => {
+
+    const titleRef = useRef()
+    const notesRef = useRef()
+    const sourceRef = useRef()
+    const levelRef = useRef()
+    const history = useHistory()
+
+    const isInitialized = useRef()
+
+    let { id, rows, columns } = useParams()
+    const [loadingPromise, setLoadingPromise] = useState()
+    const [editInfoOpen, setEditInfoOpen] = useState(false)
+    const [title, setTitle] = useState('New puzzle')
+    const [source, setSource] = useState()
+    const [notes, setNotes] = useState()
+    const [level, setLevel] = useState('easy')
+    const infoValue = useRef([title, source, notes])
+
+    const appContext = useContext(AppContext)
+
+    const handleSave = () => {
+        let data = { title: title, source: source || '', notes: notes || '', level: level }
+
+        let promise = store.puzzle.saveTemplate(data).then(() => {
+            appContext.popContextBar();
+
+            if (props.onSaved) {
+                props.onSaved(store.puzzle.template)
+            } else {
+                history.push("/")
+            }
+        })
+        setLoadingPromise(promise);
+    }
+
+    function handleEditInfoClick() {
+        setEditInfoOpen(true)
+    }
+
+    function handleCancelEditInfo() {
+        setEditInfoOpen(false)
+    }
+
+    function handleSaveInfo() {
+        setTitle(titleRef.current.value)
+        setSource(sourceRef.current.value)
+        setNotes(notesRef.current.value)
+        setLevel(levelRef.current.value)
+        setEditInfoOpen(false)
+    }
+
+
+    useEffect(() => {
+        //
+        // We either have a template id coming to us in the route
+        if (id) {
+            setLoadingPromise(store.fetchFromTemplate(id))
+
+            // Or we should have the dimensions for a new template
+            // in the location state
+        } else {
+            store.createNewPuzzle(Number(rows), Number(columns))
+        }
+    }, [])
+
+    // useEffect(() => {
+    //     if (!isInitialized.current) {
+    //         isInitialized.current = true
+    //         appContext.pushContextBar({ items: [saveButton] })
+    //     } else {
+    //         //appContext.updateContextBar({ text: titleInput(title.value), items: [saveButton] })
+    //     }
+    // }, [title])
+
+    return (
+        <>
+            <LoadingContainer isLoadingPromise={loadingPromise}>
+                {store.puzzle ?
+                    // <Div flex column>
+                    <Puzzle puzzle={store.puzzle} />
+
+                    // </Div>
+                    :
+                    <div />
+                }
+            </LoadingContainer>
+            {editInfoOpen &&
+                <AppDialog
+                    handleCancel={handleCancelEditInfo}
+                    handleSave={handleSaveInfo}
+                    open={true}
+                    title="Edit new puzzle info">
+                    <TextField label="Title" inputRef={titleRef} defaultValue={title} fullWidth />
+                    <TextField label="Source" inputRef={sourceRef} defaultValue={source} fullWidth />
+                    <TextField label="Notes" inputRef={notesRef} defaultValue={notes} fullWidth />
+                    <FormControl>
+                        <InputLabel htmlFor="select-level">Level</InputLabel>
+                        <Select
+                            native
+                            inputRef={levelRef}
+                            defaultValue={level}
+                            inputProps={{
+                                name: 'level',
+                                id: 'select-level',
+                            }}
+                        >
+                            <option value="beginner">beginner</option>
+                            <option value="easy">easy</option>
+                            <option value="medium">medium</option>
+                            <option value="hard">hard</option>
+                            <option value="expert">expert</option>
+                        </Select>
+                    </FormControl>
+                </AppDialog>
+            }
+            <AppBarConfig
+                content={
+                    <AppBarTitle>
+                        {title}
+                        <IconButton size="small" onClick={handleEditInfoClick} ><EditIcon size="small" /></IconButton>
+                    </AppBarTitle>
+                }
+                actions={
+                    <Button onClick={handleSave} mr={[.5, 1]}>Save</Button>
+                }
+            />
+        </>
+    );
+}
+
+export default EditTemplate;

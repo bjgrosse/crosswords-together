@@ -1,16 +1,21 @@
-import React, { useContext, useRef, useEffect } from 'react';
+import React, { useContext, useRef, useEffect, useMemo } from 'react';
 import PinchPanZoom from '../PinchZoomPan/PinchZoomPan';
 import ScaleBox from '../ScaleBox/ScaleBox';
 import Paper from '@material-ui/core/Paper';
 import styled from 'styled-components';
 import { observer } from 'mobx-react'
-import PuzzleContext from '../CrosswordPuzzle/CrosswordPuzzleContext';
+import Colors from '../Theme/Colors';
 
 const RowDiv = styled.div`
     display: table-row;
 `
 function Row(props) {
-    const cells = props.cells.map((item, index) => <Square key={index} item={item} clickSquare={props.clickSquare} focusedSquareRef={props.focusedSquareRef} />);
+    const cells = props.cells.map((item, index) => (
+        <Square 
+            key={index} 
+            item={item} 
+            handleClick={props.handleCellClick}  />
+    ));
 
     return (
         <RowDiv>{cells}</RowDiv>
@@ -21,12 +26,13 @@ function Row(props) {
 const CellDiv = styled.div`
     display: table-cell;
     position: relative;
-    border-right: 1px gray solid;
-    border-bottom: 1px gray solid;
+    border-right: .2px #aaa solid;
+    border-bottom: .2px #aaa solid;
     padding: 0px;
     vertical-align: middle;
     text-align: center;
     transition: background .2s;
+    color: black;
     background: ${props => {
         if (props.isBlocked)
             return 'lightgray'
@@ -34,6 +40,8 @@ const CellDiv = styled.div`
             return '#dbd68e'
         if (props.isSelected)
             return '#fffcd9'
+        if (props.color)
+            return props.color
     }}
 `
 
@@ -41,18 +49,15 @@ const CellNumber = styled.div`
     position: absolute;
     left: 1px;
     top: -1px;
-    font-size: 8px;
+    font-size: 6px;
 `
 
 const CellValue = styled.div`
     display: inline-block;
     font-weight: bold;
-    font-size:14px;
 `
 
 const Square = observer(props => {
-
-    const {puzzle} = useContext(PuzzleContext);
     const ref = useRef();
 
     useEffect(() => {
@@ -62,12 +67,15 @@ const Square = observer(props => {
     });
 
     return (
-        
-            <CellDiv ref={ref}
-                {...props.item} onClick={() => puzzle.selectCell(props.item, true)}>
-                <CellNumber>{props.item.number}</CellNumber>
-                <CellValue>{props.item.value}</CellValue>
-            </CellDiv>
+
+        <CellDiv ref={ref}
+            isFocused={props.item.isFocused}
+            isBlocked={props.item.isBlocked}
+            isSelected={props.item.isSelected}
+            color={()=> props.item.value ? Colors[props.item.playerColor][100] : null} onMouseDown={(e) => props.handleClick(props.item, e)}>
+            <CellNumber>{props.item.number}</CellNumber>
+            <CellValue>{props.item.value}</CellValue>
+        </CellDiv>
 
     )
 })
@@ -76,39 +84,47 @@ const PuzzleRoot = styled.div`
     position: relative;
     min-height: 100px;
     min-width: 200px;
-    padding: 10px 10px;
     box-sizing: border-box;
     flex-grow:1;
 `
 const PuzzleContainer = styled(Paper)`
     position: relative;
-    width: 500px;
-    height: 500px;
+    width: 300px;
+    height: 320px;
+    margin-left: 1px;
+    margin-top: 2px;
 `
 const Table = styled.div`
     display: table;
     width: 100%;
     height: 100%;    
-    border: 1px gray solid;
     table-layout: fixed;
     box-sizing: border-box;
     border-radius: 3px;
     background: white;
+    font-size: 14px;
 `
 
-export default function (props) {
-
+export default observer( (props) => {
+    const handleCellClick = (cell, e) => {
+        if (e.ctrlKey && props.puzzle.editMode) {
+            props.puzzle.toggleCellBlocked(cell)
+        }
+        else {
+            props.puzzle.selectCell(cell, true, e.button == 2)
+        }
+    }
     return (
         <PuzzleRoot>
-            <ScaleBox baseWidth={500}>
+            <ScaleBox baseWidth={300}>
                 <PinchPanZoom maxScale={2} style={{ overflow: 'visible !important' }} >
-                    <PuzzleContainer elevation="1" >
+                    <PuzzleContainer elevation={1} >
                         <Table>
-                            {props.puzzle.squares && props.puzzle.squares.map((item, index) => <Row key={index} cells={item.cells} focusedSquareRef={props.setFocusedSquareRef} />)}
+                            {props.puzzle.squares && props.puzzle.squares.map((item, index) => <Row key={index} cells={item} focusedSquareRef={props.setFocusedSquareRef} handleCellClick={handleCellClick} />)}
                         </Table>
                     </PuzzleContainer>
                 </PinchPanZoom>
             </ScaleBox>
         </PuzzleRoot>
     )
-}
+})

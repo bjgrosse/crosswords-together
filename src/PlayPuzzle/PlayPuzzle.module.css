@@ -6,7 +6,6 @@
         flex-flow: column nowrap;
     align-content: stretch;
     align-items: stretch;
-    background: #eee;
 }
 
 .containerLandscape {

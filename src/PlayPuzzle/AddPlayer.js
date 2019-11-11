@@ -6,14 +6,12 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import PuzzleContext from '../CrosswordPuzzle/CrosswordPuzzleContext';
 
 const AddPlayer = props => {
     const [state, setState] = useState({
                 email: null,
         valid: true
     });
-    const {puzzle} = useContext(PuzzleContext);
 
     const handleChange = (event) => {
         setState({email: event.target.value})
@@ -30,7 +28,7 @@ const AddPlayer = props => {
             return;
         } 
 
-        puzzle.addPlayer(state.email);
+        props.puzzle.addPlayer(state.email);
         
         props.handleClose()
     };
@@ -56,10 +54,10 @@ const AddPlayer = props => {
                 />
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleClose} color="primary">
+                <Button onClick={handleClose} color="secondary">
                     Cancel
                 </Button>
-                <Button onClick={handleInvite} color="primary">
+                <Button onClick={handleInvite} color="secondary">
                     Invite
                 </Button>
             </DialogActions>

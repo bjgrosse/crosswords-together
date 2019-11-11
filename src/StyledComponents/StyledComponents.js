@@ -1,16 +1,48 @@
 
 import React from 'react';
 import styled from 'styled-components';
-import is from 'styled-is';
+import {
+    palette, spacing, borders,
+    display,
+    positions,
+    shadows,
+    sizing,
+    typography
+} from '@material-ui/system';
+import is, { isOr } from 'styled-is';
+import { Typography } from '@material-ui/core';
+
+function designMode() { return () => (true) };
+
+
+const GetRandomColor = () => (CSSColors[Math.floor(Math.random() * CSSColors.length - 1)])
+const CSSColors = ["AliceBlue", "AntiqueWhite", "Aqua", "Aquamarine", "Azure", "Beige", "Bisque", "Black", "BlanchedAlmond", "Blue", "BlueViolet", "Brown", "BurlyWood", "CadetBlue", "Chartreuse", "Chocolate", "Coral", "CornflowerBlue", "Cornsilk", "Crimson", "Cyan", "DarkBlue", "DarkCyan", "DarkGoldenRod", "DarkGray", "DarkGrey", "DarkGreen", "DarkKhaki", "DarkMagenta", "DarkOliveGreen", "DarkOrange", "DarkOrchid", "DarkRed", "DarkSalmon", "DarkSeaGreen", "DarkSlateBlue", "DarkSlateGray", "DarkSlateGrey", "DarkTurquoise", "DarkViolet", "DeepPink", "DeepSkyBlue", "DimGray", "DimGrey", "DodgerBlue", "FireBrick", "FloralWhite", "ForestGreen", "Fuchsia", "Gainsboro", "GhostWhite", "Gold", "GoldenRod", "Gray", "Grey", "Green", "GreenYellow", "HoneyDew", "HotPink", "IndianRed", "Indigo", "Ivory", "Khaki", "Lavender", "LavenderBlush", "LawnGreen", "LemonChiffon", "LightBlue", "LightCoral", "LightCyan", "LightGoldenRodYellow", "LightGray", "LightGrey", "LightGreen", "LightPink", "LightSalmon", "LightSeaGreen", "LightSkyBlue", "LightSlateGray", "LightSlateGrey", "LightSteelBlue", "LightYellow", "Lime", "LimeGreen", "Linen", "Magenta", "Maroon", "MediumAquaMarine", "MediumBlue", "MediumOrchid", "MediumPurple", "MediumSeaGreen", "MediumSlateBlue", "MediumSpringGreen", "MediumTurquoise", "MediumVioletRed", "MidnightBlue", "MintCream", "MistyRose", "Moccasin", "NavajoWhite", "Navy", "OldLace", "Olive", "OliveDrab", "Orange", "OrangeRed", "Orchid", "PaleGoldenRod", "PaleGreen", "PaleTurquoise", "PaleVioletRed", "PapayaWhip", "PeachPuff", "Peru", "Pink", "Plum", "PowderBlue", "Purple", "RebeccaPurple", "Red", "RosyBrown", "RoyalBlue", "SaddleBrown", "Salmon", "SandyBrown", "SeaGreen", "SeaShell", "Sienna", "Silver", "SkyBlue", "SlateBlue", "SlateGray", "SlateGrey", "Snow", "SpringGreen", "SteelBlue", "Tan", "Teal", "Thistle", "Tomato", "Turquoise", "Violet", "Wheat", "White", "WhiteSmoke", "Yellow", "YellowGreen",]
 
 export const Div = styled.div`
-    ${is('full')`
+    ${palette}
+    ${spacing}
+    ${display}
+    ${borders}
+    ${sizing}
+    ${typography}
+
+    ${!is('absolute') && is('full')`
         width: 100%;
         height: 100%;
         flex-basis: 100%;
     `};
 
-    ${is('inlineBlock')`
+    ${is('fullHeight')`
+        height: 100%;
+        flex-basis: 100%;
+    `};
+
+    ${is('absolute') && is('full')`
+        position: absolute;
+        left: 0px; right: 0px; top: 0px; bottom: 0px;
+    `};
+
+    ${isOr('inlineBlock', 'inline')`
         display: inline-block;
     `};
     ${is('inlineFlex')`
@@ -24,23 +56,20 @@ export const Div = styled.div`
     ${is('background')`
         background: ${props => props.background};
     `};
-    
-    ${is('minHeight')`
-        min-height: ${props => props.minHeight};
-    `};
-    ${is('minWidth')`
-        min-width: ${props => props.minWidth};
+
+    ${is('float')`
+        float: ${props => props.float === true ? 'left' : props.float};
     `};
 
-    ${is('height')`
-        height: ${props => props.height};
+    ${is('table')`
+        display: table;
     `};
-
-    ${is('width')`
-        width: ${props => props.width};
+    ${is('tableCell')`
+        display: table-cell;
     `};
-
-
+    ${is('tableRow')`
+        display: table-row;
+    `};
     ${is('scroll')`
         overflow: auto;
     `};
@@ -49,6 +78,18 @@ export const Div = styled.div`
     `};
     ${is('scrollX')`
     overflow-x: auto;
+    `};
+
+    ${is('noOverflow')`
+        overflow: hidden;
+    `};
+
+    ${is('noOverflowX')`
+        overflow-x: hidden;
+    `};
+    
+    ${is('noOverflowY')`
+        overflow-y: hidden;
     `};
 
     ${is('relative')`
@@ -67,6 +108,12 @@ export const Div = styled.div`
         margin: auto;
     `}; 
 
+    ${is('absolute') && is('topRight')`
+    right: 0px;
+    top: 0px;
+    margin: auto;
+`}; 
+
     ${is('column')`
         display: flex;
         flex-direction: column;
@@ -78,6 +125,7 @@ export const Div = styled.div`
         flex-wrap: wrap-reverse;
     `};
     ${is('flexCenter')`
+        display: flex;
         align-items: center;
         align-content: center;
         justify-content: center;
@@ -164,10 +212,35 @@ export const Div = styled.div`
     ${is('noShrink')`
         flex-shrink: 0;
     `};
+
+    --background: ${props => GetRandomColor()}
 `;
 
 export const Paper = styled(Div)`
     border-radius: 5px;
     background: white;
-    box-shadow: 0px ${p=> ( p.elevation || 1 )* -2}px ${p=> ( p.elevation || 1 )* 5}px ${p=> ( null || 1 )* -2}px #999, 0px ${p=> ( p.elevation || 1 )* 1}px  ${p=> ( p.elevation || 1 )* 1}px 0px #ccc  ;
+    box-shadow: 0px ${p => (p.elevation || 1) * -1}px ${p => (p.elevation || 1) * 3}px 0px rgba(0,0,0,.2), 1px ${p => (p.elevation || 1) * 1}px  ${p => (p.elevation || 1) * 3}px 0px rgba(0,0,0,.2)  ;
+`
+export const SubTitle1 = styled(Typography).attrs(props => ({
+    variant: 'h6',
+    ml: props.ml !== undefined ? props.ml : 1,
+    mb: props.mb !== undefined ? props.mb : .5,
+    mt: props.mt !== undefined ? props.mt : 1
+}))`
+ && {
+    ${palette}
+    ${spacing}
+    ${display}
+    ${borders}
+    ${sizing}
+    ${typography}
+    display: block;
+    color: ${p => p.theme.palette.text.primary};
+    opacity: 0.5;
+    font-weight: ${p => p.theme.typography.fontWeightBold}
+}
+`
+
+export const SubTitle2 = styled(SubTitle1).attrs(props => ({ variant: 'button', color: props.color || 'text.subtle', ml: props.ml || 1, mb: props.mb || .5 }))`
+
 `

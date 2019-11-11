@@ -18,9 +18,7 @@ const imageStyle = createSelector(
     state => state.scale,
     (top, left, scale) => {
         const style = {
-            cursor: 'pointer',
-            '-webkit-tap-highlight-color': 'rgba(0,0,0,0)',
-            '-webkit-tap-highlight-color': 'transparent'
+            cursor: 'pointer'
         };
         return isInitialized(top, left, scale)
             ? {
@@ -505,7 +503,7 @@ export default class PinchZoomPan extends React.Component {
         const containerStyle = {
             width: '100%', 
             height: '100%',
-            overflow: 'hidden',
+            // overflow: 'hidden',
             touchAction: touchAction,
         };
 

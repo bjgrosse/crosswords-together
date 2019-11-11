@@ -5,23 +5,36 @@ import Typography from '@material-ui/core/Typography';
 import "./LoadingContainer.css";
 
 export default function (props) {
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoadingInternal, setIsLoading] = useState(props.provideWorkPromise !== undefined);
     const [error, setError] = useState(null);
+    const [processedPromise, setProcessedPromise] = useState(null);
+    const [calledProvideWorkPromise, setCalledProvideWorkPromise] = useState(false);
 
+    const waitForPromise = (promise) => {
+
+        console.log("waitForPromise");
+        setIsLoading(true)
+        promise.then(() => {
+            console.log("promise finished");
+            setIsLoading(false);
+        }).catch((err) => {
+            console.log(err);
+            setError(props.errorMessage || "Loading failed.")
+            setIsLoading(false);
+        })
+    }
     useEffect(() => {
-        if (isLoading && props.provideWorkPromise) {
-            props.provideWorkPromise().then(() => {
-                console.log("promise finished");
-                setIsLoading(false);
-            }).catch((err) => {
-                console.log(err);
-                setError(props.errorMessage || "Loading failed.")
-                setIsLoading(false);
-            })
-        }
-    }, []);
 
-    if (isLoading) {
+        if (props.isLoadingPromise && props.isLoadingPromise !== processedPromise) {
+            setProcessedPromise(props.isLoadingPromise)
+            waitForPromise(props.isLoadingPromise)
+        } else if (!calledProvideWorkPromise && props.provideWorkPromise) {
+            setCalledProvideWorkPromise(true)
+            waitForPromise(props.provideWorkPromise())
+        }
+    });
+
+    if (isLoadingInternal || props.isLoading) {
         return (
             <div className="LoadingContainer">
                 <Typography variant="h6" color="primary" gutterBottom>{props.message}</Typography >
@@ -35,7 +48,6 @@ export default function (props) {
             </div>
         )
     } else {
-        console.log("Rendering children")
         return props.children;
     }
 }

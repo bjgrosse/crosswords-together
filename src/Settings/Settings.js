@@ -18,7 +18,7 @@ class Page extends React.Component {
 
     render() {
         return (
-            <div><div>middle</div><div>bottom</div></div>
+            <div><div>Coming soon</div></div>
         );
     }
 }

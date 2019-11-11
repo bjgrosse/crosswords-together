@@ -2,27 +2,22 @@ import React, { Fragment } from 'react';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom'
 
 import AppBar from './AppBar';
-import { AppContext } from './AppFrameContext';
+import Login from './Login'
+import { AppContext, AppContextManager } from './AppFrameContext';
 import './AppFrame.css';
 import '../Theme/Theme.css';
 
-import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
-import firebaseConfig from '../firebaseConfig';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Box from '@material-ui/core/Box';
+import { Div } from "../StyledComponents"
+import { AppRoot, AppCanvas, PageContainer, LoadingContainer } from "../StyledComponents/AppFrameComponents"
 
-
-const firebaseApp = firebase.initializeApp(firebaseConfig);
-const firebaseAppAuth = firebaseApp.auth();
 //const firebaseDb = firebase.database();
 
-const providers = {
-  googleProvider: new firebase.auth.GoogleAuthProvider(),
-  emailProvider: new firebase.auth.EmailAuthProvider(),
-  facebookProvider: new firebase.auth.FacebookAuthProvider()
-};
+
 
 
 class AppFrame extends React.Component {
@@ -33,31 +28,15 @@ class AppFrame extends React.Component {
     this.state = {
       isLoading: true,
       user: null,
-      currentPage: null
+      currentPage: null,
+      contextBars: []
     }
 
-    this.uiconfig = { ...this.uiConfig, ...props.firebaseUiConfig }
     this.handlePopState = this.handlePopState.bind(this);
   }
 
 
-  
 
-  // Configure FirebaseUI.
-  uiConfig = {
-    credentialHelper: 'none',
-
-    // We will display Google and Facebook as auth providers.
-    signInOptions: [
-      firebase.auth.EmailAuthProvider.PROVIDER_ID,
-      firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-      firebase.auth.FacebookAuthProvider.PROVIDER_ID
-    ],
-    callbacks: {
-      // Avoid redirects after sign-in.
-      signInSuccessWithAuthResult: () => false
-    }
-  };
 
   // Listen to the Firebase Auth state and set the local state.
   componentDidMount() {
@@ -76,7 +55,7 @@ class AppFrame extends React.Component {
   }
 
   handlePopState(event) {
-
+    console.log(event)
   }
 
   logout = () => {
@@ -88,46 +67,58 @@ class AppFrame extends React.Component {
       return <Redirect to="/login" />
     }
   }
-
-  setContextBar = (info) => {
-    this.setState({ contextBar: info });
+  handleBack = (context) => {
+    //context.popContextBar()
+    this.props.history.goBack()
   }
 
-  getContext = () => {
-    return {
-      contextBar: this.state.contextBar,
-      user: this.state.user,
-      setContextBar: this.setContextBar
-    }
-  }
 
   render() {
 
     if (this.state.isLoading) {
       return (
-        <div className="App__LoadingContainer"><CircularProgress /></div>
+
+        <AppRoot>
+          <LoadingContainer><CircularProgress /></LoadingContainer>
+        </AppRoot>
       )
     } else {
       let user = this.state.user;
       return (
-        <AppContext.Provider value={this.getContext()}>
-          <div className="App">
-            <AppBar menuItems={this.props.menuItems} />
-            <Switch>
-              <Fragment>
-                {this.props.getRoutes()}
-                <Route path='/login' >
-                  {this.state.user ?
-                    <Redirect to="/" />
-                    :
-                    <StyledFirebaseAuth uiConfig={this.uiConfig} firebaseAuth={firebase.auth()} />
-                  }
-                </Route>
-                <Route path='/logout' render={this.logout} />
-              </Fragment>
-            </Switch>
-          </div>
-        </AppContext.Provider>
+        <AppContextManager user={this.state.user}>
+          <AppRoot>
+            <AppCanvas>
+              <AppContext.Consumer>
+                {context =>
+                  <AppBar
+                    contextBar={context.contextBar}
+                    setContentNodeRef={context.setAppBarContentNode}
+                    setActionsNodeRef={context.setAppBarActionsNode}
+                    handleBack={this.handleBack}
+                    menuItems={this.props.menuItems} />
+                }
+              </AppContext.Consumer>
+              <Div grow relative>
+                <PageContainer >
+                  <Switch>
+                    <Fragment>
+                      {this.props.getRoutes()}
+                      <Route path='/login' >
+                        {this.state.user ?
+                          <Redirect to="/" />
+                          :
+                          <Login />
+                        }
+                      </Route>
+                      <Route path='/logout' render={this.logout} />
+                    </Fragment>
+
+                  </Switch>
+                </PageContainer>
+              </Div>
+            </AppCanvas>
+          </AppRoot>
+        </AppContextManager>
       );
     }
   }
