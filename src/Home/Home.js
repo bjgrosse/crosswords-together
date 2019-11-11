@@ -13,7 +13,6 @@ function Home(props) {
 
     const loadPuzzles = async () => {
         await store.fetch();
-        console.log(store)
     }
 
 
@@ -25,14 +24,14 @@ function Home(props) {
                     {/* <Puzzle templateId="26gLX1naY3vcdT07z5b0" puzzleId="15SuJ684gpB4vjrkiSBr"/> */}
 
                     {store.pendingInvitations.length > 0 &&
-                        <PuzzleList puzzles={store.pendingInvitations} title="Pending invitations..." />
-                    }
+                        <PuzzleList key="invites"  puzzles={store.pendingInvitations} title="Pending invitations..." />
+                    } 
 
                     {store.activePuzzles.length > 0 &&
-                        <PuzzleList puzzles={store.activePuzzles} title="My puzzles..." />
+                        <PuzzleList key="active" puzzles={store.activePuzzles} title="My puzzles..." />
                     }
 
-                    <TemplateList templates={store.templates} />
+                    <TemplateList  key="templates"  templates={store.templates} />
                 </Fragment>
             </LoadingContainer>
         )

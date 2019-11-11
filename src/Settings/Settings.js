@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { AppContext } from '../AppFrame/AppFrameContext';
 
 class Page extends React.Component {

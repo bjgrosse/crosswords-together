@@ -213,9 +213,8 @@ export const Div = styled.div`
         flex-shrink: 0;
     `};
 
-    --background: ${props => GetRandomColor()}
 `;
-
+//background: ${props => GetRandomColor()}
 export const Paper = styled(Div)`
     border-radius: 5px;
     background: white;
@@ -241,6 +240,6 @@ export const SubTitle1 = styled(Typography).attrs(props => ({
 }
 `
 
-export const SubTitle2 = styled(SubTitle1).attrs(props => ({ variant: 'button', color: props.color || 'text.subtle', ml: props.ml || 1, mb: props.mb || .5 }))`
+export const SubTitle2 = styled(SubTitle1).attrs(props => ({ variant: 'button', color: props.color || 'textPrimary', ml: props.ml || 1, mb: props.mb || .5 }))`
 
 `

@@ -82,7 +82,6 @@ export default class ScaleBox extends Component {
     const minIncrement = 0.05;
 
     let scale = ((wrapperSize.width- 5) / this.props.baseWidth);
-    console.log(Math.abs(scale - this.state.scale));
 
     const increment = Math.abs(this.state.scale - scale);
 

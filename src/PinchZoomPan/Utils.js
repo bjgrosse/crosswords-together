@@ -154,7 +154,3 @@ export const getImageOverflow = (top, left, scale, imageDimensions, containerDim
         left: calculateOverflowLeft(left, scale, imageDimensions, containerDimensions),
     }
 }
-
-export const getRequiredImagePosition = (position, scale, imageDimensions, containerDimensions) => {
-    const overflow = getImageOverflow()
-}

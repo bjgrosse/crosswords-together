@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Typography from '@material-ui/core/Typography';
 
@@ -12,10 +12,8 @@ export default function (props) {
 
     const waitForPromise = (promise) => {
 
-        console.log("waitForPromise");
         setIsLoading(true)
         promise.then(() => {
-            console.log("promise finished");
             setIsLoading(false);
         }).catch((err) => {
             console.log(err);

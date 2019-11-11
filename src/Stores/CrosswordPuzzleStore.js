@@ -50,7 +50,8 @@ const Cell = types.model('Cell', {
         let result
         if (self.userId) {
             let parent = getParentOfType(self, Puzzle);
-            result = parent.players.find(x=>x.id === self.userId).color
+            let player = parent.players.find(x=>x.id === self.userId)
+            result = player ? player.color : null
         }
 
         return result 
@@ -229,8 +230,6 @@ const Puzzle = types.model('Puzzle', {
         let words = {};
         let template = self.template
         let rows = self.squares
-
-        console.log(template.cluesAcross)
 
         const processWord = (word, cell) => {
             if (word) {

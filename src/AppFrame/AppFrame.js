@@ -11,7 +11,6 @@ import * as firebase from 'firebase/app';
 import 'firebase/auth';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
-import Box from '@material-ui/core/Box';
 import { Div } from "../StyledComponents"
 import { AppRoot, AppCanvas, PageContainer, LoadingContainer } from "../StyledComponents/AppFrameComponents"
 
@@ -67,9 +66,14 @@ class AppFrame extends React.Component {
       return <Redirect to="/login" />
     }
   }
+
   handleBack = (context) => {
-    //context.popContextBar()
-    this.props.history.goBack()
+    if (context.contextBars.length > 1) {
+      this.props.history.goBack()
+    } else {
+      this.props.history.push("/")
+    }
+    
   }
 
 
@@ -83,7 +87,6 @@ class AppFrame extends React.Component {
         </AppRoot>
       )
     } else {
-      let user = this.state.user;
       return (
         <AppContextManager user={this.state.user}>
           <AppRoot>

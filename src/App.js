@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { ThemeProvider as ScThemeProvider } from 'styled-components';
 
@@ -14,7 +14,27 @@ import Theme from "./Theme/Theme"
 
 import MenuItems from './MenuItems';
 
+function toggleFullScreen() {
+    var doc = window.document;
+    var docEl = doc.documentElement;
+  
+    var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
+    var cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
+  
+    if(!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
+      requestFullScreen.call(docEl);
+    }
+    else {
+      cancelFullScreen.call(doc);
+    }
+  }
+
 export default function (props) {
+    useEffect(()=> {
+        // hack to auto hide the address bar
+        console.log('scroll hack')
+        //toggleFullScreen()
+    },[])
 
     function getRoutes() {
         return (

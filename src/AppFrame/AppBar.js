@@ -14,14 +14,14 @@ import { Div, Paper } from '../StyledComponents/StyledComponents';
 import { AppBar, AppBarTitle } from '../StyledComponents/AppFrameComponents';
 import { IconButton } from '../StyledComponents/MaterialComponents';
 
-const contentRef = React.createRef();
-const actionsRef = React.createRef();
 
 export default function (props) {
     const [state, setState] = useState({ isMenuOpen: false });
     const history = useHistory();
 
-    console.log("context bar", props.contextBar)
+    const contentRef = useRef();
+    const actionsRef = useRef();
+
     function navigateTo(path) {
         history.push(path);
     }
@@ -41,10 +41,10 @@ export default function (props) {
 
     useEffect(() => {
         if (props.setContentNodeRef && contentRef.current) {
-            props.setContentNodeRef(contentRef)
+            props.setContentNodeRef(contentRef.current)
         }
         if (props.setActionsNodeRef && actionsRef.current) {
-            props.setActionsNodeRef(actionsRef)
+            props.setActionsNodeRef(actionsRef.current)
         }
     })
 
@@ -53,7 +53,7 @@ export default function (props) {
         return (
             <div >
                 <AppBar position="static" >
-                    <IconButton size="small" color="textPrimary" aria-label="menu" onClick={goBack}><BackIcon /></IconButton>
+                    <IconButton size="small" aria-label="menu" onClick={goBack}><BackIcon /></IconButton>
                     <Div grow ref={contentRef}>
                         <AppBarTitle >
                             {props.contextBar.textRender !== undefined ?

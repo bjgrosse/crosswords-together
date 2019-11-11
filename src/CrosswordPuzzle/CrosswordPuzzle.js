@@ -186,7 +186,7 @@ class Page extends React.Component {
                                         {puzzleBoard}
                                         {keyboard && <div style={{ height: '150px' }} />}
                                     </Div>
-                                    <Div style={{ position: 'absolute', width: 'auto', bottom: '0px', left: '50%', transform: 'translateX(-50%)' }}>
+                                    <Div style={{ position: 'absolute', width: '100%', maxWidth: '400px', bottom: '0px', left: '50%', transform: 'translateX(-50%)' }}>
                                         {keyboard}
                                     </Div>
                                     {keyboardFab}

@@ -1,16 +1,12 @@
-import React, { Fragment, useState, useContext, useRef, useEffect } from 'react';
+import React, {  useState,  useRef, useEffect } from 'react';
 import IconButton from '@material-ui/core/IconButton';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Button from '@material-ui/core/Button';
 import EditIcon from '@material-ui/icons/Edit';
+import ListItem from '@material-ui/core/ListItem';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import Typography from '@material-ui/core/Typography';
 import styled from 'styled-components';
 import { observer } from 'mobx-react';
 
@@ -33,11 +29,6 @@ const WordNumber = styled.div`
     text-align: left;
     align-self: start;
     padding-left: 5px;
-`
-
-const WordClue = styled.div`
-    display: table-cell;    
-    text-align: left;
 `
 const Clue = observer(props => {
 
@@ -91,7 +82,7 @@ export default observer(props => {
             if (line.trim() === '') continue;
 
             let num = line.trim().split(' ', 1)[0];
-            if (Number(num) != num) {
+            if (Number(num).toString() !== num) {
                 lastWord.setClue(lastWord.clue + ' ' + line.trim())
             } else {
                 let word = props.words.find(x => x.number === Number(num))

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';

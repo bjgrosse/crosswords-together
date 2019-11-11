@@ -15,11 +15,9 @@ const AppBarConfig = props => {
         }
     }, [])
 
-    if (!context.appBarContentNode || !context.appBarContentNode.current ||
-        !context.appBarActionsNode || !context.appBarActionsNode.current){
+    if (!context.appBarContentNode || !context.appBarActionsNode){
         return <div/>
     }
-    console.log('rendering content')
 
     let content = props.content
     if (typeof content == 'string') {
@@ -27,8 +25,8 @@ const AppBarConfig = props => {
     }
     return (
         <>
-        {ReactDOM.createPortal(content, context.appBarContentNode.current) }
-        {ReactDOM.createPortal(props.actions, context.appBarActionsNode.current)}
+        {ReactDOM.createPortal(content, context.appBarContentNode) }
+        {ReactDOM.createPortal(props.actions, context.appBarActionsNode)}
         </>
     );
 }

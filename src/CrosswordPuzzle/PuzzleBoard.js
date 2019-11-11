@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useEffect, useMemo } from 'react';
+import React, { useRef, useEffect } from 'react';
 import PinchPanZoom from '../PinchZoomPan/PinchZoomPan';
 import ScaleBox from '../ScaleBox/ScaleBox';
 import Paper from '@material-ui/core/Paper';
@@ -40,8 +40,8 @@ const CellDiv = styled.div`
             return '#dbd68e'
         if (props.isSelected)
             return '#fffcd9'
-        if (props.color)
-            return props.color
+        if (props.userColor)
+            return props.userColor
     }}
 `
 
@@ -72,7 +72,8 @@ const Square = observer(props => {
             isFocused={props.item.isFocused}
             isBlocked={props.item.isBlocked}
             isSelected={props.item.isSelected}
-            color={()=> props.item.value ? Colors[props.item.playerColor][100] : null} onMouseDown={(e) => props.handleClick(props.item, e)}>
+            userColor={()=> props.item.value && props.item.playerColor ? Colors[props.item.playerColor][100] : null} 
+            onMouseDown={(e) => props.handleClick(props.item, e)}>
             <CellNumber>{props.item.number}</CellNumber>
             <CellValue>{props.item.value}</CellValue>
         </CellDiv>
@@ -111,7 +112,7 @@ export default observer( (props) => {
             props.puzzle.toggleCellBlocked(cell)
         }
         else {
-            props.puzzle.selectCell(cell, true, e.button == 2)
+            props.puzzle.selectCell(cell, true, e.button === 2)
         }
     }
     return (

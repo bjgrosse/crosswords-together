@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 export const AppRoot = styled.div
 `${({ theme }) => `
     background: ${theme.palette.background.default};
-    height: 100vh;
+    height: 110vh;
     width: 100vw;
 `}
 `;

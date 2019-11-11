@@ -29,7 +29,6 @@ export default function (props) {
 
     let menuItems = [];
 
-    console.log(props.menuItems);
     for (const chunk of props.menuItems) {
         if (menuItems.length > 0) {
             menuItems.push(<Divider key={menuItems.length} />)

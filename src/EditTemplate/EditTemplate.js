@@ -11,16 +11,12 @@ import EditIcon from '@material-ui/icons/Edit';
 import AppDialog from '../AppFrame/AppDialog'
 import AppBarConfig from '../AppFrame/AppBarConfig'
 import InputLabel from '@material-ui/core/InputLabel';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import NativeSelect from '@material-ui/core/NativeSelect';
 import { Div } from '../StyledComponents'
 import { IconButton } from '../StyledComponents/MaterialComponents'
 import { AppBarTitle } from '../StyledComponents/AppFrameComponents'
-import debounce from 'lodash.debounce'
 
-const store = PuzzleStore.create();
 
 const EditTemplate = props => {
 
@@ -28,6 +24,8 @@ const EditTemplate = props => {
     const notesRef = useRef()
     const sourceRef = useRef()
     const levelRef = useRef()
+    const storeRef = useRef()
+
     const history = useHistory()
 
     const isInitialized = useRef()
@@ -39,18 +37,21 @@ const EditTemplate = props => {
     const [source, setSource] = useState()
     const [notes, setNotes] = useState()
     const [level, setLevel] = useState('easy')
+    const [puzzle, setPuzzle] = useState()
+
     const infoValue = useRef([title, source, notes])
 
     const appContext = useContext(AppContext)
 
     const handleSave = () => {
+        let store = storeRef.current;
         let data = { title: title, source: source || '', notes: notes || '', level: level }
 
-        let promise = store.puzzle.saveTemplate(data).then(() => {
+        let promise = puzzle.saveTemplate(data).then(() => {
             appContext.popContextBar();
 
             if (props.onSaved) {
-                props.onSaved(store.puzzle.template)
+                props.onSaved(puzzle.template)
             } else {
                 history.push("/")
             }
@@ -76,15 +77,18 @@ const EditTemplate = props => {
 
 
     useEffect(() => {
+        let store = PuzzleStore.create();
+
         //
         // We either have a template id coming to us in the route
         if (id) {
-            setLoadingPromise(store.fetchFromTemplate(id))
+            setLoadingPromise(store.fetchFromTemplate(id).then(()=> setPuzzle(store.puzzle)))
 
             // Or we should have the dimensions for a new template
             // in the location state
         } else {
             store.createNewPuzzle(Number(rows), Number(columns))
+            setPuzzle(store.puzzle)
         }
     }, [])
 
@@ -100,9 +104,9 @@ const EditTemplate = props => {
     return (
         <>
             <LoadingContainer isLoadingPromise={loadingPromise}>
-                {store.puzzle ?
+                {puzzle ?
                     // <Div flex column>
-                    <Puzzle puzzle={store.puzzle} />
+                    <Puzzle puzzle={puzzle} />
 
                     // </Div>
                     :
