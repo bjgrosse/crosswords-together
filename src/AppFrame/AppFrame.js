@@ -63,7 +63,7 @@ class AppFrame extends React.Component {
       return <div>Logging out...</div>;
 
     } else {
-      return <Redirect to="/login" />
+      return <Redirect to="/" />
     }
   }
 
@@ -97,7 +97,7 @@ class AppFrame extends React.Component {
                     contextBar={context.contextBar}
                     setContentNodeRef={context.setAppBarContentNode}
                     setActionsNodeRef={context.setAppBarActionsNode}
-                    handleBack={this.handleBack}
+                    handleBack={() => this.handleBack(context)}
                     menuItems={this.props.menuItems} />
                 }
               </AppContext.Consumer>

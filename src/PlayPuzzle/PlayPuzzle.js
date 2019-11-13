@@ -138,8 +138,9 @@ export default observer(props => {
             <Div display={{ xs: 'none', md: 'block' }}
               width={200}>
 
-              <SubTitle2>Players</SubTitle2>
-              <Paper py={1}>
+              <Paper column>
+                <SubTitle2>Players</SubTitle2>
+                <Divider />
                 <PlayerList puzzle={store.puzzle} />
               </Paper>
             </Div>

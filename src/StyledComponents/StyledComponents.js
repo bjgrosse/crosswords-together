@@ -57,6 +57,9 @@ export const Div = styled.div`
         background: ${props => props.background};
     `};
 
+    ${is('zIndex')`
+        z-index: ${props => props.zIndex};
+    `};
     ${is('float')`
         float: ${props => props.float === true ? 'left' : props.float};
     `};

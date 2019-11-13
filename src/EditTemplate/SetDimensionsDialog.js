@@ -50,7 +50,7 @@ const SetDimensionsDialog = props => {
 
         <AppDialog
             open={props.open}
-            onClose={props.handleCancel}
+            handleCancel={props.handleCancel}
             handleSave={() =>  props.handleSave(rows, columns)}
             title="Create new puzzle"
             text="Please specify the dimensions of your new puzzle:"

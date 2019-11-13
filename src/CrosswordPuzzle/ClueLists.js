@@ -2,9 +2,10 @@ import React, { useEffect, useState, useRef } from 'react';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import Divider from '@material-ui/core/Divider';
 import { spacing } from '@material-ui/system';
 import ClueList from './ClueList';
-import { Div } from '../StyledComponents/StyledComponents'
+import { Div, Paper } from '../StyledComponents/StyledComponents'
 import styled from 'styled-components'
 import ResizeObserver from 'resize-observer-polyfill';
 import debounce from 'lodash.debounce'
@@ -89,6 +90,7 @@ const ClueLists = observer(props => {
                             label={list.title} />
                     )}
                 </TabList>
+                <Divider/>
                 <ClueList
                     showTitle={false}
                     title={selectedList.title}
@@ -102,7 +104,7 @@ const ClueLists = observer(props => {
         content = wordLists.map((list, index) =>
             <Div
                 key={list.title}
-                flex alignStretch mr={index === 0 ? [.25, .25, 1] : 0} grow >
+                flex alignStretch grow >
                 <ClueList
                     showTitle={true}
                     title={list.title}
@@ -115,9 +117,9 @@ const ClueLists = observer(props => {
 
     return (
 
-        <Div flex column={showTabs} ref={ref} alignStretch minHeight={100} minWidth={200} grow>
+        <Paper flex column={showTabs} ref={ref} alignStretch minHeight={100} minWidth={200} grow>
             {content}
-        </Div>
+        </Paper>
     )
 })
 

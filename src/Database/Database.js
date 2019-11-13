@@ -10,6 +10,37 @@ class Deferred {
     }
 }
 
+function retrieveAndListen(ref, listenForChanges, prepRecord) {
+    let handle = new Deferred()
+
+    ref.onSnapshot((snapshot) => {            
+        let result = snapshot.docs.map((doc) => ({ ...doc.data(), ...{ id: doc.id } }));
+
+        if (prepRecord) {
+            result = result.map(r => prepRecord(r))
+        }
+        // If this is our initial response
+        // then resolve the promise that is waiting
+        if (handle) {
+            handle.resolve(result)
+            handle = null;
+
+            // Otherwise, call the change listener
+        } else {
+            listenForChanges(result)
+        }
+    }, (error) => {
+        if (handle) {
+            handle.reject(error)
+            handle = null;
+        } else {
+            throw error;
+        }
+    })
+
+    return handle.promise;
+}
+
 export default {
     getCurrentUserId: getCurrentUserId,
     getCurrentUser: () => firebase.auth().currentUser,
@@ -42,26 +73,14 @@ export default {
         const ref = firebase.firestore().collection("puzzle-templates")
             .where("ownerId", "==", getCurrentUserId())
 
-        let handle = new Deferred()
+        return retrieveAndListen(ref, listenForChanges, r => r = {...r, dateAdded: r.dateAdded.toDate() })
+    },
+    getPublicTemplates: (listenForChanges) => {
 
-        ref.onSnapshot((snapshot) => {            
-            let result = snapshot.docs.map((doc) => ({ ...doc.data(), ...{ id: doc.id, dateAdded: doc.data().dateAdded.toDate() } }));
+        const ref = firebase.firestore().collection("puzzle-templates")
+            .where("public", "==", true).where("ownerId", "!==", getCurrentUserId())
 
-            if (handle) {
-                console.log("my templates:" , result)
-                handle.resolve(result)
-                handle = null;
-            } else {
-                listenForChanges(result)
-            }
-        }, (error) => {
-            if (handle) {
-                handle.reject(error)
-                handle = null;
-            }
-        })
-
-        return handle.promise
+        return retrieveAndListen(ref, listenForChanges, r => r = {...r, dateAdded: r.dateAdded.toDate() })
     },
     saveSquareValue: (puzzleId, rowIdx, cellIdx, value, percentComplete) => {
         console.log("saving square: ", rowIdx, cellIdx, value);

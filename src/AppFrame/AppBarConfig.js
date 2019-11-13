@@ -7,7 +7,7 @@ const AppBarConfig = props => {
     const context = useContext(AppContext)
 
     useEffect(()=> {
-        context.pushContextBar({})
+        context.pushContextBar({hideAppBar: props.hideAppBar})
 
         // Clean-up
         return function() {
@@ -15,18 +15,15 @@ const AppBarConfig = props => {
         }
     }, [])
 
-    if (!context.appBarContentNode || !context.appBarActionsNode){
-        return <div/>
-    }
-
     let content = props.content
     if (typeof content == 'string') {
         content = <AppBarTitle>{content}</AppBarTitle>
     }
     return (
         <>
-        {ReactDOM.createPortal(content, context.appBarContentNode) }
-        {ReactDOM.createPortal(props.actions, context.appBarActionsNode)}
+        {context.appBarContentNode && content && ReactDOM.createPortal(content, context.appBarContentNode) }
+        {context.appBarActionsNode && ReactDOM.createPortal(props.actions, context.appBarActionsNode)}
+        {props.children}
         </>
     );
 }

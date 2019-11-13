@@ -50,6 +50,9 @@ export default function (props) {
 
     // If we're displaying in "contextual mode"
     if (props.contextBar) {
+        if (props.contextBar.hideAppBar) {
+            return <div />
+        }
         return (
             <div >
                 <AppBar position="static" >
@@ -63,7 +66,7 @@ export default function (props) {
                             }
                         </AppBarTitle>
                     </Div>
-                    <Div ref={actionsRef}> 
+                    <Div ref={actionsRef}>
                     </Div>
                 </AppBar>
 
@@ -76,6 +79,7 @@ export default function (props) {
         return (
             <div>
                 <AppBar position="static">
+                <IconButton size="small" aria-label="menu" onClick={showMenu}><MenuIcon /></IconButton>
                     <AppBarTitle >
                         {Config.appName}
                     </AppBarTitle>

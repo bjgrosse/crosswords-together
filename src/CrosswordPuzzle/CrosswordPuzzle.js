@@ -6,7 +6,7 @@ import Debounce from 'lodash.debounce';
 import Fab from '@material-ui/core/Fab';
 import KeyboardIcon from '@material-ui/icons/Keyboard';
 
-import { Div } from '../StyledComponents';
+import { Div, Paper } from '../StyledComponents';
 
 import PuzzleBoard from './PuzzleBoard';
 import Keyboard from './Keyboard';
@@ -142,8 +142,9 @@ class Page extends React.Component {
         const noticePopover = this.props.noticePopover && this.props.noticePopover();
         const puzzleBoard = <PuzzleBoard puzzle={this.props.puzzle} clickSquare={this.clickSquare} />;
         const keyboardFab = !this.state.isKeyboardOpen && puzzle.selectedWord && <Fab className="KeyboardButton" color="secondary" size="medium" aria-label="keyboard" onClick={(e) => this.setState({ isKeyboardOpen: !this.state.isKeyboardOpen, keyboardButtonElement: e.currentTarget })} ><KeyboardIcon /></Fab>
+        const showKeyboard = puzzle.selectedWord && this.state.isKeyboardOpen;
 
-        const keyboard = puzzle.selectedWord && this.state.isKeyboardOpen &&
+        const keyboard = showKeyboard &&
             <Keyboard handleKeyDown={this.handleKeyDown} closeKeyboard={this.closeKeyboard} />
 
         return (
@@ -161,10 +162,13 @@ class Page extends React.Component {
                                 {puzzleBoard}
                                 {noticePopover}
                             </Div>
-                            <Div column borderTop="1px solid #adb6b9" >
+                            <Div column zIndex={2}>
 
                                 <ClueLists puzzle={puzzle} />
-                                {keyboard}
+                                {showKeyboard  && <Div height="125px" />}
+                                <Div style={{ position: 'fixed', width: '100%', bottom: '0px', left: '50%', transform: 'translateX(-50%)' }}>
+                                        {keyboard}
+                                    </Div>
                                 {keyboardFab}
                             </Div>
                         </Split>
@@ -180,7 +184,7 @@ class Page extends React.Component {
                             height: '100%',
                             alignContent: 'stretch'
                         }}>
-                            <Div grow p={[0, 0, 1, 2]} relative minWidth='330px'>
+                            <Div grow px={[0, 0, 1, 2]} relative minWidth='330px'>
                                 <>
                                     <Div scroll fullHeight>
                                         {puzzleBoard}

@@ -4,7 +4,8 @@ const defaultState = {
   contextBar: null,
   user: null,
   appBarContentNode: null,
-  appBarActionsNode: null
+  appBarActionsNode: null,
+  hideAppBar: false
 }
 
 // Make sure the shape of the default value passed to
@@ -14,15 +15,16 @@ export const AppContext = React.createContext({
   pushContextBar: (bar) => { },
   updateContextBar: (bar) => { },
   popContextBar: () => { },
-  setAppBarContentNode: () => {},
-  setAppBarActionsNode: () => {}
+  setAppBarContentNode: () => { },
+  setAppBarActionsNode: () => { },
+  setHideAppBar: (value) => { }
 });
 
 
 export class AppContextManager extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {contextBars: [], }
+    this.state = { contextBars: [], }
   }
 
   pushContextBar = (info) => {
@@ -39,29 +41,36 @@ export class AppContextManager extends React.Component {
     this.setState(state => { return { contextBars: state.contextBars.slice(0, -1) } });
   }
   setAppBarContentNode = (ref) => {
-    this.setState( state => {
+    this.setState(state => {
       if (ref !== state.appBarContentNode) {
-        return {appBarContentNode: ref}
-      }       
+        return { appBarContentNode: ref }
+      }
     })
   }
   setAppBarActionsNode = (ref) => {
-    this.setState( state => {
+    this.setState(state => {
       if (ref !== state.appBarActionsNode) {
-        return {appBarActionsNode: ref}
-      }       
+        return { appBarActionsNode: ref }
+      }
     })
   }
 
+  setHideAppBar = (value) => {
+    this.setState({ hideAppBar: value })
+  }
+
   getContext = () => {
-    return {...this.state, ...{
-      contextBar: this.state.contextBars[this.state.contextBars.length-1],
-      user: this.props.user,
-      pushContextBar: this.pushContextBar,
-      updateContextBar: this.updateContextBar,
-      popContextBar: this.popContextBar,
-      setAppBarContentNode: this.setAppBarContentNode,
-      setAppBarActionsNode: this.setAppBarActionsNode }
+    return {
+      ...this.state, ...{
+        contextBar: this.state.contextBars[this.state.contextBars.length - 1],
+        user: this.props.user,
+        pushContextBar: this.pushContextBar,
+        updateContextBar: this.updateContextBar,
+        popContextBar: this.popContextBar,
+        setAppBarContentNode: this.setAppBarContentNode,
+        setAppBarActionsNode: this.setAppBarActionsNode,
+        setHideAppBar: this.setHideAppBar
+      }
     }
   }
 

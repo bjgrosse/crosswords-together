@@ -1,7 +1,7 @@
 
 import React from 'react';
 import AddIcon from '@material-ui/icons/Add';
-import FolderIcon from '@material-ui/icons/Folder';
+import HomeIcon from '@material-ui/icons/Home';
 import SettingsIcon from '@material-ui/icons/Settings';
 import LogoutIcon from '@material-ui/icons/ExitToApp';
 
@@ -15,9 +15,9 @@ const MenuItems = function () {
         }))
     }
 
-    addList(['Add a new puzzle...', 'My Puzzles', 'Settings'],
-        [() => <AddIcon />, () => <FolderIcon />, () => <SettingsIcon />],
-        ['/add-puzzle', '/', '/settings']);
+    addList(['Home', 'Settings'],
+        [() => <HomeIcon />, () => <SettingsIcon />],
+        ['/', '/settings']);
 
 
     addList(['Log out'],

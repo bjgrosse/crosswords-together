@@ -1,6 +1,7 @@
-import React, {  useState,  useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
+import Divider from '@material-ui/core/Divider';
 import EditIcon from '@material-ui/icons/Edit';
 import ListItem from '@material-ui/core/ListItem';
 import DialogTitle from '@material-ui/core/DialogTitle';
@@ -36,7 +37,7 @@ const Clue = observer(props => {
 
     useEffect(() => {
         if (props.item.isSelected) {
-            ref.current.scrollIntoView(false);
+            ref.current.scrollIntoView(true);
         }
     });
 
@@ -55,11 +56,11 @@ const Clue = observer(props => {
 const Container = styled(Div)`
     justify-Items: left;
 `
-const ClueList = styled(Paper)`
+const ClueList = styled(Div)`
     position: relative;
 `
 
-const ScrollBox = styled(Div)`
+const ScrollBox = styled(Div).attrs(p => ({p: [.5,.5,1,1]}))`
     overflow-y: auto;
     position: absolute;
     left: 3px;
@@ -116,15 +117,19 @@ export default observer(props => {
         <>
             <Container column grow >
                 {props.showTitle &&
-                    <SubTitle2>
-                        {props.title}
-                    </SubTitle2>
+                    <>
+                        <SubTitle2>
+                            {props.title}
+                        </SubTitle2>
+                        <Divider />
+                    </>
                 }
                 <ClueList grow relative>
                     <ScrollBox>
                         {props.words.map((x) => (
                             <Clue key={x.number} item={x} handleSelect={props.handleSelectWord} />
                         ))}
+                        <Div key="filler" height="100px" />
                     </ScrollBox>
 
                     {props.canEdit ?

@@ -60,25 +60,7 @@ const PuzzlesStore = types.model('PuzzlesStore', {
         if (self.initialized) return
 
 
-        yield Promise.all([fetchPuzzles(), fetchTemplates()])
-        // let puzzleListData = yield db.getMyPuzzles()
-
-
-        // for (const puzzleData of puzzleListData) {
-        //     console.log(puzzleData)
-        //     let player = puzzleData.players.find(x => x.id == db.getCurrentUserId());
-
-        //     let puzzle = Puzzle.create({
-        //         id: puzzleData.id,
-        //         ownerId: puzzleData.ownerId,
-        //         title: puzzleData.title,
-        //         players: puzzleData.players.map(x => Player.create(x)),
-        //         pendingInvitationId: player.pending ? player.invitationId : undefined
-        //     })
-
-        //     self.puzzles.push(puzzle);
-        // }
-
+        yield Promise.all([fetchPuzzles(), fetchMyTemplates(), fetchPublicTemplates()])
         self.initialized = true;
     })
 
@@ -86,9 +68,13 @@ const PuzzlesStore = types.model('PuzzlesStore', {
         let data = yield db.getMyPuzzles() //(data => mapPuzzleData(data))
         self.puzzles  = mapPuzzleData(data);
     })
-    const fetchTemplates = flow(function* () {
+    const fetchMyTemplates = flow(function* () {
         let templateData = yield db.getMyTemplates(data => self.myTemplates = mapTemplateData(data))
         self.myTemplates = mapTemplateData(templateData);
+    })
+    const fetchPublicTemplates = flow(function* () {
+        let templateData = yield db.getPublicTemplates(data => self.publicTemplates = mapTemplateData(data))
+        self.publicTemplates = mapTemplateData(templateData);
     })
 
     return { fetch }

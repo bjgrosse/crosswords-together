@@ -80,7 +80,7 @@ export default function (props) {
     ));
 
     useEffect(()=>{
-        ref.current.scrollIntoView(false);
+      //  ref.current.scrollIntoView(false);
     }, [])
 
     return (

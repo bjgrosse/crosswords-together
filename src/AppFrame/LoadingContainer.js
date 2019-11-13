@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import logger from './AppLogger'
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Typography from '@material-ui/core/Typography';
 
@@ -16,7 +17,7 @@ export default function (props) {
         promise.then(() => {
             setIsLoading(false);
         }).catch((err) => {
-            console.log(err);
+            logger.error(err);
             setError(props.errorMessage || "Loading failed.")
             setIsLoading(false);
         })

@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 export const AppRoot = styled.div
 `${({ theme }) => `
     background: ${theme.palette.background.default};
-    height: 110vh;
+    height: 100vh;
     width: 100vw;
 `}
 `;
@@ -24,7 +24,7 @@ export const AppCanvas = styled(Div).attrs(props => ({
 `;
 
 export const PageContainer = styled(Div).attrs(props => ({
-    mx: [0,0,1,2],
+    m: [.5,1,1,2],
     absolute: true,
     full: true
 }))
@@ -47,7 +47,6 @@ export const AppBar = styled(Paper).attrs(props => ({
     flex: true,
     alignCenter: true,
     justifyStretch: true,
-    mb: [.5,1,1,1],
     p: [0, 0, 1, 1],
     elevation: 1
 }))

@@ -67,7 +67,7 @@ export default observer((props) => {
                         Start a new puzzle
                     </SubTitle1>
                 </Div>
-                <Button startIcon={<AddIcon />} onClick={() => setShowCreateNew(true)}>Import</Button>
+                <Button startIcon={<AddIcon />} onClick={() => setShowCreateNew(true)}>Create</Button>
             </Div>
             <Paper>
                 <List

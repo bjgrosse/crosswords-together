@@ -50,11 +50,11 @@ const Cell = types.model('Cell', {
         let result
         if (self.userId) {
             let parent = getParentOfType(self, Puzzle);
-            let player = parent.players.find(x=>x.id === self.userId)
+            let player = parent.players.find(x => x.id === self.userId)
             result = player ? player.color : null
         }
 
-        return result 
+        return result
     }
 }))
 
@@ -123,10 +123,10 @@ const Puzzle = types.model('Puzzle', {
             let currentWordId = self.selectedWord ? self.selectedWord.id : null
             // Only change the selected word if we're selecting a cell that's already focused
             // indicating the user wants to toggle directions, or the cell is outside the current word
-            if (cell.isFocused || (cell.horizontalWord !== currentWordId && cell.verticalWord !== currentWordId)) {
+            if (cell.isFocused || !currentWordId || (cell.horizontalWord !== currentWordId && cell.verticalWord !== currentWordId)) {
                 // If we have the horizontal word already selected, or we're instructed to 
                 // select the vertical word by default and we don't already have the vertical word selected..
-                if (currentWordId == cell.horizontalWord || (preferVertical && currentWordId !== cell.verticalWord)) {
+                if (currentWordId == cell.horizontalWord || !cell.horizontalWord || (preferVertical && currentWordId !== cell.verticalWord)) {
                     newSelectedWord = cell.verticalWord;
 
                 } else {
@@ -155,12 +155,14 @@ const Puzzle = types.model('Puzzle', {
 
     function setCellValue(value) {
         let { rowIdx, cellIdx } = self.focusedCell;
-        self.focusedCell.value = value;
-        self.focusedCell.userId = db.getCurrentUserId();
+        if (value !== self.focusedCell.value) {
+            self.focusedCell.value = value;
+            self.focusedCell.userId = db.getCurrentUserId();
 
-        // Only save cell value if we're not in template editing mode
-        if (!self.editMode) {
-            db.saveSquareValue(self.id, rowIdx, cellIdx, value, self.getPercentComplete());
+            // Only save cell value if we're not in template editing mode
+            if (!self.editMode) {
+                db.saveSquareValue(self.id, rowIdx, cellIdx, value, self.getPercentComplete());
+            }
         }
     }
 
@@ -220,7 +222,7 @@ const Puzzle = types.model('Puzzle', {
             squares: self.squares.map(row => row.map(cell => cell.isBlocked ? "~" : cell.value || "0").join('')).join('|')
         }
 
-        templateData = {...templateData, ...data}
+        templateData = { ...templateData, ...data }
         console.log("saving template", templateData)
         return db.saveTemplate(self.template.templateId, templateData, id => { self.template.id = id });
 
@@ -362,7 +364,7 @@ function CreatePuzzleSquares(puzzle, template) {
             cellIdx++;
 
             let value = null;
-            
+
             if (puzzle && puzzle.squares) {
                 value = puzzle.squares[rowIdx + '|' + cellIdx];
             }
