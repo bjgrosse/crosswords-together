@@ -1,22 +1,27 @@
-import winston, { createLogger, format, transports, } from 'winston';
+import { format, transports } from 'winston';
 import * as StackTrace from 'stacktrace-js';
-import firebase from 'firebase'
+import { createThrottledLogger } from '../Logging/ThrottledLogger'
 
-const { combine, timestamp, prettyPrint, colorize, errors, json, simple } = format;
+import FirebaseTransport from '../Logging/FirebaseTransport'
+
+
+const { combine, timestamp, json } = format;
+
+
+const cloneError = function(error, props) {
+    return Object.assign({
+        message: error.message,
+        stack: error.stack
+    }, error, props);
+}
 
 const enumerateErrorFormat = format(info => {
     if (info.message instanceof Error) {
-        info.message = Object.assign({
-            message: info.message.message,
-            stack: info.message.stack
-        }, info.message);
+        info.message = cloneError(info.message)
     }
 
     if (info instanceof Error) {
-        return Object.assign({
-            message: info.message,
-            stack: info.stack
-        }, info);
+        return cloneError(info)
     }
 
     return info;
@@ -27,65 +32,63 @@ const showNewLines = format.printf((info) => {
 })
 
 function intialize() {
-    let logger = createLogger({
+    let logger = createThrottledLogger({
         format: combine(
             enumerateErrorFormat(),
             timestamp(),
-            json()
+            json(), 
+            showNewLines
         ),
-
+        transports: [new FirebaseTransport()]
     })
 
-    //
-    // If we're not in production then log to the `console` with the format:
-    // `${info.level}: ${info.message} JSON.stringify({ ...rest }) `
-    // 
     if (process.env.NODE_ENV !== 'production') {
         logger.add(new transports.Console({
             format: showNewLines
         }));
     }
 
-    // Override the error() method of our logger
-    // and add our own logic to map the stack trace.
-    logger.errorInternal = logger.error
-    logger.error = function (...args) {
+    // // Override the error() method of our logger
+    // // and add our own logic to map the stack trace.
+    // logger.errorInternal = logger.error
+    // logger.error = function (...args) {
 
-        let err;
-        let errIdx;
+    //     let err;
+    //     let errIdx;
 
-        // Check the args for an error object
-        for (let i = 0; i <= args.length; i++) {
-            if (args[i] instanceof Error) {
-                err = args[i]
-                errIdx = i
-                break
-            }
-        }
+    //     // Check the args for an error object
+    //     for (let i = 0; i <= args.length; i++) {
+    //         if (args[i] instanceof Error) {
+    //             err = args[i]
+    //             errIdx = i
+    //             break
+    //         }
+    //     }
 
-        if (!err) {
-            logger.errorInternal(...args)
-            return
-        }
+    //     if (!err) {
+    //         logger.errorInternal(...args)
+    //         return
+    //     }
 
-        try {
-            //
-            // Get the updated call stack
-            StackTrace.fromError(err)
-                .then((frames) => {
-                    // update the args 
-                    args[errIdx] = {...err, stack: frames.map(x => x.toString()).join("\n    ")}
-                }).catch((newErr) => {
-                    logger.errorInternal("error translating stack trace: ", newErr)
-                }).finally(()=> {  
-                    logger.errorInternal(...args)
-                })
+    //     try {
+    //         //
+    //         // Get the updated call stack
+    //         StackTrace.fromError(err)
+    //             .then((frames) => {
+    //                 // update the args 
+    //                 let newError = cloneError(err, {stack: frames.map(x => x.toString()).join("\n    ")})
+    //                 args[errIdx] = newError
+    //             }).catch((newErr) => {
+    //                 logger.errorInternal("error translating stack trace: ", newErr)
+    //             }).finally(()=> {  
+    //                 logger.errorInternal(...args)
+    //             })
 
-        } catch (error) {
-            logger.errorInternal("error translating stack trace: ", error)
-            logger.errorInternal(...args)
-        }
-    }
+    //     } catch (error) {
+    //         logger.errorInternal("error translating stack trace: ", error)
+    //         logger.errorInternal(...args)
+    //     }
+    // }
 
     return logger
 }

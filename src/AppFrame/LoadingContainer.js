@@ -5,48 +5,130 @@ import Typography from '@material-ui/core/Typography';
 
 import "./LoadingContainer.css";
 
-export default function (props) {
-    const [isLoadingInternal, setIsLoading] = useState(props.provideWorkPromise !== undefined);
-    const [error, setError] = useState(null);
-    const [processedPromise, setProcessedPromise] = useState(null);
-    const [calledProvideWorkPromise, setCalledProvideWorkPromise] = useState(false);
+class LoadingContainer extends React.Component {
+    processedPromise = React.createRef();
+    calledProvideWorkPromise = React.createRef();
 
-    const waitForPromise = (promise) => {
+    constructor(props) {
+        super(props)
+        this.state = {
+            isLoadingInternal: props.provideWorkPromise !== undefined,
+            error: null
+        }
+    }
 
-        setIsLoading(true)
+    setIsLoading = (value) => this.setState({ isLoadingInternal: value })
+    setError = (value) => this.setState({ error: value })
+
+    waitForPromise = (promise) => {
+
+        this.setIsLoading(true)
         promise.then(() => {
-            setIsLoading(false);
+            this.setIsLoading(false);
         }).catch((err) => {
             logger.error(err);
-            setError(props.errorMessage || "Loading failed.")
-            setIsLoading(false);
+            this.setError(this.props.errorMessage || "Loading failed.")
+            this.setIsLoading(false);
         })
     }
-    useEffect(() => {
 
-        if (props.isLoadingPromise && props.isLoadingPromise !== processedPromise) {
-            setProcessedPromise(props.isLoadingPromise)
-            waitForPromise(props.isLoadingPromise)
-        } else if (!calledProvideWorkPromise && props.provideWorkPromise) {
-            setCalledProvideWorkPromise(true)
-            waitForPromise(props.provideWorkPromise())
+    checkForLoadingPromise = () => {
+        if (this.props.isLoadingPromise && this.props.isLoadingPromise !== this.processedPromise.current) {
+            this.processedPromise.current = this.props.isLoadingPromise
+            this.waitForPromise(this.props.isLoadingPromise)
         }
-    });
+    }
+    componentDidMount() {
+        // If we've been given a function that will provide a work promise
+        // and we haven't already called it, then call it and wait on it now
+        if (!this.calledProvideWorkPromise.current && this.props.provideWorkPromise) {
+            this.calledProvideWorkPromise.current = true
+            this.waitForPromise(this.props.provideWorkPromise())
+        } else {
 
-    if (isLoadingInternal || props.isLoading) {
-        return (
-            <div className="LoadingContainer">
-                <Typography variant="h6" color="primary" gutterBottom>{props.message}</Typography >
-                <CircularProgress />
-            </div>
-        )
-    } if (error) {
-        return (
-            <div className="LoadingContainer">
-                <Typography variant="h6" color="secondary" gutterBottom>{error}</Typography >
-            </div>
-        )
-    } else {
-        return props.children;
+            this.checkForLoadingPromise()
+        }
+    }
+
+    componentDidUpdate() {
+        this.checkForLoadingPromise()
+    }
+    componentWillUnmount() {
+
+    }
+
+    static getDerivedStateFromError(error) {
+        return {error: "Loading failed."}
+    }
+
+    componentDidCatch(error, info) {
+        error.componentStack = info.componentStack
+        logger.error(error)
+    }
+
+    render() {
+        if (this.state.isLoadingInternal || this.props.isLoading) {
+            return (
+                <div className="LoadingContainer">
+                    <Typography variant="h6" color="primary" gutterBottom>{this.props.message}</Typography >
+                    <CircularProgress />
+                </div>
+            )
+        } if (this.state.error) {
+            return (
+                <div className="LoadingContainer">
+                    <Typography variant="h6" color="secondary" gutterBottom>{this.state.error}</Typography >
+                </div>
+            )
+        } else {
+            return this.props.children;
+        }
     }
 }
+
+export default LoadingContainer
+// export default function (props) {
+//     const [isLoadingInternal, setIsLoading] = useState(props.provideWorkPromise !== undefined);
+//     const [error, setError] = useState(null);
+//     const [processedPromise, setProcessedPromise] = useState(null);
+//     const [calledProvideWorkPromise, setCalledProvideWorkPromise] = useState(false);
+
+//     const waitForPromise = (promise) => {
+
+//         setIsLoading(true)
+//         promise.then(() => {
+//             setIsLoading(false);
+//         }).catch((err) => {
+//             logger.error(err);
+//             setError(props.errorMessage || "Loading failed.")
+//             setIsLoading(false);
+//         })
+//     }
+//     useEffect(() => {
+
+//         if (props.isLoadingPromise && props.isLoadingPromise !== processedPromise) {
+//             setProcessedPromise(props.isLoadingPromise)
+//             waitForPromise(props.isLoadingPromise)
+//         } else if (!calledProvideWorkPromise && props.provideWorkPromise) {
+//             setCalledProvideWorkPromise(true)
+//             waitForPromise(props.provideWorkPromise())
+//         }
+//     });
+
+//     if (isLoadingInternal || props.isLoading) {
+//         return (
+//             <div className="LoadingContainer">
+//                 <Typography variant="h6" color="primary" gutterBottom>{props.message}</Typography >
+//                 <CircularProgress />
+//             </div>
+//         )
+//     } if (error) {
+//         return (
+//             <div className="LoadingContainer">
+//                 <Typography variant="h6" color="secondary" gutterBottom>{error}</Typography >
+//             </div>
+//         )
+//     } else {
+//         return props.children;
+//     }
+// }

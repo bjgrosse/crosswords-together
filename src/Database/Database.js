@@ -78,7 +78,7 @@ export default {
     getPublicTemplates: (listenForChanges) => {
 
         const ref = firebase.firestore().collection("puzzle-templates")
-            .where("public", "==", true).where("ownerId", "!==", getCurrentUserId())
+            .where("public", "==", true) //.where("ownerId", "!==", getCurrentUserId())
 
         return retrieveAndListen(ref, listenForChanges, r => r = {...r, dateAdded: r.dateAdded.toDate() })
     },

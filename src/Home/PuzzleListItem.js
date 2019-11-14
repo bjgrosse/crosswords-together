@@ -32,7 +32,7 @@ const PuzzleListItem = observer(props => {
             <ListItemAvatar >
                 <Div relative>
                     <Progress color="primary" variant="static" value={100} max={100} thickness={22} />
-                    <Progress color="secondary" variant="static" value={props.puzzle.percentComplete} max={100} thickness={22} />
+                    <Progress color="secondary" variant="static" value={props.puzzles.percentComplete} max={100} thickness={22} />
 
                 </Div>
             </ListItemAvatar>
