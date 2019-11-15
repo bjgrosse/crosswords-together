@@ -5,7 +5,8 @@ const defaultState = {
   user: null,
   appBarContentNode: null,
   appBarActionsNode: null,
-  hideAppBar: false
+  hideAppBar: false,
+  snackBarMessage: null
 }
 
 // Make sure the shape of the default value passed to
@@ -17,7 +18,9 @@ export const AppContext = React.createContext({
   popContextBar: () => { },
   setAppBarContentNode: () => { },
   setAppBarActionsNode: () => { },
-  setHideAppBar: (value) => { }
+  setHideAppBar: (value) => { },
+  setSnackBarMessage: (value) => { },
+  closeSnackBar: (value) => { }
 });
 
 
@@ -59,6 +62,13 @@ export class AppContextManager extends React.Component {
     this.setState({ hideAppBar: value })
   }
 
+  setSnackBarMessage = (value) => {
+    this.setState({ snackBarMessage: value })
+  }
+  closeSnackBar = (value) => {
+    this.setState({ snackBarMessage: null })
+  }
+
   getContext = () => {
     return {
       ...this.state, ...{
@@ -69,7 +79,9 @@ export class AppContextManager extends React.Component {
         popContextBar: this.popContextBar,
         setAppBarContentNode: this.setAppBarContentNode,
         setAppBarActionsNode: this.setAppBarActionsNode,
-        setHideAppBar: this.setHideAppBar
+        setHideAppBar: this.setHideAppBar,
+        setSnackBarMessage: this.setSnackBarMessage,
+        closeSnackBar: this.closeSnackBar
       }
     }
   }

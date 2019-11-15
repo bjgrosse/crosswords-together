@@ -39,7 +39,7 @@ function intialize() {
             json(), 
             showNewLines
         ),
-        transports: [new FirebaseTransport()]
+        transports: [new FirebaseTransport({level: 'error' })]
     })
 
     if (process.env.NODE_ENV !== 'production') {

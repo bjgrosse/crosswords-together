@@ -11,9 +11,11 @@ import * as firebase from 'firebase/app';
 import 'firebase/auth';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
+
+import Snackbar from '@material-ui/core/Snackbar';
 import { Div } from "../StyledComponents"
 import { AppRoot, AppCanvas, PageContainer, LoadingContainer } from "../StyledComponents/AppFrameComponents"
-
+import AppSnackBar from './AppSnackBar'
 //const firebaseDb = firebase.database();
 
 
@@ -73,7 +75,7 @@ class AppFrame extends React.Component {
     } else {
       this.props.history.push("/")
     }
-    
+
   }
 
 
@@ -89,38 +91,42 @@ class AppFrame extends React.Component {
     } else {
       return (
         <AppContextManager user={this.state.user}>
-          <AppRoot>
-            <AppCanvas>
-              <AppContext.Consumer>
-                {context =>
-                  <AppBar
-                    contextBar={context.contextBar}
-                    setContentNodeRef={context.setAppBarContentNode}
-                    setActionsNodeRef={context.setAppBarActionsNode}
-                    handleBack={() => this.handleBack(context)}
-                    menuItems={this.props.menuItems} />
-                }
-              </AppContext.Consumer>
-              <Div grow relative>
-                <PageContainer >
-                  <Switch>
-                    <Fragment>
-                      {this.props.getRoutes()}
-                      <Route path='/login' >
-                        {this.state.user ?
-                          <Redirect to="/" />
-                          :
-                          <Login />
-                        }
-                      </Route>
-                      <Route path='/logout' render={this.logout} />
-                    </Fragment>
+          <>
+            <AppRoot>
+              <AppCanvas>
+                <AppContext.Consumer>
+                  {context =>
+                    <AppBar
+                      contextBar={context.contextBar}
+                      setContentNodeRef={context.setAppBarContentNode}
+                      setActionsNodeRef={context.setAppBarActionsNode}
+                      handleBack={() => this.handleBack(context)}
+                      menuItems={this.props.menuItems} />
+                  }
+                </AppContext.Consumer>
+                <Div grow relative>
+                  <PageContainer >
+                    <Switch>
+                      <Fragment>
+                        {this.props.getRoutes()}
+                        <Route path='/login' >
+                          {this.state.user ?
+                            <Redirect to="/" />
+                            :
+                            <Login />
+                          }
+                        </Route>
+                        <Route path='/logout' render={this.logout} />
+                      </Fragment>
 
-                  </Switch>
-                </PageContainer>
-              </Div>
-            </AppCanvas>
-          </AppRoot>
+                    </Switch>
+                  </PageContainer>
+                </Div>
+              </AppCanvas>
+            </AppRoot>
+            <AppSnackBar />
+            
+          </>
         </AppContextManager>
       );
     }

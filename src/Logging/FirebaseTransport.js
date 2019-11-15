@@ -11,9 +11,15 @@ export default class FirebaseTransport extends Transport {
             this.emit('logged', info);
         });
 
-        let date = Date.now()
-        let ref = firebase.firestore().collection("logs").doc() //.doc(`${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`).collection("logs").doc()
-        ref.set({...info, uid: firebase.auth().currentUser ? firebase.auth().currentUser.uid : null});
+        try {
+            
+            //let date = Date.now()
+            let ref = firebase.firestore().collection("logs").doc() //.doc(`${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`).collection("logs").doc()
+            ref.set({ ...info, uid: firebase.auth().currentUser ? firebase.auth().currentUser.uid : null });
+
+        } catch (error) {
+            this.emit('warn', error);
+        }
 
         callback()
 

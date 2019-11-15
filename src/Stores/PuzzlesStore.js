@@ -86,7 +86,7 @@ const PuzzlesStore = types.model('PuzzlesStore', {
         return self.puzzles.filter(x => !x.pendingInvitationId)
     },
     get templates() {
-        return self.myTemplates.concat(self.publicTemplates)
+        return self.myTemplates.concat(self.publicTemplates.filter(x=> x.ownerId !== db.getCurrentUserId()))
     }
 }))
 

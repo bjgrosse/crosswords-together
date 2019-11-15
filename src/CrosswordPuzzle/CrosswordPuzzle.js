@@ -14,6 +14,7 @@ import ClueLists from './ClueLists';
 
 import './CrosswordPuzzle.css';
 
+import {safeHandler} from '../Utility/useSafeHandler'
 
 
 class Page extends React.Component {
@@ -57,9 +58,10 @@ class Page extends React.Component {
 
     setFocusedSquareRefDelayed = Debounce((element) => this.setState({ focusedSquareElement: element, keyboardSelectedWord: this.state.selectedWord }), 1000);
 
-    clickSquare = (square) => {
+    clickSquare = safeHandler(this, (square) => {
+        throw new Error("click error")
         this.props.puzzle.selectCell(square);
-    }
+    })
 
     getUpdatedSquares(squares, func) {
         return squares.map((row) => {
@@ -69,8 +71,8 @@ class Page extends React.Component {
         });
     }
 
-    handleKeyDown = (e) => {
-
+    handleKeyDown = safeHandler(this,"notify", (e) => {
+        throw new Error("event error")
         // Only handle this keystroke if it's coming from the "body"
         // which indicates we're not in an input control somewhere
         if (e.srcElement && e.srcElement.nodeName !== 'BODY') return;
@@ -133,7 +135,7 @@ class Page extends React.Component {
         if (!newCell.isFocused) {
             puzzle.selectCell(newCell, true)
         }
-    }
+    })
 
     closeKeyboard = () => this.setState({ isKeyboardOpen: false });
 

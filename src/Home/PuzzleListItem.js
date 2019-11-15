@@ -14,6 +14,7 @@ import Typography from '@material-ui/core/Typography';
 import LoadingContainer from '../AppFrame/LoadingContainer';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import styled from 'styled-components'
+import useSafeHandler from '../Utility/useSafeHandler'
 
 const Progress = styled(CircularProgress)`
     position: absolute;
@@ -22,17 +23,22 @@ const Progress = styled(CircularProgress)`
 const PuzzleListItem = observer(props => {
 
 
+    const handleClick = useSafeHandler((e) => {
+        console.log(e)
+        navigateTo(`/puzzle/${props.puzzle.id}`)
+    })
+
     const history = useHistory();
     function navigateTo(path) {
         history.push(path);
     }
 
     return (
-        <ListItem button alignItems="flex-start" onClick={() => navigateTo(`/puzzle/${props.puzzle.id}`)}>
+        <ListItem button alignItems="flex-start" onClick={handleClick}>
             <ListItemAvatar >
                 <Div relative>
                     <Progress color="primary" variant="static" value={100} max={100} thickness={22} />
-                    <Progress color="secondary" variant="static" value={props.puzzles.percentComplete} max={100} thickness={22} />
+                    <Progress color="secondary" variant="static" value={props.puzzle.percentComplete} max={100} thickness={22} />
 
                 </Div>
             </ListItemAvatar>
@@ -55,7 +61,7 @@ const PuzzleListItem = observer(props => {
                 {props.puzzle.pendingInvitationId &&
                     <Button color="secondary" variant="contained" onClick={() => props.puzzle.acceptInvitation()}>Accept</Button>
                 }
-                
+
                 <IconButton edge="end" aria-label="delete">
                     <DeleteIcon />
                 </IconButton>
