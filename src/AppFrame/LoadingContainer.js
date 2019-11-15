@@ -68,7 +68,7 @@ class LoadingContainer extends React.Component {
         error.componentStack = info.componentStack
         logger.error(error)
 
-        if (error.severity == "notify") {
+        if (error.severity == "warn") {
             this.context.setSnackBarMessage("Something went wrong.")
         }
     }

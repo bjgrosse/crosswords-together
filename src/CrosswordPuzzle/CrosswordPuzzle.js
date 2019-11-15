@@ -14,7 +14,7 @@ import ClueLists from './ClueLists';
 
 import './CrosswordPuzzle.css';
 
-import {safeHandler} from '../Utility/useSafeHandler'
+import {safeHandlerWarn} from '../Utility/useSafeHandler'
 
 
 class Page extends React.Component {
@@ -58,11 +58,6 @@ class Page extends React.Component {
 
     setFocusedSquareRefDelayed = Debounce((element) => this.setState({ focusedSquareElement: element, keyboardSelectedWord: this.state.selectedWord }), 1000);
 
-    clickSquare = safeHandler(this, (square) => {
-        throw new Error("click error")
-        this.props.puzzle.selectCell(square);
-    })
-
     getUpdatedSquares(squares, func) {
         return squares.map((row) => {
             return row.map((cell) => {
@@ -71,8 +66,7 @@ class Page extends React.Component {
         });
     }
 
-    handleKeyDown = safeHandler(this,"notify", (e) => {
-        throw new Error("event error")
+    handleKeyDown = safeHandlerWarn(this, function(e) {
         // Only handle this keystroke if it's coming from the "body"
         // which indicates we're not in an input control somewhere
         if (e.srcElement && e.srcElement.nodeName !== 'BODY') return;
@@ -83,11 +77,14 @@ class Page extends React.Component {
         let x = puzzle.focusedCell.cellIdx;
         let y = puzzle.focusedCell.rowIdx;
         let newX = x; let newY = y;
+        let focusedCell = puzzle.focusedCell
 
         let direction = puzzle.selectedWord.id.charAt(0);
         let move = 0;
         let setValue;
         let clearValue;
+        let clearTargetCell;
+        let selectedDirectly;
 
         // if we're entering a letter
         if (e.key.length === 1 && e.key.match('[a-zA-Z0-9]')) {
@@ -98,18 +95,27 @@ class Page extends React.Component {
             switch (e.key) {
                 case 'ArrowLeft':
                     move--;
+                    selectedDirectly = true;
                     break;
 
                 case 'ArrowRight':
                     move++;
+                    selectedDirectly = true;
                     break;
 
                 case 'Backspace':
-                    move--;
-                    clearValue = true;
+
+                    if (focusedCell.value && (focusedCell.selectedDirectly || focusedCell.valueJustSet)) {                        
+                        clearValue = true;
+                    } else {
+                        move--;
+                        selectedDirectly = true;
+                        clearTargetCell = true;
+                    }
                     break;
                 case 'Delete':
                     move++;
+                    selectedDirectly = true;
                     clearValue = true;
                     break;
             }
@@ -133,7 +139,11 @@ class Page extends React.Component {
 
         let newCell = puzzle.squares[newY][newX];
         if (!newCell.isFocused) {
-            puzzle.selectCell(newCell, true)
+            puzzle.selectCell(newCell, selectedDirectly)
+            
+            if (clearTargetCell) {
+                puzzle.setCellValue(null)
+            }
         }
     })
 
@@ -142,7 +152,7 @@ class Page extends React.Component {
     render() {
         const { puzzle } = this.props
         const noticePopover = this.props.noticePopover && this.props.noticePopover();
-        const puzzleBoard = <PuzzleBoard puzzle={this.props.puzzle} clickSquare={this.clickSquare} />;
+        const puzzleBoard = <PuzzleBoard puzzle={this.props.puzzle} />;
         const keyboardFab = !this.state.isKeyboardOpen && puzzle.selectedWord && <Fab className="KeyboardButton" color="secondary" size="medium" aria-label="keyboard" onClick={(e) => this.setState({ isKeyboardOpen: !this.state.isKeyboardOpen, keyboardButtonElement: e.currentTarget })} ><KeyboardIcon /></Fab>
         const showKeyboard = puzzle.selectedWord && this.state.isKeyboardOpen;
 

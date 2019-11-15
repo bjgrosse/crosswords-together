@@ -38,7 +38,8 @@ const Cell = types.model('Cell', {
     horizontalWord: types.maybeNull(types.string),
     verticalWord: types.maybeNull(types.string),
     userId: types.maybeNull(types.string),
-    selectedDirectly: false
+    selectedDirectly: false,
+    scrollTo: false
 }).actions(self => {
     function update(data) {
         self.value = data.value;
@@ -116,6 +117,7 @@ const Puzzle = types.model('Puzzle', {
 
         if (self.focusedCell && self.focusedCell !== cell) {
             self.focusedCell.isFocused = false;
+            self.focusedCell.valueJustSet = false;
         }
 
         if (selectedDirectly) {
@@ -150,6 +152,7 @@ const Puzzle = types.model('Puzzle', {
         if (self.selectedWord) self.selectedWord.setSelected(false);
         word.setSelected(true);
         self.selectedWord = word;
+        word.cells[0].scrollTo = true;
         self.selectCell(word.cells[0], false);
     }
 
@@ -157,6 +160,7 @@ const Puzzle = types.model('Puzzle', {
         let { rowIdx, cellIdx } = self.focusedCell;
         if (value !== self.focusedCell.value) {
             self.focusedCell.value = value;
+            self.focusedCell.valueJustSet = true 
             self.focusedCell.userId = db.getCurrentUserId();
 
             // Only save cell value if we're not in template editing mode

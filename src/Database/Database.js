@@ -61,12 +61,13 @@ export default {
         return { ...doc.data(), ...{ id: doc.id } };
     },
     getNewPuzzleId: () => (firebase.firestore().collection("puzzles").doc().id),
-    getMyPuzzles: async () => {
+    getMyPuzzles: async (listenForChanges) => {
 
         console.log("Getting my puzzles");
-        const querySnapshot = await firebase.firestore().collection("puzzles")
-            .where("playerIds", "array-contains", getCurrentUserId()).get();
-        return querySnapshot.docs.map((doc) => ({ ...doc.data(), ...{ id: doc.id } }));
+        const ref = firebase.firestore().collection("puzzles")
+            .where("playerIds", "array-contains", getCurrentUserId())
+            
+        return retrieveAndListen(ref, listenForChanges, r => r = {...r })
     },
     getMyTemplates: (listenForChanges) => {
 
@@ -78,7 +79,7 @@ export default {
     getPublicTemplates: (listenForChanges) => {
 
         const ref = firebase.firestore().collection("puzzle-templates")
-            .where("public", "==", true) //.where("ownerId", "!==", getCurrentUserId())
+            .where("public", "==", true) 
 
         return retrieveAndListen(ref, listenForChanges, r => r = {...r, dateAdded: r.dateAdded.toDate() })
     },

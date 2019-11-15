@@ -1,5 +1,16 @@
 import { useState } from 'react';
-const useSafeHandler = (...args) => {
+
+const handleError = function(error, severity, setState) {
+    error.severity = severity
+
+    switch (severity) {
+        case 'ignore':
+            return;
+        default:
+            setState.call(this, x => {throw error})
+    }
+}
+export const useSafeHandler = (...args) => {
     let fn = args.find(x => x instanceof Function)
     let severity = args.find(x=>  typeof x === "string")
 
@@ -9,12 +20,14 @@ const useSafeHandler = (...args) => {
         try {
             fn(args)
         } catch (error) {
-            error.severity = severity
-            setErrorState(s => {throw error})
+            handleError(error, severity, setErrorState)
         }
     }
-
 }
+
+export const useSafeHandlerWarn = (...args) => useSafeHandler('warn', ...args)
+export const useSafeHandlerSilent = (...args) => useSafeHandler('silent', ...args)
+export const useSafeHandlerIgnore = (...args) => useSafeHandler('ignore', ...args)
 
 export const safeHandler = (obj, ...args) => {  
     let fn = args.find(x => x instanceof Function)
@@ -22,12 +35,16 @@ export const safeHandler = (obj, ...args) => {
 
     let handler = function(...args) {
         try {
-            fn(args)
+            fn.apply(this, args)
         } catch (error) {
-            error.severity = severity
-            this.setState(s => {throw error})
+            handleError.call(this, error, severity, this.setState)
         }
     }
     return handler.bind(obj)
 }
+
+export const safeHandlerWarn = (obj, ...args) => safeHandler(obj, 'warn', ...args)
+export const safeHandlerSilent = (obj, ...args) => safeHandler(obj, 'silent', ...args)
+export const safeHandlerIgnore = (obj, ...args) => safeHandler(obj, 'ignore', ...args)
+
 export default useSafeHandler;

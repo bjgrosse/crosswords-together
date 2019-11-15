@@ -65,19 +65,29 @@ const PuzzlesStore = types.model('PuzzlesStore', {
     })
 
     const fetchPuzzles = flow(function* () {
-        let data = yield db.getMyPuzzles() //(data => mapPuzzleData(data))
+        let data = yield db.getMyPuzzles(self.updatePuzzles)
         self.puzzles  = mapPuzzleData(data);
     })
     const fetchMyTemplates = flow(function* () {
-        let templateData = yield db.getMyTemplates(data => self.myTemplates = mapTemplateData(data))
+        let templateData = yield db.getMyTemplates(self.updateMyTemplates)
         self.myTemplates = mapTemplateData(templateData);
     })
     const fetchPublicTemplates = flow(function* () {
-        let templateData = yield db.getPublicTemplates(data => self.publicTemplates = mapTemplateData(data))
+        let templateData = yield db.getPublicTemplates(self.updatePublicTemplates)
         self.publicTemplates = mapTemplateData(templateData);
     })
+    
+    const updatePublicTemplates = (data) => {
+        self.publicTemplates = mapTemplateData(data);
+    }
+    const updateMyTemplates = (data) => {
+        self.myTemplates = mapTemplateData(data);
+    }
+    const updatePuzzles = (data) => {
+        self.puzzles = mapPuzzleData(data);
+    }
 
-    return { fetch }
+    return { fetch, updatePuzzles, updateMyTemplates, updatePublicTemplates }
 }).views(self => ({
     get pendingInvitations() {
         return self.puzzles.filter(x => x.pendingInvitationId)

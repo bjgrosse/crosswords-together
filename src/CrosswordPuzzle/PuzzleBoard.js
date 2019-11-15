@@ -61,7 +61,7 @@ const Square = observer(props => {
     const ref = useRef();
 
     useEffect(() => {
-        if (props.item.isFocused && !props.item.selectedDirectly) {
+        if (props.item.isFocused && props.item.scrollTo) {
             ref.current.scrollIntoView();
         }
     });
