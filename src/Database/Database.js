@@ -13,7 +13,7 @@ class Deferred {
 function retrieveAndListen(ref, listenForChanges, prepRecord) {
     let handle = new Deferred()
 
-    ref.onSnapshot((snapshot) => {            
+    ref.onSnapshot((snapshot) => {
         let result = snapshot.docs.map((doc) => ({ ...doc.data(), ...{ id: doc.id } }));
 
         if (prepRecord) {
@@ -44,6 +44,11 @@ function retrieveAndListen(ref, listenForChanges, prepRecord) {
 export default {
     getCurrentUserId: getCurrentUserId,
     getCurrentUser: () => firebase.auth().currentUser,
+    saveFCMToken: (token) => {
+        console.log("saving fcm token");
+        return firebase.functions().httpsCallable("saveFcmToken")({ userId: getCurrentUserId(), token: token })
+        return firebase.firestore().collection("users").doc(getCurrentUserId()).update({ FCMToken: token });
+    },
     getPuzzleTemplate: async (id) => {
         console.log("Getting template", id);
         const doc = await firebase.firestore().collection("puzzle-templates").doc(id).get();
@@ -66,29 +71,29 @@ export default {
         console.log("Getting my puzzles");
         const ref = firebase.firestore().collection("puzzles")
             .where("playerIds", "array-contains", getCurrentUserId())
-            
-        return retrieveAndListen(ref, listenForChanges, r => r = {...r })
+
+        return retrieveAndListen(ref, listenForChanges, r => r = { ...r })
     },
     getMyTemplates: (listenForChanges) => {
 
         const ref = firebase.firestore().collection("puzzle-templates")
             .where("ownerId", "==", getCurrentUserId())
 
-        return retrieveAndListen(ref, listenForChanges, r => r = {...r, dateAdded: r.dateAdded.toDate() })
+        return retrieveAndListen(ref, listenForChanges, r => r = { ...r, dateAdded: r.dateAdded.toDate() })
     },
     getPublicTemplates: (listenForChanges) => {
 
         const ref = firebase.firestore().collection("puzzle-templates")
-            .where("public", "==", true) 
+            .where("public", "==", true)
 
-        return retrieveAndListen(ref, listenForChanges, r => r = {...r, dateAdded: r.dateAdded.toDate() })
+        return retrieveAndListen(ref, listenForChanges, r => r = { ...r, dateAdded: r.dateAdded.toDate() })
     },
     saveSquareValue: (puzzleId, rowIdx, cellIdx, value, percentComplete) => {
         console.log("saving square: ", rowIdx, cellIdx, value);
         let data = {};
         data[`squares.${rowIdx}|${cellIdx}`] = { value: value, userId: getCurrentUserId() }
         data.percentComplete = percentComplete;
-        
+
         return firebase.firestore().collection("puzzles").doc(puzzleId).update(data);
     },
     savePuzzle: (id, data) => {

@@ -5,7 +5,7 @@ import Tab from '@material-ui/core/Tab';
 import Divider from '@material-ui/core/Divider';
 import { spacing } from '@material-ui/system';
 import ClueList from './ClueList';
-import { Div, Paper } from '../StyledComponents/StyledComponents'
+import { Div, Paper } from '../UI/StyledComponents/StyledComponents'
 import styled from 'styled-components'
 import ResizeObserver from 'resize-observer-polyfill';
 import debounce from 'lodash.debounce'

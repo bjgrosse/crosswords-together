@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import PinchPanZoom from '../PinchZoomPan/PinchZoomPan';
 import ScaleBox from '../ScaleBox/ScaleBox';
-import Paper from '@material-ui/core/Paper';
+import { Paper } from '../UI/StyledComponents'
 import styled from 'styled-components';
 import { observer } from 'mobx-react'
 import Colors from '../Theme/Colors';
@@ -12,6 +12,8 @@ const RowDiv = styled.div`
 function Row(props) {
     const cells = props.cells.map((item, index) => (
         <Square 
+            drawRightBorder={index < props.cells.length -1}
+            drawBottomBorder={props.drawBorder}
             key={index} 
             item={item} 
             handleClick={props.handleCellClick}  />
@@ -26,8 +28,8 @@ function Row(props) {
 const CellDiv = styled.div`
     display: table-cell;
     position: relative;
-    border-right: .2px #aaa solid;
-    border-bottom: .2px #aaa solid;
+    border-right: ${p => p.drawRightBorder ? '.1px #aaa solid' : null};
+    border-bottom: ${p => p.drawBottomBorder ? '.1px #aaa solid' : null};
     padding: 0px;
     vertical-align: middle;
     text-align: center;
@@ -69,6 +71,8 @@ const Square = observer(props => {
     return (
 
         <CellDiv ref={ref}
+            drawRightBorder={props.drawRightBorder}
+            drawBottomBorder={props.drawBottomBorder}
             isFocused={props.item.isFocused}
             isBlocked={props.item.isBlocked}
             isSelected={props.item.isSelected}
@@ -81,19 +85,20 @@ const Square = observer(props => {
     )
 })
 
-const PuzzleRoot = styled.div`
+const PuzzleRoot = styled(Paper)`
     position: relative;
     min-height: 100px;
     min-width: 200px;
     box-sizing: border-box;
     flex-grow:1;
+    overflow: hidden;
+    margin-bottom: 10px
 `
-const PuzzleContainer = styled(Paper)`
+const PuzzleContainer = styled.div`
     position: relative;
     width: 300px;
     height: 320px;
-    margin-left: 1px;
-    margin-top: 2px;
+    -webkit-tap-highlight-color: transparent;
 `
 const Table = styled.div`
     display: table;
@@ -116,12 +121,12 @@ export default observer( (props) => {
         }
     }
     return (
-        <PuzzleRoot>
+        <PuzzleRoot id="PuzzleRoot" elevation={1}>
             <ScaleBox baseWidth={300}>
                 <PinchPanZoom maxScale={2} style={{ overflow: 'visible !important' }} >
-                    <PuzzleContainer elevation={1} >
+                    <PuzzleContainer  >
                         <Table>
-                            {props.puzzle.squares && props.puzzle.squares.map((item, index) => <Row key={index} cells={item} focusedSquareRef={props.setFocusedSquareRef} handleCellClick={handleCellClick} />)}
+                            {props.puzzle.squares && props.puzzle.squares.map((item, index) => <Row key={index} drawBorder={index < props.puzzle.squares.length-1} cells={item} focusedSquareRef={props.setFocusedSquareRef} handleCellClick={handleCellClick} />)}
                         </Table>
                     </PuzzleContainer>
                 </PinchPanZoom>

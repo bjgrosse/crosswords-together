@@ -2,23 +2,31 @@ import { createMuiTheme, responsiveFontSizes, rgbToHex } from '@material-ui/core
 
 import indigo from '@material-ui/core/colors/indigo';
 import blueGrey from '@material-ui/core/colors/blueGrey';
+import yellow from '@material-ui/core/colors/yellow';
 import deepOrange from '@material-ui/core/colors/deepOrange';
 const Theme = responsiveFontSizes(createMuiTheme({
   palette: {
     primary: {
-      main:  '#cfd8dc'
+      main:  '#003da8'
     },
     background: {
-      default: blueGrey[50]
+      default: '#d0e0ff',
+      overlay: 'rgba(255,255,255,.5)',
+      alert: yellow[100]
+    },
+    border: {
+      primary: '#b4d2ff',
+      alert: '#cbc693'
     },
     text: {
       subtle: 'rgba(0,0,0,.25)',
       secondarySubtle: '#c5cae9',
-      primary: '#607d8b',
-      secondary: '#90a4ae'
+      primary: '#6388cb',
+      secondary: '#b47200',
+      alert: '#847700'
     },
     secondary: {
-      main: '#5c6bc0'
+      main: '#f18a00'
     },
     error: deepOrange,
     // Used by `getContrastText()` to maximize the contrast between the background and
@@ -27,11 +35,15 @@ const Theme = responsiveFontSizes(createMuiTheme({
     // Used to shift a color's luminance by approximately
     // two indexes within its tonal palette.
     // E.g., shift from Red 500 to Red 300 or Red 700.
-    tonalOffset: 0.2,
+    tonalOffset: 0.4,
+  },
+  typography: {
+    fontFamily: 'Rubik, sans-serif'
   },
   overrides: {
     MuiButton: {
       root: {
+        color: '#b47200',
         fontWeight: 'bold'
       }
     },

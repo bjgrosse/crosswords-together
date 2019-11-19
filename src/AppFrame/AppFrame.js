@@ -1,9 +1,10 @@
 import React, { Fragment } from 'react';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom'
+import { observer } from 'mobx-react'
 
 import AppBar from './AppBar';
 import Login from './Login'
-import { AppContext, AppContextManager } from './AppFrameContext';
+import { AppContext } from './AppContext';
 import './AppFrame.css';
 import '../Theme/Theme.css';
 
@@ -13,11 +14,24 @@ import 'firebase/auth';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import Snackbar from '@material-ui/core/Snackbar';
-import { Div } from "../StyledComponents"
-import { AppRoot, AppCanvas, PageContainer, LoadingContainer } from "../StyledComponents/AppFrameComponents"
+import { Div } from "../UI/StyledComponents"
+import Placeholder from "../UI/Placeholder"
+import { AppRoot, AppCanvas, PageContainer, AppBanner, LoadingContainer } from "../UI/StyledComponents/AppFrameComponents"
 import AppSnackBar from './AppSnackBar'
-//const firebaseDb = firebase.database();
+import PushMessaging from './PushMessaging'
 
+import posed, { PoseGroup } from 'react-pose'
+
+const RouteContainer = posed(PageContainer)({
+  enter: {
+    x: 0,
+    opacity: 1,
+  },
+  exit: {
+    x: -300,
+    opacity: 0
+  }
+})
 
 
 
@@ -27,26 +41,26 @@ class AppFrame extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      isLoading: true,
-      user: null,
-      currentPage: null,
-      contextBars: []
+      isLoading: true
     }
 
+    this.bannerRef = React.createRef();
     this.handlePopState = this.handlePopState.bind(this);
   }
 
 
-
-
   // Listen to the Firebase Auth state and set the local state.
   componentDidMount() {
+    this.context.setUser(firebase.auth().user)
     this.unregisterAuthObserver = firebase.auth().onAuthStateChanged(
       (user) => {
-        this.setState({ user: user, isLoading: false });
+        this.setState({ isLoading: false });
+        this.context.setUser(user)
       }
     );
     window.onpopstate = this.handlePopState;
+
+
   }
 
   // Make sure we un-register Firebase observers when the component unmounts.
@@ -60,7 +74,7 @@ class AppFrame extends React.Component {
   }
 
   logout = () => {
-    if (this.state.user) {
+    if (this.context.user) {
       firebase.auth().signOut(); //.then(()=> this.props.history.push('/login'));
       return <div>Logging out...</div>;
 
@@ -69,8 +83,8 @@ class AppFrame extends React.Component {
     }
   }
 
-  handleBack = (context) => {
-    if (context.contextBars.length > 1) {
+  handleBack = () => {
+    if (this.context.store.appBars.length > 1) {
       this.props.history.goBack()
     } else {
       this.props.history.push("/")
@@ -80,7 +94,7 @@ class AppFrame extends React.Component {
 
 
   render() {
-
+    let context = this.context
     if (this.state.isLoading) {
       return (
 
@@ -89,49 +103,55 @@ class AppFrame extends React.Component {
         </AppRoot>
       )
     } else {
-      return (
-        <AppContextManager user={this.state.user}>
-          <>
-            <AppRoot>
-              <AppCanvas>
-                <AppContext.Consumer>
-                  {context =>
-                    <AppBar
-                      contextBar={context.contextBar}
-                      setContentNodeRef={context.setAppBarContentNode}
-                      setActionsNodeRef={context.setAppBarActionsNode}
-                      handleBack={() => this.handleBack(context)}
-                      menuItems={this.props.menuItems} />
-                  }
-                </AppContext.Consumer>
-                <Div grow relative>
-                  <PageContainer >
-                    <Switch>
-                      <Fragment>
-                        {this.props.getRoutes()}
-                        <Route path='/login' >
-                          {this.state.user ?
-                            <Redirect to="/" />
-                            :
-                            <Login />
-                          }
-                        </Route>
-                        <Route path='/logout' render={this.logout} />
-                      </Fragment>
+      let routes = [
+        <Route path='/login' >
+          {this.context.user ?
+            <Redirect to="/" />
+            :
+            <Login />
+          }
+        </Route>,
+        <Route path='/logout' render={this.logout} />
+      ]
 
+      routes.push(this.props.getRoutes())
+
+      //catch all
+      routes.push(<Route><Login /></Route>)
+
+      return (
+        <AppRoot>
+          <>
+            <AppCanvas>
+              <>
+                <AppBar
+                  config={context.store.appBar}
+                  setContentNodeRef={context.setAppBarContentNode}
+                  setActionsNodeRef={context.setAppBarActionsNode}
+                  handleBack={this.handleBack}
+                  menuItems={this.props.menuItems} />
+
+                <Placeholder onDomNodeLoaded={context.setBannerNode} />
+                <Div grow relative>
+                  <RouteContainer key={this.props.location.key}>
+
+                    <Switch>
+                      {routes}
                     </Switch>
-                  </PageContainer>
+                  </RouteContainer>
                 </Div>
-              </AppCanvas>
-            </AppRoot>
+              </>
+            </AppCanvas>
+
             <AppSnackBar />
-            
           </>
-        </AppContextManager>
+        </AppRoot>
       );
     }
   }
 }
 
-export default withRouter(AppFrame);
+AppFrame.contextType = AppContext
+
+export default withRouter(observer(AppFrame));
 

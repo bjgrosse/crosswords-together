@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppContext } from '../AppFrame/AppFrameContext';
+import { AppContext } from '../AppFrame/AppContext';
 
 class Page extends React.Component {
     constructor(props) {

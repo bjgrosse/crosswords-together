@@ -3,10 +3,12 @@ import { palette, spacing } from '@material-ui/system';
 import is from 'styled-is';
 import { Div, Paper } from '../StyledComponents'
 import Typography from '@material-ui/core/Typography';
+import Banner from '../Banner'
 
 export const AppRoot = styled.div
 `${({ theme }) => `
-    background: ${theme.palette.background.default};
+    background-color: ${theme.palette.background.default};
+    background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(215,237,255,1) 100%);
     height: 100vh;
     width: 100vw;
 `}
@@ -18,15 +20,15 @@ export const AppCanvas = styled(Div).attrs(props => ({
     fullHeight: true
 }))
 `${({ theme }) => `
-    background: ${theme.palette.background.default};
     max-width: 1280px;
 `}
 `;
 
 export const PageContainer = styled(Div).attrs(props => ({
-    m: [.5,1,1,2],
+    p: [1,1,2],
     absolute: true,
-    full: true
+    full: true,
+    scroll: true
 }))
 `${({ theme }) => `
 
@@ -42,18 +44,20 @@ export const LoadingContainer = styled(Div).attrs(props => ({
 `}
 `;
 
-export const AppBar = styled(Paper).attrs(props => ({
+export const AppBar = styled(Div).attrs(props => ({
     bgcolor: 'primary',
     flex: true,
     alignCenter: true,
     justifyStretch: true,
-    p: [0, 0, 1, 1],
-    elevation: 1
+    p: [1, 1, 1.5, 2],
 }))
-`
+`${({ theme }) => `
     border-radius: 0px 0px 2px 2px;
-    background: linear-gradient(to bottom, #edf5f9 23%,#cfd8dc 100%);;
+    border-bottom: 2px solid ${theme.palette.border.primary};
+    background-color: ${theme.palette.background.overlay};
     z-Index: 10;
+    
+`}
 `;
 
 
@@ -67,6 +71,14 @@ export const AppBarTitle = styled(Typography).attrs(props => ({
     text-align: left;
     flex-grow: 1
     color: ${p => p.theme.palette.text.primary};
-    font-weight: 700;
 }
+`;
+
+export const AppBanner = styled(Banner)
+`${({ theme }) => `
+    && {
+        background: ${theme.palette.background.alert};
+        border-bottom: 1px solid ${theme.palette.border.alert};
+    }
+`}
 `;

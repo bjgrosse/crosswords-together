@@ -74,7 +74,11 @@ const Word = types.model('Word', {
         self.clue = value
     }
     return { setSelected, setClue }
-})
+}).views(self => ({
+    get isCompleted() {
+        return !self.cells.find(x=>!x.value)
+    }
+}))
 
 
 const Player = types.model('Player', {
@@ -140,6 +144,7 @@ const Puzzle = types.model('Puzzle', {
                 let word = self.words.get(newSelectedWord)
                 if (self.selectedWord) self.selectedWord.setSelected(false);
                 word.setSelected(true);
+                word.selectedDirectly = false;
                 self.selectedWord = word;
             }
         }
@@ -150,7 +155,8 @@ const Puzzle = types.model('Puzzle', {
 
     function selectWord(word) {
         if (self.selectedWord) self.selectedWord.setSelected(false);
-        word.setSelected(true);
+        word.setSelected(true);        
+        word.selectedDirectly = true;
         self.selectedWord = word;
         word.cells[0].scrollTo = true;
         self.selectCell(word.cells[0], false);

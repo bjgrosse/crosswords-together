@@ -6,7 +6,7 @@ import Debounce from 'lodash.debounce';
 import Fab from '@material-ui/core/Fab';
 import KeyboardIcon from '@material-ui/icons/Keyboard';
 
-import { Div, Paper } from '../StyledComponents';
+import { Div, Paper } from '../UI/StyledComponents';
 
 import PuzzleBoard from './PuzzleBoard';
 import Keyboard from './Keyboard';
@@ -14,7 +14,8 @@ import ClueLists from './ClueLists';
 
 import './CrosswordPuzzle.css';
 
-import {safeHandlerWarn} from '../Utility/useSafeHandler'
+import { safeHandlerWarn } from '../Utility/useSafeHandler'
+import HideScrollBars from '../UI/HideScrollBars/HideScrollBars';
 
 
 class Page extends React.Component {
@@ -66,7 +67,7 @@ class Page extends React.Component {
         });
     }
 
-    handleKeyDown = safeHandlerWarn(this, function(e) {
+    handleKeyDown = safeHandlerWarn(this, function (e) {
         // Only handle this keystroke if it's coming from the "body"
         // which indicates we're not in an input control somewhere
         if (e.srcElement && e.srcElement.nodeName !== 'BODY') return;
@@ -105,7 +106,7 @@ class Page extends React.Component {
 
                 case 'Backspace':
 
-                    if (focusedCell.value && (focusedCell.selectedDirectly || focusedCell.valueJustSet)) {                        
+                    if (focusedCell.value && (focusedCell.selectedDirectly || focusedCell.valueJustSet)) {
                         clearValue = true;
                     } else {
                         move--;
@@ -140,7 +141,7 @@ class Page extends React.Component {
         let newCell = puzzle.squares[newY][newX];
         if (!newCell.isFocused) {
             puzzle.selectCell(newCell, selectedDirectly)
-            
+
             if (clearTargetCell) {
                 puzzle.setCellValue(null)
             }
@@ -153,7 +154,7 @@ class Page extends React.Component {
         const { puzzle } = this.props
         const noticePopover = this.props.noticePopover && this.props.noticePopover();
         const puzzleBoard = <PuzzleBoard puzzle={this.props.puzzle} />;
-        const keyboardFab = !this.state.isKeyboardOpen && puzzle.selectedWord && <Fab className="KeyboardButton" color="secondary" size="medium" aria-label="keyboard" onClick={(e) => this.setState({ isKeyboardOpen: !this.state.isKeyboardOpen, keyboardButtonElement: e.currentTarget })} ><KeyboardIcon /></Fab>
+        const keyboardFab = !this.state.isKeyboardOpen && puzzle.selectedWord && <Fab className="KeyboardButton" color="primary" size="medium" aria-label="keyboard" onClick={(e) => this.setState({ isKeyboardOpen: !this.state.isKeyboardOpen, keyboardButtonElement: e.currentTarget })} ><KeyboardIcon /></Fab>
         const showKeyboard = puzzle.selectedWord && this.state.isKeyboardOpen;
 
         const keyboard = showKeyboard &&
@@ -170,17 +171,17 @@ class Page extends React.Component {
                             height: '100%',
                             alignContent: 'stretch'
                         }}>
-                            <Div scroll grow minHeight='150px' relative>
+                            <Div scroll grow minHeight='150px' relative p="5px" m="-5px">
                                 {puzzleBoard}
                                 {noticePopover}
                             </Div>
                             <Div column zIndex={2}>
 
                                 <ClueLists puzzle={puzzle} />
-                                {showKeyboard  && <Div height="125px" />}
+                                {showKeyboard && <Div height="125px" />}
                                 <Div style={{ position: 'fixed', width: '100%', bottom: '0px', left: '50%', transform: 'translateX(-50%)' }}>
-                                        {keyboard}
-                                    </Div>
+                                    {keyboard}
+                                </Div>
                                 {keyboardFab}
                             </Div>
                         </Split>
@@ -198,9 +199,11 @@ class Page extends React.Component {
                         }}>
                             <Div grow px={[0, 0, 1, 2]} relative minWidth='330px'>
                                 <>
-                                    <Div scroll fullHeight>
+                                    <Div scroll hideScrollBars fullHeight pl="5px" ml="-5px" pt="5px" mt="-5px"  pb="5px" mb="-5px"  pr={[1, 1, 2]}>
+                                        {/* <Div as={HideScrollBars} scrollVisible full> */}
                                         {puzzleBoard}
                                         {keyboard && <div style={{ height: '150px' }} />}
+                                        {/* </Div> */}
                                     </Div>
                                     <Div style={{ position: 'absolute', width: '100%', maxWidth: '400px', bottom: '0px', left: '50%', transform: 'translateX(-50%)' }}>
                                         {keyboard}

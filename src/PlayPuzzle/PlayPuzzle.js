@@ -8,7 +8,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { useParams } from "react-router-dom";
-import { AppContext } from '../AppFrame/AppFrameContext';
+import { AppContext } from '../AppFrame/AppContext';
 import PuzzleStore from '../Stores/CrosswordPuzzleStore';
 import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
@@ -17,9 +17,12 @@ import { observer } from 'mobx-react';
 import Login from '../AppFrame/Login'
 import Puzzle from '../CrosswordPuzzle/CrosswordPuzzle';
 import PlayerList from './PlayerList';
-import { Div, Paper, SubTitle2 } from '../StyledComponents';
-import { IconButton } from '../StyledComponents/MaterialComponents';
-import AppBarConfig from '../AppFrame/AppBarConfig'
+import { Div, Paper, SubTitle2 } from '../UI/StyledComponents';
+import { IconButton } from '../UI/StyledComponents/MaterialComponents';
+import AppFrameConfig from '../AppFrame/AppFrameConfig'
+import useSafeHandler from '../Utility/useSafeHandler';
+
+import { reaction } from 'mobx'
 
 const store = PuzzleStore.create();
 
@@ -27,10 +30,20 @@ export default observer(props => {
 
   const context = useContext(AppContext);
   const [playerListOpen, setPlayerListOpen] = useState(false)
+  const [isPermissionPromptOpen, setisPermissionPromptOpen] = useState(false)
+  const [showNotificationBanner, setShowNotificationBanner] = useState(false)
+
   const { id, templateId } = useParams();
   const isPortrait = useMediaQuery('(orientation: portrait)')
   console.log("isPortrait", isPortrait)
+  let disposeAutoRun = () => { }
+  useEffect(() => {
 
+
+    return () => {
+      disposeAutoRun()
+    }
+  })
 
   const fetchPuzzle = async () => {
     if (id) {
@@ -44,6 +57,15 @@ export default observer(props => {
     } else if (templateId) {
       await store.fetchFromTemplate(templateId);
     }
+
+    disposeAutoRun = reaction(() => [store.puzzle.selectedWord && store.puzzle.selectedWord.isCompleted, context.store.pushNotificationsAllowed],
+      ([isCompleted, pushNotificationsAllowed]) => {
+        console.log("reaction", isCompleted, pushNotificationsAllowed)
+        if (isCompleted && !pushNotificationsAllowed) {
+          setShowNotificationBanner(true)
+        }
+      })
+
   }
 
   const handleDecline = () => {
@@ -54,10 +76,25 @@ export default observer(props => {
     store.acceptInvitation()
   }
 
-
   const handlePlay = () => {
     store.puzzle.startPuzzle()
   }
+
+  const handleClosePermissionPrompt = () => setisPermissionPromptOpen(false)
+  const handlePermissionsGranted = useSafeHandler(() => {
+    store.puzzle.saveNotificationOption(true)
+  })
+
+  const hideNotificationBanner = useSafeHandler(() => {
+    setShowNotificationBanner(false)
+  })
+
+
+  const turnOnNotifications = useSafeHandler(() => {
+    context.PushMessaging.requestPermissions()
+    setShowNotificationBanner(false)
+  })
+
   const getInvitationNotice = () => (
     store.invitation && !store.invitation.accepted &&
     <Div flex absolute full flexCenter style={{ background: 'rgba(100,100,100,0.5)' }}>
@@ -106,19 +143,14 @@ export default observer(props => {
   if (!context.user) {
     if (props.isInvitation) {
       return (
-        <>
-          <Div flex column flexCenter>
-            <Box m={2} textAlign='center'>
-              <Typography gutterBottom variant="h5" component="h2">
-                You're Invited!
-              </Typography>
-              <Typography variant="body" color="textPrimary" component="p">
-                You have been invited to collaborate on a puzzle. Login now to start playing!
-              </Typography>
-            </Box>
+
+        <Login>
+          <Div my={1, 1, 2}>
+            <Typography variant="body" color="textPrimary" align="center" component="p">
+              You have been invited to collaborate on a puzzle. Login now to start playing!
+            </Typography>
           </Div>
-          <Login />
-        </>
+        </Login>
       )
     } else {
       return <Login />
@@ -136,6 +168,7 @@ export default observer(props => {
           >
 
             <Div display={{ xs: 'none', md: 'block' }}
+              mr={[1, 1, 2]}
               width={200}>
 
               <Paper column>
@@ -157,11 +190,21 @@ export default observer(props => {
 
         }
       </LoadingContainer>
-      <AppBarConfig
-        content={store.puzzle && store.puzzle.title}
-        actions={
+      <AppFrameConfig
+        appBarContent={store.puzzle && store.puzzle.title}
+        appBarActions={
           <IconButton display={{ xs: 'block', md: 'none' }} size="small" onClick={() => setPlayerListOpen(true)}><PeopleIcon /></IconButton>
         }
+        banners={[
+          {
+            show: showNotificationBanner,
+            content: "Turn on notifications to be alerted when a teammate makes progress or sends a message",
+            actions: [
+              <Button onClick={hideNotificationBanner}>not now</Button>,
+              <Button onClick={turnOnNotifications}>turn on</Button>
+            ]
+          }
+        ]}
       />
     </>
   );

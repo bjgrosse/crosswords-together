@@ -2,20 +2,20 @@ import React, { useContext, useState, useEffect, useRef, useCallback } from 'rea
 import { useParams, useHistory } from "react-router-dom";
 import { observer } from 'mobx-react'
 import PuzzleStore from '../Stores/CrosswordPuzzleStore'
-import AppContext from '../AppFrame/AppFrameContext'
+import AppContext from '../AppFrame/AppContext'
 import Button from '@material-ui/core/Button';
 import Puzzle from '../CrosswordPuzzle/CrosswordPuzzle'
 import LoadingContainer from '../AppFrame/LoadingContainer';
 import TextField from '@material-ui/core/TextField';
 import EditIcon from '@material-ui/icons/Edit';
 import AppDialog from '../AppFrame/AppDialog'
-import AppBarConfig from '../AppFrame/AppBarConfig'
+import AppFrameConfig from '../AppFrame/AppFrameConfig'
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import { Div } from '../StyledComponents'
-import { IconButton } from '../StyledComponents/MaterialComponents'
-import { AppBarTitle } from '../StyledComponents/AppFrameComponents'
+import { Div } from '../UI/StyledComponents'
+import { IconButton } from '../UI/StyledComponents/MaterialComponents'
+import { AppBarTitle } from '../UI/StyledComponents/AppFrameComponents'
 
 
 const EditTemplate = props => {
@@ -142,14 +142,14 @@ const EditTemplate = props => {
                     </FormControl>
                 </AppDialog>
             }
-            <AppBarConfig
-                content={
+            <AppFrameConfig
+                appBarContent={
                     <AppBarTitle>
                         {title}
                         <IconButton size="small" onClick={handleEditInfoClick} ><EditIcon size="small" /></IconButton>
                     </AppBarTitle>
                 }
-                actions={
+                appBarActions={
                     <Button onClick={handleSave} mr={[.5, 1]}>Save</Button>
                 }
             />

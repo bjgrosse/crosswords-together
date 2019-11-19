@@ -10,9 +10,9 @@ import BackIcon from '@material-ui/icons/ArrowBack';
 
 import Menu from './AppMenu';
 import Config from '../config';
-import { Div, Paper } from '../StyledComponents/StyledComponents';
-import { AppBar, AppBarTitle } from '../StyledComponents/AppFrameComponents';
-import { IconButton } from '../StyledComponents/MaterialComponents';
+import { Div, Paper } from '../UI/StyledComponents/StyledComponents';
+import { AppBar, AppBarTitle } from '../UI/StyledComponents/AppFrameComponents';
+import { IconButton } from '../UI/StyledComponents/MaterialComponents';
 
 
 export default function (props) {
@@ -49,20 +49,22 @@ export default function (props) {
     })
 
     // If we're displaying in "contextual mode"
-    if (props.contextBar) {
-        if (props.contextBar.hideAppBar) {
+    if (props.config) {
+        if (props.config.hideAppBar) {
             return <div />
         }
         return (
             <div >
                 <AppBar position="static" >
-                    <IconButton size="small" aria-label="menu" onClick={goBack}><BackIcon /></IconButton>
+
+                    {props.config.showMenu && <IconButton size="small" aria-label="menu" onClick={showMenu}><MenuIcon /></IconButton>}
+                    {props.config.showBackButton && <IconButton size="small" aria-label="menu" onClick={goBack}><BackIcon /></IconButton>}
                     <Div grow ref={contentRef}>
                         <AppBarTitle >
-                            {props.contextBar.textRender !== undefined ?
-                                props.contextBar.textRender()
+                            {props.config.textRender !== undefined ?
+                                props.config.textRender()
                                 :
-                                props.contextBar.text
+                                props.config.text
                             }
                         </AppBarTitle>
                     </Div>
@@ -70,6 +72,7 @@ export default function (props) {
                     </Div>
                 </AppBar>
 
+                <Menu isOpen={state.isMenuOpen} closeMenu={closeMenu} menuItems={props.menuItems} />
             </div>
         );
 
@@ -79,7 +82,7 @@ export default function (props) {
         return (
             <div>
                 <AppBar position="static">
-                <IconButton size="small" aria-label="menu" onClick={showMenu}><MenuIcon /></IconButton>
+                    <IconButton size="small" aria-label="menu" onClick={showMenu}><MenuIcon /></IconButton>
                     <AppBarTitle >
                         {Config.appName}
                     </AppBarTitle>

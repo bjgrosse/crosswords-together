@@ -2,7 +2,7 @@ import React from 'react';
 import logger from './AppLogger'
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Typography from '@material-ui/core/Typography';
-import AppContext from './AppFrameContext';
+import AppContext from './AppContext';
 
 import "./LoadingContainer.css";
 

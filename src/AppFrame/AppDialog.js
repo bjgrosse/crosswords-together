@@ -6,7 +6,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import { Div } from '../StyledComponents'
+import { Div } from '../UI/StyledComponents'
 const AppDialog = props => {
     return (
         <Dialog
@@ -22,7 +22,7 @@ const AppDialog = props => {
             <DialogContent>
                 {props.text &&
                     <DialogContentText>
-                        Please specify the dimensions of your new puzzle:
+                        {props.text}
                     </DialogContentText>
                 }
                 {props.children}

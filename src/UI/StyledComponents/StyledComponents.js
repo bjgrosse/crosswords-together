@@ -9,7 +9,7 @@ import {
     sizing,
     typography
 } from '@material-ui/system';
-import is, { isOr } from 'styled-is';
+import is, { isOr, isNot } from '../../Utility/styledIs';
 import { Typography } from '@material-ui/core';
 
 function designMode() { return () => (true) };
@@ -26,7 +26,7 @@ export const Div = styled.div`
     ${sizing}
     ${typography}
 
-    ${!is('absolute') && is('full')`
+    ${is('!absolute', 'full')`
         width: 100%;
         height: 100%;
         flex-basis: 100%;
@@ -36,8 +36,14 @@ export const Div = styled.div`
         height: 100%;
         flex-basis: 100%;
     `};
+    
+    ${is('fullWidth')`
+        width: 100%;
+        flex-basis: 100%;
+    `};
 
-    ${is('absolute') && is('full')`
+
+    ${is('absolute', 'full')`
         position: absolute;
         left: 0px; right: 0px; top: 0px; bottom: 0px;
     `};
@@ -76,6 +82,9 @@ export const Div = styled.div`
     ${is('scroll')`
         overflow: auto;
     `};
+    ${is('scrollVisible')`
+        overflow: scroll;
+    `};
     ${is('scrollY')`
         overflow-y: auto;
     `};
@@ -94,7 +103,17 @@ export const Div = styled.div`
     ${is('noOverflowY')`
         overflow-y: hidden;
     `};
-
+    
+    ${is('hideScrollBars')`
+        ::-webkit-scrollbar { 
+            display: none;  /* Chrome Safari */
+            width: 0;
+            height: 0;
+        }
+        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none;  /* IE 10+ */
+    
+    `};
     ${is('relative')`
         position: relative;
     `};
@@ -112,10 +131,10 @@ export const Div = styled.div`
     `}; 
 
     ${is('absolute') && is('topRight')`
-    right: 0px;
-    top: 0px;
-    margin: auto;
-`}; 
+        right: 0px;
+        top: 0px;
+        margin: auto;
+    `}; 
 
     ${is('column')`
         display: flex;
@@ -220,7 +239,7 @@ export const Div = styled.div`
 //background: ${props => GetRandomColor()}
 export const Paper = styled(Div)`
     border-radius: 5px;
-    background: white;
+    background: ${p => p.background || 'white'};
     box-shadow: 0px ${p => (p.elevation || 1) * -1}px ${p => (p.elevation || 1) * 3}px 0px rgba(0,0,0,.2), 1px ${p => (p.elevation || 1) * 1}px  ${p => (p.elevation || 1) * 3}px 0px rgba(0,0,0,.2)  ;
 `
 export const SubTitle1 = styled(Typography).attrs(props => ({
@@ -245,4 +264,9 @@ export const SubTitle1 = styled(Typography).attrs(props => ({
 
 export const SubTitle2 = styled(SubTitle1).attrs(props => ({ variant: 'button', color: props.color || 'textPrimary', ml: props.ml || 1, mb: props.mb || .5 }))`
 
+`
+
+export const Banner = styled(Paper)`
+    background: yellow;
+    
 `

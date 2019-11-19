@@ -168,6 +168,10 @@ export default class PinchZoomPan extends React.Component {
     }
 
     handleMouseWheel = event => {
+        if (!event.altKey) {
+            return 
+        }
+        
         this.cancelAnimation();
         const point = getRelativePosition(event, this.imageRef.parentNode);
         if (event.deltaY > 0) {

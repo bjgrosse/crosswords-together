@@ -12,15 +12,16 @@ import styled from 'styled-components';
 import { observer } from 'mobx-react';
 
 import LoadingContainer from '../AppFrame/LoadingContainer';
-import { Paper, Div, SubTitle2 } from '../StyledComponents';
+import { Paper, Div, SubTitle2 } from '../UI/StyledComponents';
 
 import TextField from '@material-ui/core/TextField';
 
-const ClueListItem = styled(ListItem)`
+const ClueListItem = styled(({isCompleted, ...rest}) => <ListItem {...rest} />)`
     && {
         display: table-row;
         vertical-align: top;
         padding: 0px;
+        text-decoration: ${p => p.isCompleted ? 'line-through' : null}
     }
 `
 const WordNumber = styled.div`
@@ -31,24 +32,29 @@ const WordNumber = styled.div`
     align-self: start;
     padding-left: 5px;
 `
+
+const ClueText = styled.div`
+    display: table-cell;
+`
 const Clue = observer(props => {
 
     let ref = useRef(null)
 
     useEffect(() => {
-        if (props.item.isSelected) {
+        if (props.item.isSelected && !props.item.selectedDirectly) {
             ref.current.scrollIntoView(true);
         }
     });
 
     return (
-        <ClueListItem ref={ref} button
+        <ClueListItem button
             disableRipple
             selected={props.item.isSelected}
             key={props.item.number}
+            isCompleted={props.item.isCompleted}
             onClick={() => props.handleSelect(props.item)}>
             <WordNumber>{props.item.number}</WordNumber>
-            <Div tableCell fontSize={['0.9rem', '1rem', '1.2rem']}>{props.item.clue}</Div>
+            <Div ref={ref}  tableCell fontSize={['0.9rem', '1rem', '1.2rem']}>{props.item.clue}</Div>
         </ClueListItem>
     )
 })
@@ -129,7 +135,7 @@ export default observer(props => {
                         {props.words.map((x) => (
                             <Clue key={x.number} item={x} handleSelect={props.handleSelectWord} />
                         ))}
-                        <Div key="filler" height="100px" />
+                        <Div key="filler" height="50px" />
                     </ScrollBox>
 
                     {props.canEdit ?
