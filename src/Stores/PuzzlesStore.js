@@ -1,4 +1,4 @@
-import { types, flow } from 'mobx-state-tree'
+import { types, flow, getParentOfType } from 'mobx-state-tree'
 import db from '../Database/Database'
 
 const Player = types.model('Player', {
@@ -17,7 +17,13 @@ const Puzzle = types.model('Puzzle', {
     percentComplete: 0
 }).actions(self => ({ 
      acceptInvitation: () => {
-        return db.acceptInvitation(self.pendingInvitationId);
+        let promise =  db.acceptInvitation(self.pendingInvitationId);
+        self.players.find(x=> x.id === db.getCurrentUserId()).pending = false
+        return promise
+    },
+    delete: () => {        
+        getParentOfType(self, PuzzlesStore).removePuzzle(self);
+        return db.leaveGame(self.id);
     }
     
 })).views((self)=> ({
@@ -86,8 +92,11 @@ const PuzzlesStore = types.model('PuzzlesStore', {
     const updatePuzzles = (data) => {
         self.puzzles = mapPuzzleData(data);
     }
+    const removePuzzle = (puzzle) => {
+        self.puzzles.remove(puzzle)
+    }
 
-    return { fetch, updatePuzzles, updateMyTemplates, updatePublicTemplates }
+    return { fetch, updatePuzzles, updateMyTemplates, updatePublicTemplates, removePuzzle }
 }).views(self => ({
     get pendingInvitations() {
         return self.puzzles.filter(x => x.pendingInvitationId)

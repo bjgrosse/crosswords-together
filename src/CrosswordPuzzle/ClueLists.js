@@ -82,9 +82,9 @@ const ClueLists = observer(props => {
     if (showTabs) {
         content =
             <>
-                <TabList variant="fullWidth" value={selectedList.index} onChange={handleChange}>
+                <TabList variant="fullWidth" indicatorColor="primary" value={selectedList.index} onChange={handleChange}>
                     {wordLists.map(list =>
-                        <TabItem
+                        <TabItem 
                             key={list.title}
                             pb={.5}
                             label={list.title} />

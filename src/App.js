@@ -18,6 +18,7 @@ import Theme from "./Theme/Theme"
 import MenuItems from './MenuItems';
 import { AppContext, AppContextManager } from './AppFrame/AppContext';
 import './UI/Animations/Animations.css'
+import StartNewPuzzle from './Home/StartNewPuzzle';
 
 
 export default function (props) {
@@ -26,9 +27,10 @@ export default function (props) {
                 <Route exact path='/' ><Home /></Route>,
                 <Route path='/settings' ><Settings /></Route>,
                 <Route path='/puzzles' ><Home /></Route>,
+                <Route path='/start' ><StartNewPuzzle /></Route>,
                 <Route path='/puzzle/:id' ><PlayPuzzle /></Route>,
                 <Route path='/start-puzzle/:templateId' ><PlayPuzzle /></Route>,
-                <Route path='/invitation/:id' ><PlayPuzzle isInvitation /></Route>,
+                <Route path='/i/:id' ><PlayPuzzle isInvitation /></Route>,
                 <Route path='/edit-template/:id' ><EditTemplate /></Route>,
                 <Route path='/new-template/:rows/:columns' ><EditTemplate /></Route>,
                 <Route path='/test1' ><TestPage1 /></Route>,

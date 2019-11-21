@@ -81,7 +81,7 @@ const Login = props => {
 
                             <Div absolute fullWidth height={80}>
                                 <Div absolute center width={40} height={40}>
-                                    <CircularProgress color="secondar" />
+                                    <CircularProgress color="primary" />
                                 </Div>
                             </Div>
                             <Div relative width='auto'>

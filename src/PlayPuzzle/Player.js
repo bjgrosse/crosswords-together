@@ -2,8 +2,6 @@ import React, { useContext, useState, useEffect } from 'react';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import DeleteIcon from '@material-ui/icons/Delete';
 import MenuIcon from '@material-ui/icons/MoreVert';
@@ -11,6 +9,7 @@ import PersonIcon from '@material-ui/icons/Person';
 import MailIcon from '@material-ui/icons/Mail';
 import styled from 'styled-components';
 import Colors from '../Theme/Colors';
+import { IconButton } from '../UI/StyledComponents/MaterialComponents'
 
 const Action = styled(ListItemSecondaryAction)`
     display: block;
@@ -51,7 +50,7 @@ const Player = props => {
                 {props.player.pending ?
                     <MailIcon size="small" />
                     :
-                    <PersonIcon size="small" />
+                    <PersonIcon htmlColor="white" size="small" />
                 }
             </MyAvatar>
             <Text {...props} title={props.player.name}>{props.player.name}</Text>

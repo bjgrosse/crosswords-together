@@ -28,11 +28,15 @@ export const ApplicationStore = types.model('ApplicationStore', {
         self.snackBarMessage = value
     }
 
+    function closeSnackBar() {
+        self.snackBarMessage = undefined
+    }
     return {
         pushAppBar,
         popAppBar,
         setPushNotificationsAllowed,
-        setSnackBarMessage
+        setSnackBarMessage,
+        closeSnackBar
     }
 }).views(self => ({
     get appBar() {

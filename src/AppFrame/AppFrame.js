@@ -16,8 +16,9 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Snackbar from '@material-ui/core/Snackbar';
 import { Div } from "../UI/StyledComponents"
 import Placeholder from "../UI/Placeholder"
-import { AppRoot, AppCanvas, PageContainer, AppBanner, LoadingContainer } from "../UI/StyledComponents/AppFrameComponents"
+import { AppRoot, AppCanvas, PageContainer, AppBanner } from "../UI/StyledComponents/AppFrameComponents"
 import AppSnackBar from './AppSnackBar'
+import LoadingContainer from './LoadingContainer'
 import PushMessaging from './PushMessaging'
 
 import posed, { PoseGroup } from 'react-pose'
@@ -54,8 +55,8 @@ class AppFrame extends React.Component {
     this.context.setUser(firebase.auth().user)
     this.unregisterAuthObserver = firebase.auth().onAuthStateChanged(
       (user) => {
-        this.setState({ isLoading: false });
         this.context.setUser(user)
+        this.setState({ isLoading: false });
       }
     );
     window.onpopstate = this.handlePopState;
@@ -66,7 +67,9 @@ class AppFrame extends React.Component {
   // Make sure we un-register Firebase observers when the component unmounts.
   componentWillUnmount() {
     this.unregisterAuthObserver();
-    window.onpopstate = null;
+    window.onpopstate = (e) => {
+      console.log(e)
+    };
   }
 
   handlePopState(event) {
@@ -99,25 +102,25 @@ class AppFrame extends React.Component {
       return (
 
         <AppRoot>
-          <LoadingContainer><CircularProgress /></LoadingContainer>
+          <LoadingContainer isLoading={true}/>
         </AppRoot>
       )
     } else {
       let routes = [
-        <Route path='/login' >
+        <Route key="login" path='/login' >
           {this.context.user ?
             <Redirect to="/" />
             :
             <Login />
           }
         </Route>,
-        <Route path='/logout' render={this.logout} />
+        <Route key="logout" path='/logout' render={this.logout} />
       ]
 
       routes.push(this.props.getRoutes())
 
       //catch all
-      routes.push(<Route><Login /></Route>)
+      routes.push(<Route key="catchall"><Login /></Route>)
 
       return (
         <AppRoot>

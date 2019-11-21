@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useState, useEffect } from 'react';
+import React, { Fragment, useContext } from 'react';
 import { observer } from 'mobx-react'
 import { AppContext } from '../AppFrame/AppContext';
 
@@ -9,6 +9,8 @@ import LoadingContainer from '../AppFrame/LoadingContainer';
 import AppFrameConfig from '../AppFrame/AppFrameConfig'
 import Login from '../AppFrame/Login';
 import { Div } from '../UI/StyledComponents'
+import WelcomeMessage from './WelcomeMessage';
+import NewPuzzleMessage from './NewPuzzleMessage';
 const store = PuzzlesStore.create();
 
 function Home(props) {
@@ -23,19 +25,22 @@ function Home(props) {
         content = (
             <LoadingContainer provideWorkPromise={loadPuzzles}>
                 <Fragment>
-                    <Div full>
-                    {/* <div >Welcome home, {context.user.displayName}</div> */}
-                    {/* <Puzzle templateId="26gLX1naY3vcdT07z5b0" puzzleId="15SuJ684gpB4vjrkiSBr"/> */}
+                    <Div fullWidth>
+                        {store.puzzles.length == 0 ?
+                            <WelcomeMessage />
+                            :
+                            <NewPuzzleMessage />
+                        }   
 
-                    {store.pendingInvitations.length > 0 &&
-                        <PuzzleList key="invites" puzzles={store.pendingInvitations} title="Pending invitations..." />
-                    }
+                        {store.pendingInvitations.length > 0 &&
+                            <PuzzleList key="invites" puzzles={store.pendingInvitations} title="Pending invitations..." />
+                        }
 
-                    {store.activePuzzles.length > 0 &&
-                        <PuzzleList key="active" puzzles={store.activePuzzles} title="My puzzles..." />
-                    }
+                        {store.activePuzzles.length > 0 &&
+                            <PuzzleList key="active" puzzles={store.activePuzzles} title="My puzzles..." />
+                        }
 
-                    <TemplateList key="templates" templates={store.templates} />
+                        <TemplateList key="templates" templates={store.templates} />
                     </Div>
                 </Fragment>
             </LoadingContainer>
@@ -48,7 +53,7 @@ function Home(props) {
 
     return (
         <AppFrameConfig showMenu={true} appBarContent={
-            <Div width={[256, 256, 400]} ml={1}><img style={{verticalAlign: 'middle'}} src="/inline-logo.png" alt="CROSSWORDS together" width="100%" /></Div>
+            <Div width={[256, 256, 400]} ml={1}><img style={{ verticalAlign: 'middle' }} src="/inline-logo.png" alt="CROSSWORDS together" width="100%" /></Div>
         }>
             {content}
         </AppFrameConfig>

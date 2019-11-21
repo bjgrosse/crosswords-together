@@ -6,59 +6,67 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import LoadingContainer from '../AppFrame/LoadingContainer';
+import CopyIcon from '@material-ui/icons/FileCopy';
+import useSafeHandler from '../Utility/useSafeHandler';
+import { IconButton } from '../UI/StyledComponents/MaterialComponents';
+import { Div } from '../UI/StyledComponents/StyledComponents';
+import * as clipboard from "clipboard-polyfill"
+
 
 const AddPlayer = props => {
-    const [state, setState] = useState({
-                email: null,
-        valid: true
-    });
+    const [link, setLink] = useState();
+    const [linkCopied, setLinkCopied] = useState();
 
-    const handleChange = (event) => {
-        setState({email: event.target.value})
-    }
 
     const handleClose = () => {
         props.handleClose()
     };
 
-    
-    const handleInvite = () => {
-        if (!state.email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i)) {
-            setState({valid: false})
-            return;
-        } 
+    const handleCopy = useSafeHandler(async () => {
+        clipboard.writeText(link)
+            .then(() => setLinkCopied(true));
 
-        props.puzzle.addPlayer(state.email);
-        
-        props.handleClose()
-    };
+    })
+
+    const getLinkId = () => {
+        return props.puzzle.getInviteLink().then((link) => {
+            setLink("https://crosswordstogether.com/i/" + link)
+        });
+
+    }
 
     return (
         <Dialog open={props.open} onClose={handleClose} aria-labelledby="form-dialog-title">
-            <DialogTitle id="form-dialog-title">Add a player</DialogTitle>
-            <DialogContent>
-                <DialogContentText>
-                    Enter the player's email address
+
+            <LoadingContainer provideWorkPromise={getLinkId} message="Generating invitation...">
+                <DialogContent>
+                    <DialogContentText>
+                        Copy this link and send it to your friends
                 </DialogContentText>
-                <TextField
-                    autoFocus
-                    margin="dense"
-                    id="name"
-                    label="Email Address"
-                    type="email"
-                    fullWidth
-                    error={!state.valid}
-                    helperMessage={state.valie ? null : "Please enter a valid email address"}
-                    value={state.email}
-                    onChange={handleChange}
-                />
-            </DialogContent>
+
+                    <Div fullWidth flex>
+                        <Div grow>
+                            <TextField
+                                autoFocus
+                                margin="dense"
+                                id="link"
+                                type="text"
+                                fullWidth
+                                value={link}
+                                helperText={linkCopied ? "Link copied" : null}
+                            />
+                        </Div>
+                        <Div>
+                            <IconButton onClick={handleCopy}><CopyIcon color="secondary" /></IconButton>
+                        </Div>
+                    </Div>
+                </DialogContent>
+
+            </LoadingContainer>
             <DialogActions>
-                <Button onClick={handleClose} color="secondary">
-                    Cancel
-                </Button>
-                <Button onClick={handleInvite} color="secondary">
-                    Invite
+                <Button onClick={handleClose} color="primary">
+                    Close
                 </Button>
             </DialogActions>
         </Dialog>

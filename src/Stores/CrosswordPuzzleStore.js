@@ -76,7 +76,7 @@ const Word = types.model('Word', {
     return { setSelected, setClue }
 }).views(self => ({
     get isCompleted() {
-        return !self.cells.find(x=>!x.value)
+        return !self.cells.find(x => !x.value)
     }
 }))
 
@@ -98,7 +98,8 @@ const Invitation = types.model('Invitation', {
     accepted: false,
     declined: false,
     senderId: types.string,
-    puzzleId: types.string
+    puzzleId: types.string,
+    senderName: types.string
 })
 
 
@@ -114,10 +115,12 @@ const Puzzle = types.model('Puzzle', {
     words: types.map(Word),
     selectedWord: types.maybe(types.reference(Word)),
     players: types.array(Player),
-    template: PuzzleTemplate
+    invitationLinks: types.map(types.string),
+    template: PuzzleTemplate,
+    lastCompletedWord: types.maybe(types.reference(Word))
 }).actions(self => {
     function selectCell(cell, selectedDirectly, preferVertical) {
-        if (cell.isBlocked) return
+        if (cell.isBlocked || !self.isActivePlayer) return
 
         if (self.focusedCell && self.focusedCell !== cell) {
             self.focusedCell.isFocused = false;
@@ -155,7 +158,7 @@ const Puzzle = types.model('Puzzle', {
 
     function selectWord(word) {
         if (self.selectedWord) self.selectedWord.setSelected(false);
-        word.setSelected(true);        
+        word.setSelected(true);
         word.selectedDirectly = true;
         self.selectedWord = word;
         word.cells[0].scrollTo = true;
@@ -165,13 +168,20 @@ const Puzzle = types.model('Puzzle', {
     function setCellValue(value) {
         let { rowIdx, cellIdx } = self.focusedCell;
         if (value !== self.focusedCell.value) {
+            let word = self.selectedWord;
+            let wasCompleted = word.isCompleted;
+
             self.focusedCell.value = value;
-            self.focusedCell.valueJustSet = true 
+            self.focusedCell.valueJustSet = true
             self.focusedCell.userId = db.getCurrentUserId();
 
             // Only save cell value if we're not in template editing mode
             if (!self.editMode) {
                 db.saveSquareValue(self.id, rowIdx, cellIdx, value, self.getPercentComplete());
+
+                if (word.isCompleted && !wasCompleted) {
+                    self.lastCompletedWord = word;
+                }
             }
         }
     }
@@ -308,6 +318,25 @@ const Puzzle = types.model('Puzzle', {
         self.words = words;
     }
 
+    const getInviteLink = flow(function* () {
+        let userId = db.getCurrentUserId()
+        let link = self.invitationLinks.get(userId)
+        if (!link) {
+            link = yield db.createInvitationLink(self.id)
+            self.invitationLinks.set(userId, link);
+        }
+
+        return link
+    })
+
+    function acceptInvitation() {
+        self.currentPlayer.pending = false;
+        return db.acceptInvitation(self.currentPlayer.invitationId);
+    }
+    function leaveGame() {
+        return db.leaveGame(self.id);
+    }
+
     return {
         selectCell,
         selectWord,
@@ -316,7 +345,10 @@ const Puzzle = types.model('Puzzle', {
         addPlayer,
         initializeWords,
         saveTemplate,
-        startPuzzle
+        startPuzzle,
+        getInviteLink,
+        acceptInvitation,
+        leaveGame
     }
 }).views(self => ({
     wordsByDirection(dir) {
@@ -338,7 +370,7 @@ const Puzzle = types.model('Puzzle', {
         return self.isNew === false && self.ownerId === db.getCurrentUserId()
     },
     get canInvitePlayers() {
-        return self.isNew === false && !self.pendingInvitationId
+        return self.isNew === false && self.isActivePlayer
     },
     getPercentComplete() {
         const countCells = (shouldCount) => {
@@ -350,12 +382,11 @@ const Puzzle = types.model('Puzzle', {
         let completed = countCells(cell => cell.value)
         return completed / total * 100
     },
-    get pendingInvitationId() {
-        let playerRecord = self.players.find(x => x.id === db.getCurrentUserId())
-
-        if (playerRecord && playerRecord.pending) {
-            return playerRecord.invitationId
-        }
+    get isActivePlayer() {
+        return self.players.find(x => x.id === db.getCurrentUserId() && !x.pending) !== undefined
+    },
+    get currentPlayer() {
+        return self.players.find(x => x.id === db.getCurrentUserId())
     }
 }))
 
@@ -460,23 +491,21 @@ const PuzzleStore = types.model('PuzzleStore', {
     const fetchFromTemplate = flow(function* (id) {
 
         let user = db.getCurrentUser()
+        let templateData = yield loadTemplateData(id)
+        let players = [{ id: user.uid, name: user.displayName, color: GetRandomColor() }]
+
         let puzzleData = {
             id: db.getNewPuzzleId(),
             ownerId: db.getCurrentUserId(),
-            players: [{ id: user.uid, name: user.displayName, color: GetRandomColor() }]
-        }
-
-        let templateData = yield loadTemplateData(id)
-
-        let puzzle = Puzzle.create({
-            id: id,
-            ownerId: puzzleData.ownerId,
             title: templateData.title,
             isNew: true,
-            squares: CreatePuzzleSquares(puzzleData, templateData),
-            players: puzzleData.players.map(x => Player.create(x)),
-            template: PuzzleTemplate.create(templateData)
-        })
+            template: PuzzleTemplate.create(templateData),
+            players: players.map(x => Player.create(x)),
+        }
+
+        puzzleData.squares = CreatePuzzleSquares(puzzleData, templateData)
+
+        let puzzle = Puzzle.create(puzzleData)
 
         puzzle.initializeWords();
 
@@ -501,14 +530,11 @@ const PuzzleStore = types.model('PuzzleStore', {
             title: templateData.title,
             squares: CreatePuzzleSquares(puzzleData, templateData),
             players: puzzleData.players.map(x => Player.create(x)),
-            template: PuzzleTemplate.create(templateData)
+            template: PuzzleTemplate.create(templateData),
+            invitationLinks: puzzleData.invitationLinks
         })
 
         puzzle.initializeWords();
-
-        if (puzzle.pendingInvitationId && !self.invitation) {
-            yield self.fetchInvitation(puzzle.pendingInvitationId)
-        }
 
         self.puzzle = puzzle;
 
@@ -522,6 +548,10 @@ const PuzzleStore = types.model('PuzzleStore', {
 
         if (!self.puzzle) {
             yield self.fetch(self.invitation.puzzleId)
+
+            if (!self.puzzle.players.find(x => x.id === db.getCurrentUserId())) {
+                db.connectInvitation(id, self.puzzle.id)
+            }
         }
 
     })
@@ -538,12 +568,9 @@ const PuzzleStore = types.model('PuzzleStore', {
         self.puzzle.players = puzzleData.players.map(x => Player.create(x))
     }
 
-    function acceptInvitation() {
-        db.acceptInvitation(self.invitation.id);
-        self.invitation.accepted = true;
-    }
 
-    return { createNewPuzzle, fetch, fetchFromTemplate, updatePuzzle, fetchInvitation, acceptInvitation }
+
+    return { createNewPuzzle, fetch, fetchFromTemplate, updatePuzzle, fetchInvitation }
 })
 
 export default PuzzleStore;

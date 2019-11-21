@@ -7,6 +7,7 @@ import { Div, Paper, SubTitle1 } from '../UI/StyledComponents/StyledComponents'
 
 export default observer((props) => {
 
+
   return (
 
     <Div>
@@ -18,7 +19,7 @@ export default observer((props) => {
           component="nav"
           aria-labelledby="nested-list-subheader">
           {props.puzzles.map((item, index) => (
-              [<PuzzleListItem key={item.id} puzzle={item} />,
+            [<PuzzleListItem key={item.id} puzzle={item} />,
               index < props.puzzles.length - 1 && <Divider key={index} component="li" />]
           ))}
         </List>

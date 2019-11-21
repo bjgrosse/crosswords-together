@@ -5,6 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import AppContext from './AppContext';
 
 import "./LoadingContainer.css";
+import { Div } from '../UI/StyledComponents/StyledComponents';
 
 class LoadingContainer extends React.Component {
     processedPromise = React.createRef();
@@ -69,23 +70,23 @@ class LoadingContainer extends React.Component {
         logger.error(error)
 
         if (error.severity == "warn") {
-            this.context.setSnackBarMessage("Something went wrong.")
+            this.context.store.setSnackBarMessage("Something went wrong.")
         }
     }
 
     render() {
         if (this.state.isLoadingInternal || this.props.isLoading) {
             return (
-                <div className="LoadingContainer">
-                    <Typography variant="h6" color="primary" gutterBottom>{this.props.message}</Typography >
+                <Div full justifyCenter className="LoadingContainer">
+                    <Typography color="primary" gutterBottom>{this.props.message}</Typography >
                     <CircularProgress />
-                </div>
+                </Div>
             )
         } if (this.state.error) {
             return (
-                <div className="LoadingContainer">
-                    <Typography variant="h6" color="secondary" gutterBottom>{this.state.error}</Typography >
-                </div>
+                <Div full justifyCenter className="LoadingContainer">
+                    <Typography color="secondary" gutterBottom>{this.state.error}</Typography >
+                </Div>
             )
         } else {
             return this.props.children;

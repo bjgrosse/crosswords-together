@@ -52,32 +52,44 @@ const onCreateInvitation = async (snapshot, context) => {
 
     console.log(newPlayer.name, newPlayer.id);
   }
+}
+/**
+ * When an invitation record gets created, this function adds a placeholder
+ * player value to the puzzle and sends a notification to the recipient
+ */
+const onStartPuzzle = async (snapshot, context) => {
+  const { ownerId, templateId } = snapshot.data()
+  console.log("starting new puzzle", snapshot.id, ownerId, templateId);
 
+  const userRef = db.collection("users").doc(ownerId)
+  userRef.collection("usedTemplateIds").doc(templateId).set({ date: Date.now() })
+};
+/**
+ * When an invitation record gets created, this function adds a placeholder
+ * player value to the puzzle and sends a notification to the recipient
+ */
+const createInvitationLink = async (data, context) => {
+  let { puzzleId, userId } = data
+
+  const invitationRef = db.collection("invitations").doc()
+
+  let user = await admin.auth().getUser(userId);
+  let name = user.displayName;
+
+  let invitationData = {
+    puzzleId: puzzleId,
+    senderId: userId,
+    senderName: name
+  }
 
   const puzzleRef = db.collection("puzzles").doc(puzzleId);
-  await puzzleRef.update({ players: admin.firestore.FieldValue.arrayUnion(newPlayer) });
 
-  if (newPlayer.id) {
-    await puzzleRef.update({ playerIds: admin.firestore.FieldValue.arrayUnion(newPlayer.id) });
-  }
-
-  const sender = await admin.auth().getUser(senderId);
-
-  const mailOptions = {
-    from: '"Crosswords Together" <crosswords.together@gmail.com>',
-    to: recipientEmail,
-    subject: "You've been invited",
-    html: `You've been invited by ${sender.displayName} (${sender.email}) to collaborate on a puzzle. <a href="http://crosswordstogether.com/invitation/${snapshot.id}">Click here</a> to start!`
-  };
-
-  try {
-    await mailTransport.sendMail(mailOptions);
-    console.log(`Invitation email sent to:`, recipientEmail);
-  } catch (error) {
-    console.error('There was an error while sending the email:', error);
-  }
-  return null;
-};
+  await Promise.all([
+    invitationRef.set(invitationData),
+    puzzleRef.update({ [`invitationLinks.${userId}`]: invitationRef.id })
+  ])
+  return invitationRef.id
+}
 
 /**
  * When an invitation record gets created, this function adds a placeholder
@@ -96,29 +108,71 @@ const acceptInvitation = async (data, context) => {
 
 
 
-  let player = puzzle.players.find(x => x.invitationId === id);
+  let player = puzzle.players.find(x => x.id === acceptingUserId);
 
   if (player) {
-    await puzzleRef.update({ players: admin.firestore.FieldValue.arrayRemove(player) });
+    let batch = db.batch()
+
+    batch.update(puzzleRef, { players: admin.firestore.FieldValue.arrayRemove(player) })
 
     let needToAddPlayerId = !player.id;
-
     let existingColors = puzzle.players.map(x => x.color);
     let availableColors = colors.filter(x => !existingColors.includes(x));
     let newColor = availableColors[Math.floor(Math.random() * availableColors.length)];
 
-    player = { ...player, ...{ id: acceptingUserId, pending: false, color: newColor } }
+    let newPlayer = { ...player, ...{ id: acceptingUserId, pending: false, color: newColor } }
 
     if (needToAddPlayerId) {
       let user = await admin.auth().getUser(acceptingUserId);
       player.name = user.displayName;
 
     }
-    await puzzleRef.update({ players: admin.firestore.FieldValue.arrayUnion(player), playerIds: admin.firestore.FieldValue.arrayUnion(acceptingUserId) });
+    batch.update(puzzleRef, { players: admin.firestore.FieldValue.arrayUnion(newPlayer), playerIds: admin.firestore.FieldValue.arrayUnion(acceptingUserId) });
+
+    await batch.commit()
   }
 
 }
+/**
+ * When a player declines an invitation
+ */
+const leaveGame = async (data, context) => {
+  let { id, userId } = data
 
+  const puzzleRef = db.collection("puzzles").doc(id);
+  const puzzle = (await puzzleRef.get()).data();
+
+  let player = puzzle.players.find(x => x.id === userId);
+
+  if (player) {
+    await puzzleRef.update({ players: admin.firestore.FieldValue.arrayRemove(player), playerIds: admin.firestore.FieldValue.arrayRemove(userId) });
+
+  }
+}
+
+/**
+ * When someone clicks an invitation link and logs in
+ * we want to add a "pending" record for them under the
+ * puzzle so we can show it in their Invitations list
+ */
+const connectInvitation = async (data, context) => {
+  const { id, puzzleId, acceptingUserId } = data
+
+  const user = await admin.auth().getUser(acceptingUserId);
+
+  const userRef = db.collection("users").doc(acceptingUserId)
+  const puzzleRef = db.collection("puzzles").doc(puzzleId);
+  const { templateId } = (await puzzleRef.get()).data()
+
+  player = { id: acceptingUserId, invitationId: id, pending: true, name: user.displayName }
+
+  const batch = db.batch();
+
+  batch.create(userRef.collection("usedTemplateIds").doc(templateId), { date: Date.now() })
+  batch.update(puzzleRef, { players: admin.firestore.FieldValue.arrayUnion(player), playerIds: admin.firestore.FieldValue.arrayUnion(acceptingUserId) });
+
+  await batch.commit()
+}
 
 /**
  * When an invitation record gets created, this function adds a placeholder
@@ -133,9 +187,9 @@ const saveFcmToken = async (data, context) => {
 
   const instance = axios.create({
     headers: {
-      "Content-Type" : "application/json",
-      Authorization:  "key=AIzaSyBNIXv7rYW48wCmyIIZK_tXAXdFGW9ylOg",
-      "project_id" : "847675267519"
+      "Content-Type": "application/json",
+      Authorization: "key=AIzaSyBNIXv7rYW48wCmyIIZK_tXAXdFGW9ylOg",
+      "project_id": "847675267519"
     }
   })
 
@@ -147,15 +201,15 @@ const saveFcmToken = async (data, context) => {
       "notification_key_name": userId,
       "notification_key": groupKey,
       "registration_ids": [token]
-   }
+    }
   } else {
     body = {
       "operation": "create",
       "notification_key_name": userId,
       "registration_ids": [token]
-   }
+    }
   }
-  
+
   let newGroupKey
 
   await instance.post('https://fcm.googleapis.com/fcm/notification', body)
@@ -172,9 +226,9 @@ const saveFcmToken = async (data, context) => {
       console.error(error)
     })
 
-    if (newGroupKey) {
-      await userRef.update({FCMGroupKey: newGroupKey})
-    }
+  if (newGroupKey) {
+    await userRef.update({ FCMGroupKey: newGroupKey })
+  }
 }
 
 /**
@@ -208,11 +262,16 @@ const sendMessage = async (data, context) => {
     });
 }
 
+
 module.exports = {
   authOnCreate: functions.auth.user().onCreate(onCreateProfile),
   onCreateInvitation: functions.firestore.document('/invitations/{uid}').onCreate(onCreateInvitation),
+  onStartPuzzle: functions.firestore.document('/puzzles/{uid}').onCreate(onStartPuzzle),
   acceptInvitation: functions.https.onCall(acceptInvitation),
   saveFcmToken: functions.https.onCall(saveFcmToken),
-  sendMessage: functions.https.onCall(sendMessage)
+  sendMessage: functions.https.onCall(sendMessage),
+  createInvitationLink: functions.https.onCall(createInvitationLink),
+  connectInvitation: functions.https.onCall(connectInvitation),
+  leaveGame: functions.https.onCall(leaveGame)
 };
 

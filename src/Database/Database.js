@@ -124,8 +124,22 @@ export default {
 
         return firebase.firestore().collection("invitations").add(data);
     },
+    createInvitationLink: async (puzzleId) => {
+        let response = await firebase.functions().httpsCallable("createInvitationLink")({ puzzleId: puzzleId, userId: getCurrentUserId() })
+        return response.data
+    },
+    connectInvitation: (id, puzzleId) => {        
+        return firebase.functions().httpsCallable("connectInvitation")({ id: id, puzzleId: puzzleId, acceptingUserId: getCurrentUserId() })
+    },
     acceptInvitation: (id) => {
         return firebase.functions().httpsCallable("acceptInvitation")({ id: id, acceptingUserId: getCurrentUserId() })
+    },
+    leaveGame: (id) => {
+        return firebase.functions().httpsCallable("leaveGame")({ id: id, userId: getCurrentUserId() })
+    },
+    getUsedTemplateIds: async () => {
+        let query = await firebase.firestore().collection("users").doc(getCurrentUserId()).collection("usedTemplateIds").get();
+        return query.docs.map(x=> x.id)
     }
 
 };

@@ -34,10 +34,10 @@ const AppDialog = props => {
 
                         :
                         <>
-                            <Button onClick={props.handleCancel} color="secondary">
+                            <Button onClick={props.handleCancel} >
                                 Cancel
                             </Button>
-                            <Button onClick={props.handleSave} color="secondary">
+                            <Button onClick={props.handleSave} >
                                 {props.saveText || 'Save'}
                             </Button>
                         </>

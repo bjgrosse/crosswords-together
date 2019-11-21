@@ -35,7 +35,7 @@ export const PageContainer = styled(Div).attrs(props => ({
 `}
 `;
 
-export const LoadingContainer = styled(Div).attrs(props => ({
+export const AppLoadingContainer = styled(Div).attrs(props => ({
     full: true,
     flexCenter: true
 }))

@@ -3,12 +3,14 @@ import { observer } from 'mobx-react';
 import Divider from '@material-ui/core/Divider';
 import Player from './Player'
 import AddPlayer from './AddPlayer'
-import AddIcon from '@material-ui/icons/Add';
+import AddIcon from '@material-ui/icons/AddCircle';
 import styled from 'styled-components';
 import Avatar from '@material-ui/core/Avatar';
 import ListItem from '@material-ui/core/ListItem';
 import List from '@material-ui/core/List';
 import ListItemText from '@material-ui/core/ListItemText';
+import { Button } from '../UI/StyledComponents/MaterialComponents';
+import { Div } from '../UI/StyledComponents/StyledComponents';
 
 
 const Header = styled.div`
@@ -52,13 +54,14 @@ const PlayerList = observer(props => {
                 {props.puzzle.canInvitePlayers &&
                     <>
                         <Divider />
-                        <ListItem button dense onClick={addPlayer} >
-                            <MyAvatar color="primary">
-                                <AddIcon size="small" />
-                            </MyAvatar>
-                            <ListItemText>Add a player...</ListItemText>
+                        <Div p={1}>
+                        <Button fullWidth dense onClick={addPlayer} variant="contained"
+                        color="secondary"
+                            startIcon={<AddIcon color="text.secondary" size="small" />} >
+                            Invite friends
 
-                        </ListItem>
+                        </Button>
+                        </Div>
                     </>
                 }
             </List>

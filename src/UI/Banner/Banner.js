@@ -22,8 +22,10 @@ const Banner = props => {
                 <Div grow color="text.secondary">{props.content}</Div>
                 {props.handleClose && <CloseButton size="small" handleClick={props.handleClose} />}
             </Div>
-            <Div flex justifyEnd px={[2, 2, 3]} >
+            <Div flex justifyEnd px={[1, 1, 2]} >
+                <>
                 {props.actions}
+                </>
             </Div>
         </BannerDiv>
     );

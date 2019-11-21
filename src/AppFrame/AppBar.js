@@ -79,18 +79,19 @@ export default function (props) {
 
         // Otherwise, just display the normal app bar
     } else {
-        return (
-            <div>
-                <AppBar position="static">
-                    <IconButton size="small" aria-label="menu" onClick={showMenu}><MenuIcon /></IconButton>
-                    <AppBarTitle >
-                        {Config.appName}
-                    </AppBarTitle>
-                </AppBar>
+        // return (
+        //     <div>
+        //         <AppBar position="static">
+        //             <IconButton size="small" aria-label="menu" onClick={showMenu}><MenuIcon /></IconButton>
+        //             <AppBarTitle >
+        //                 {Config.appName}
+        //             </AppBarTitle>
+        //         </AppBar>
 
-                <Menu isOpen={state.isMenuOpen} closeMenu={closeMenu} menuItems={props.menuItems} />
-            </div>
-        );
+        //         <Menu isOpen={state.isMenuOpen} closeMenu={closeMenu} menuItems={props.menuItems} />
+        //     </div>
+        // );
+        return null
     }
 
 
