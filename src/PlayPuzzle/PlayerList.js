@@ -55,11 +55,11 @@ const PlayerList = observer(props => {
                     <>
                         <Divider />
                         <Div p={1}>
-                        <Button fullWidth dense onClick={addPlayer} variant="contained"
-                        color="secondary"
-                            startIcon={<AddIcon color="text.secondary" size="small" />} >
-                            Invite friends
-
+                            <Button fullWidth onClick={addPlayer} variant="contained"
+                                color="secondary"
+                                startIcon={<AddIcon htmlColor="text.secondary" size="small" />} >
+                                Invite friends
+    
                         </Button>
                         </Div>
                     </>

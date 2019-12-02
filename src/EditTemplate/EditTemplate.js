@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect, useRef, useCallback } from 'react';
 import { useParams, useHistory } from "react-router-dom";
 import { observer } from 'mobx-react'
-import PuzzleStore from '../Stores/CrosswordPuzzleStore'
+import PuzzleStore from '../Stores/PuzzleStore'
 import AppContext from '../AppFrame/AppContext'
 import Button from '@material-ui/core/Button';
 import Puzzle from '../CrosswordPuzzle/CrosswordPuzzle'

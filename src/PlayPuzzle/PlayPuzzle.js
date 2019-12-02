@@ -9,9 +9,9 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import { useParams } from "react-router-dom";
 import { AppContext } from '../AppFrame/AppContext';
-import PuzzleStore from '../Stores/CrosswordPuzzleStore';
+import PuzzleStore from '../Stores/PuzzleStore';
 import Divider from '@material-ui/core/Divider';
-import Drawer from '@material-ui/core/Drawer';
+// import Drawer from '@material-ui/core/Drawer';
 import PeopleIcon from '@material-ui/icons/GroupAdd';
 import { observer } from 'mobx-react';
 import Login from '../AppFrame/Login'
@@ -21,9 +21,11 @@ import { Div, Paper, SubTitle2, Span } from '../UI/StyledComponents';
 import { IconButton, Button } from '../UI/StyledComponents/MaterialComponents';
 import AppFrameConfig from '../AppFrame/AppFrameConfig'
 import useSafeHandler from '../Utility/useSafeHandler';
+import Drawer from '../UI/Drawer'
 
 import { reaction } from 'mobx'
 import db from '../Database/Database';
+import Scrum from '../UI/Scrum/Scrum';
 
 const store = PuzzleStore.create();
 
@@ -37,10 +39,10 @@ export default observer(props => {
 
   const { id, templateId } = useParams();
   const isPortrait = useMediaQuery('(orientation: portrait)')
-  
+
   const history = useHistory();
   function navigateTo(path) {
-      history.push(path);
+    history.push(path);
   }
 
   let disposeAutoRun = () => { }
@@ -67,14 +69,16 @@ export default observer(props => {
       throw new Error("no id or templateId paramater found")
     }
 
-    disposeAutoRun = reaction(() => [store.puzzle.lastCompletedWord, promptedForNotifications, context.store.pushNotificationsAllowed],
-      ([lastCompletedWord, promptedForNotifications, pushNotificationsAllowed]) => {
-        if (!pushNotificationsAllowed && !promptedForNotifications.current) {
-          promptedForNotifications.current = true
-          setTimeout(() => setShowNotificationBanner(true), 1000)
-        }
-      })
 
+    if (context.PushMessaging.pushMessagingSupported) {
+      disposeAutoRun = reaction(() => [store.puzzle.lastCompletedWord, promptedForNotifications, context.store.pushNotificationsAllowed, store.puzzle.players.length],
+        ([lastCompletedWord, promptedForNotifications, pushNotificationsAllowed, playerCount]) => {
+          if (lastCompletedWord && !pushNotificationsAllowed && !promptedForNotifications.current && playerCount > 1) {
+            promptedForNotifications.current = true
+            setTimeout(() => setShowNotificationBanner(true), 1000)
+          }
+        })
+    }
   }
 
   const handleDecline = () => {
@@ -107,9 +111,11 @@ export default observer(props => {
   })
 
   const handleOnInvitation = useSafeHandler(() => {
-    context.PushMessaging.requestPermissions()
-    if (!context.store.pushNotificationsAllowed) {
-      setShowNotificationBanner(true)
+    if (context.PushMessaging.pushMessagingSupported) {
+      context.PushMessaging.requestPermissions()
+      if (!context.store.pushNotificationsAllowed) {
+        setShowNotificationBanner(true)
+      }
     }
   })
   const getInvitationNotice = () => (
@@ -119,12 +125,12 @@ export default observer(props => {
         <Card>
           <CardContent>
             <Typography variant="body2" color="textPrimary" component="p">
-            <Span fontWeight="bold">{store.invitation.senderName}</Span> has invited you to collaborate on this puzzle.
+              <Span fontWeight="bold">{store.invitation.senderName}</Span> has invited you to collaborate on this puzzle.
           </Typography>
           </CardContent>
           <CardActions>
-            <Button size="small"  onClick={handleDecline}>Decline</Button>
-            <Button size="small"  onClick={handleAccept}>Accept</Button>
+            <Button size="small" onClick={handleDecline}>Decline</Button>
+            <Button size="small" onClick={handleAccept}>Accept</Button>
           </CardActions>
         </Card>
 
@@ -141,11 +147,11 @@ export default observer(props => {
             <Typography gutterBottom variant="h5" component="h2">
               Start this puzzle now!
             </Typography>
-            <Typography variant="body2" color="textPrimary" component="p">
-              <Div flexCenter>
+            <Div flexCenter>
+              <Typography variant="body2" color="textPrimary" component="p">
                 <Button size="small" variant="contained" color="secondary" onClick={handlePlay}>Play</Button>
-              </Div>
-            </Typography>
+              </Typography>
+            </Div>
           </CardContent>
         </Card>
 
@@ -162,7 +168,7 @@ export default observer(props => {
           <Login>
             <Div my={1, 1, 2}>
               <Typography variant="body1" color="textPrimary" align="center" component="p">
-                Login now to join <Span fontWeight="bold">{invitationSender}</Span><br/> in solving a puzzle.
+                Login now to join <Span fontWeight="bold">{invitationSender}</Span><br /> in solving a puzzle.
             </Typography>
             </Div>
           </Login>
@@ -192,14 +198,20 @@ export default observer(props => {
                 <Divider />
                 <PlayerList puzzle={store.puzzle} onInvitation={handleOnInvitation} />
               </Paper>
+
+              {/* <Paper column>
+                <SubTitle2>Activity</SubTitle2>
+                <Divider />
+                <PlayerList puzzle={store.puzzle} onInvitation={handleOnInvitation} />
+              </Paper> */}
             </Div>
             <Drawer anchor="right" open={playerListOpen} onClose={() => setPlayerListOpen(false)}>
-
               <SubTitle2 ml={2} mt={2}>Players</SubTitle2>
               <Divider />
               <PlayerList puzzle={store.puzzle} />
             </Drawer>
             <Div grow relative fullHeight >
+
               <Puzzle puzzle={store.puzzle} noticePopover={store.puzzle.isNew ? getPlayNowPopup : getInvitationNotice} />
             </Div>
           </Div>
@@ -209,17 +221,17 @@ export default observer(props => {
       </LoadingContainer>
       <AppFrameConfig
         appBarContent={store.puzzle && store.puzzle.title}
-        appBarActions={
-          <IconButton display={{ xs: 'block', md: 'none' }} size="small" onClick={() => setPlayerListOpen(true)}><PeopleIcon /></IconButton>
-        }
+        appBarActions={[
+          <IconButton key="players" display={{ xs: 'block', md: 'none' }} size="small" onClick={() => setPlayerListOpen(!playerListOpen)}><PeopleIcon /></IconButton>
+        ]}
         banners={[
           {
             show: showNotificationBanner,
             content: "Turn on notifications to be alerted when a teammate makes progress or sends a message",
             content: "Do you want notifications of activity from teammates?",
             actions: [
-              <Button onClick={hideNotificationBanner} color="secondary" fontWeight="normal">no, thanks</Button>,
-              <Button onClick={turnOnNotifications} color="secondary">Yes</Button>
+              <Button key="no" onClick={hideNotificationBanner} color="secondary" fontWeight="normal">no, thanks</Button>,
+              <Button key="yes" onClick={turnOnNotifications} color="secondary">Yes</Button>
             ]
           }
         ]}

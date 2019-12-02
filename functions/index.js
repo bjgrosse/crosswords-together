@@ -9,15 +9,15 @@ admin.initializeApp();
 
 const db = admin.firestore();
 
-const gmailEmail = functions.config().gmail.email;
-const gmailPassword = functions.config().gmail.password;
-const mailTransport = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: gmailEmail,
-    pass: gmailPassword,
-  },
-});
+// const gmailEmail = functions.config().gmail.email;
+// const gmailPassword = functions.config().gmail.password;
+// const mailTransport = nodemailer.createTransport({
+//   service: 'gmail',
+//   auth: {
+//     user: gmailEmail,
+//     pass: gmailPassword,
+//   },
+// });
 
 /**
  * Creates a document with ID -> uid in the `Users` collection.
@@ -174,6 +174,97 @@ const connectInvitation = async (data, context) => {
   await batch.commit()
 }
 
+
+/**
+ * When someone clicks an invitation link and logs in
+ * we want to add a "pending" record for them under the
+ * puzzle so we can show it in their Invitations list
+ */
+const updateCompletedWord = async (data, context) => {
+  const { id, puzzleId, userId, value } = data
+  const puzzleRef = db.collection("puzzles").doc(puzzleId);
+  const wordRef = puzzleRef.collection("completed-words").doc(id);
+  const user = (await db.collection("users").doc(userId).get()).data();
+  const existingWordSnapshot = await wordRef.get();
+  const exists = existingWordSnapshot.exists
+  const existingData = existingWordSnapshot.data()
+  let usePreviousValues;
+
+  // If no change, exit
+  if (exists && existingData.value === value) {
+    return
+  }
+
+  let newActivityRef = puzzleRef.collection("activity").doc()
+  const newData = {...existingData, ...{
+    id: id,
+    userId: userId,
+    value: value,
+    addedTimestamp: new Date().getTime(),
+    activityId: newActivityRef.id
+  }}
+
+  if (exists) {
+    // We treat any value added within the last two minutes as "pending"
+    // and will treat any changes made to the word by the same user within that
+    // period as simply overwriting their previous change
+
+    // If previous value was set by the same user in the last two minutes, we need to lookup
+    // and delete the previously logged activity record, 
+    if (existingData.userId === userId && existingData.addedTimestamp >= new Date().getTime() - 120000) {
+      puzzleRef.collection("activity").doc(existingData.activityId).delete();
+      usePreviousValues = true
+
+      //
+      // Otherwise we are updating a previously "committed" word
+      // and we want to save that info while the current changes are "pending"
+    } else {
+      newData.previousValue = existingData.value
+      newData.previousUserId = existingData.userId
+    }
+  }
+
+  if (!value) {
+    wordRef.delete()
+    return 
+  }
+
+  const batch = db.batch();
+
+  if (!exists) {
+    batch.create(wordRef, newData)
+  } else {
+    batch.update(wordRef, newData)
+  }
+
+  const activityData = {
+    userId: userId,
+    userDisplayName: user.displayName,
+    addedTimestamp: new Date().getTime()
+  }
+
+  const wordName = `${id.substr(1)}-${id.startsWith('h') ? 'across' : 'down'}`
+  // If this is a new record, or we're overwriting this user's last added value
+  // and there was no "previous" value to refer to...
+  if (!exists || (usePreviousValues && !newData.previousValue)) {
+    activityData.message = `added ${value.toUpperCase()} for ${wordName}`
+
+  } else {
+    let existingValue = usePreviousValues ? newData.previousValue : existingData.value
+    activityData.message = `changed ${existingValue.toUpperCase()} to ${value.toUpperCase()} for ${wordName}`
+  }
+  batch.create(newActivityRef, activityData)
+
+  await batch.commit()
+
+  const notification = {
+    title: `${user.displayName} made progress:`,
+    body: activityData.message,
+    puzzleId: puzzleId
+  }
+  await sendNotificationForPuzzle(puzzleId, userId, notification)
+}
+
 /**
  * When an invitation record gets created, this function adds a placeholder
  * player value to the puzzle and sends a notification to the recipient
@@ -183,7 +274,8 @@ const saveFcmToken = async (data, context) => {
 
   const userRef = db.collection("users").doc(userId)
   const user = await userRef.get();
-  const groupKey = user.data().FCMGroupKey
+  let groupKey = user.data().FCMGroupKey
+  let newGroupKey
 
   const instance = axios.create({
     headers: {
@@ -192,6 +284,24 @@ const saveFcmToken = async (data, context) => {
       "project_id": "847675267519"
     }
   })
+
+  if (!groupKey) {
+    await instance.get('https://fcm.googleapis.com/fcm/notification?notification_key_name=' + userId)
+    .then((res) => {
+      console.log(res)
+      if (!groupKey) {
+        newGroupKey = res.data.notification_key
+        groupKey = newGroupKey
+      }
+
+      return true;
+    })
+    .catch((error) => {
+      console.error(error)
+      console.log(error.response.data)
+      throw error
+    })
+  }
 
   let body
 
@@ -203,6 +313,7 @@ const saveFcmToken = async (data, context) => {
       "registration_ids": [token]
     }
   } else {
+    
     body = {
       "operation": "create",
       "notification_key_name": userId,
@@ -210,7 +321,6 @@ const saveFcmToken = async (data, context) => {
     }
   }
 
-  let newGroupKey
 
   await instance.post('https://fcm.googleapis.com/fcm/notification', body)
     .then((res) => {
@@ -220,15 +330,31 @@ const saveFcmToken = async (data, context) => {
         newGroupKey = res.data.notification_key
       }
 
-      return res;
+      return true;
     })
     .catch((error) => {
       console.error(error)
+      console.log(error.response.data)
+      throw error
     })
 
   if (newGroupKey) {
     await userRef.update({ FCMGroupKey: newGroupKey })
   }
+}
+
+const sendNotificationForPuzzle = async (puzzleId, senderId, messageData) => {
+  const puzzleRef = db.collection("puzzles").doc(puzzleId);
+  const puzzle = (await puzzleRef.get()).data()
+  let tasks = []
+  for (player of puzzle.playerIds) {
+    if (player !== senderId) {
+      console.log(`Sending notification to ${player}`)
+      tasks.push(sendMessage({userId: player, puzzleId: puzzleId,  messageData: messageData}))
+    }
+  }
+
+  await Promise.all(tasks)
 }
 
 /**
@@ -272,6 +398,7 @@ module.exports = {
   sendMessage: functions.https.onCall(sendMessage),
   createInvitationLink: functions.https.onCall(createInvitationLink),
   connectInvitation: functions.https.onCall(connectInvitation),
-  leaveGame: functions.https.onCall(leaveGame)
+  leaveGame: functions.https.onCall(leaveGame),
+  updateCompletedWord: functions.https.onCall(updateCompletedWord)
 };
 

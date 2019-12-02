@@ -47,7 +47,6 @@ export default {
     saveFCMToken: (token) => {
         console.log("saving fcm token");
         return firebase.functions().httpsCallable("saveFcmToken")({ userId: getCurrentUserId(), token: token })
-        return firebase.firestore().collection("users").doc(getCurrentUserId()).update({ FCMToken: token });
     },
     getPuzzleTemplate: async (id) => {
         console.log("Getting template", id);
@@ -128,7 +127,7 @@ export default {
         let response = await firebase.functions().httpsCallable("createInvitationLink")({ puzzleId: puzzleId, userId: getCurrentUserId() })
         return response.data
     },
-    connectInvitation: (id, puzzleId) => {        
+    connectInvitation: (id, puzzleId) => {
         return firebase.functions().httpsCallable("connectInvitation")({ id: id, puzzleId: puzzleId, acceptingUserId: getCurrentUserId() })
     },
     acceptInvitation: (id) => {
@@ -137,9 +136,13 @@ export default {
     leaveGame: (id) => {
         return firebase.functions().httpsCallable("leaveGame")({ id: id, userId: getCurrentUserId() })
     },
-    getUsedTemplateIds: async () => {
-        let query = await firebase.firestore().collection("users").doc(getCurrentUserId()).collection("usedTemplateIds").get();
-        return query.docs.map(x=> x.id)
-    }
+    getUsedTemplateIds: async (listenForChanges) => {
+        const ref = firebase.firestore().collection("users").doc(getCurrentUserId()).collection("usedTemplateIds")
+        return retrieveAndListen(ref, listenForChanges, r => r.id)
+    },
 
+    saveCompletedWord: (id, puzzleId, value) => {
+        console.log("saving word", id, value)
+        return firebase.functions().httpsCallable("updateCompletedWord")({ id: id, userId: getCurrentUserId(),puzzleId: puzzleId, value: value })
+    },
 };

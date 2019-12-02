@@ -9,12 +9,13 @@ export const AppRoot = styled.div
 `${({ theme }) => `
     background-color: ${theme.palette.background.default};
     background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(215,237,255,1) 100%);
-    height: 100vh;
-    width: 100vw;
+    height: 100%;
+    width: 100%;
 `}
 `;
 
 export const AppCanvas = styled(Div).attrs(props => ({
+    absolute: true,
     center: true,
     column: true,
     fullHeight: true

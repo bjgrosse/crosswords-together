@@ -8,11 +8,12 @@ import { lineHeight } from '@material-ui/system';
 const Theme = responsiveFontSizes(createMuiTheme({
   palette: {
     primary: {
-      main: '#003da8'
+      main: '#6388cb'
     },
     background: {
       default: '#d0e0ff',
-      overlay: 'rgba(255,255,255,.5)',
+      overlay: 'rgba(255,255,255,.5)',      
+      inset: '#0065ff1c',
       alert: yellow[100],
     },
     border: {

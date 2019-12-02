@@ -20,16 +20,16 @@
   <defs
      id="defs1921">
     <linearGradient
-       id="linearGradient3593"
+       id="linearGradient5694"
        inkscape:collect="always">
       <stop
-         id="stop3587"
+         id="stop5690"
          offset="0"
-         style="stop-color:#9f5c00;stop-opacity:1;" />
+         style="stop-color:#ffdeac;stop-opacity:1" />
       <stop
-         id="stop3591"
+         id="stop5692"
          offset="1"
-         style="stop-color:#dead6a;stop-opacity:1" />
+         style="stop-color:#ffdeac;stop-opacity:0;" />
     </linearGradient>
     <linearGradient
        inkscape:collect="always"
@@ -140,15 +140,6 @@
        y2="154.63979"
        gradientUnits="userSpaceOnUse" />
     <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3593"
-       id="linearGradient3585"
-       gradientUnits="userSpaceOnUse"
-       x1="87.457359"
-       y1="145.7921"
-       x2="87.285408"
-       y2="154.63979" />
-    <linearGradient
        gradientTransform="matrix(0.25984781,0,0,0.25984781,38.017641,55.536611)"
        inkscape:collect="always"
        xlink:href="#linearGradient4303"
@@ -182,31 +173,13 @@
        gradientUnits="userSpaceOnUse" />
     <linearGradient
        inkscape:collect="always"
-       xlink:href="#linearGradient3563"
+       xlink:href="#linearGradient5694"
        id="linearGradient5061"
        gradientUnits="userSpaceOnUse"
        x1="65.739456"
        y1="157.04805"
        x2="65.567513"
        y2="148.86394" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3579"
-       id="linearGradient5063"
-       gradientUnits="userSpaceOnUse"
-       x1="87.457359"
-       y1="145.7921"
-       x2="87.285408"
-       y2="154.63979" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3579"
-       id="linearGradient5065"
-       gradientUnits="userSpaceOnUse"
-       x1="87.457359"
-       y1="145.7921"
-       x2="87.285408"
-       y2="154.63979" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -216,8 +189,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="2"
-     inkscape:cx="345.2579"
-     inkscape:cy="546.57659"
+     inkscape:cx="178.13257"
+     inkscape:cy="655.8715"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -238,16 +211,6 @@
        opacity="0"
        empcolor="#3f3fff"
        empopacity="0.05490196" />
-    <sodipodi:guide
-       position="19.84375,186.39896"
-       orientation="0,1"
-       id="guide3634"
-       inkscape:locked="false" />
-    <sodipodi:guide
-       position="-6.7351921,186.39896"
-       orientation="0,1"
-       id="guide4405"
-       inkscape:locked="false" />
   </sodipodi:namedview>
   <metadata
      id="metadata1924">
@@ -685,7 +648,7 @@ IXyr8f8Bs0oI269P8sMAAAAASUVORK5CYII=
        ry="1.4260534" />
     <text
        xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:8.02710342px;line-height:1.25;font-family:Rubik;-inkscape-font-specification:'Rubik Medium';letter-spacing:0px;word-spacing:0px;fill:#1552bd;fill-opacity:0.75961537;stroke:none;stroke-width:0.43002337"
+       style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:8.02710342px;line-height:1.25;font-family:Rubik;-inkscape-font-specification:'Rubik Medium';letter-spacing:0px;word-spacing:0px;fill:#1552bd;fill-opacity:1;stroke:none;stroke-width:0.43002337;"
        x="-99.277191"
        y="204.19022"
        id="text2613-7"><tspan
@@ -693,7 +656,7 @@ IXyr8f8Bs0oI269P8sMAAAAASUVORK5CYII=
          id="tspan2611-1"
          x="-99.277191"
          y="204.19022"
-         style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:8.02710342px;font-family:Rubik;-inkscape-font-specification:'Rubik Medium';fill:#1552bd;fill-opacity:0.75961537;stroke-width:0.43002337">Welcome!</tspan></text>
+         style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:8.02710342px;font-family:Rubik;-inkscape-font-specification:'Rubik Medium';fill:#1552bd;fill-opacity:1;stroke-width:0.43002337;">Welcome!</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:4.89334345px;line-height:1.25;font-family:Rubik;-inkscape-font-specification:'Rubik Medium';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#003da8;fill-opacity:0.59420286;stroke:none;stroke-width:0.40777862"
@@ -1043,11 +1006,11 @@ IXyr8f8Bs0oI269P8sMAAAAASUVORK5CYII=
        id="g3211-8-9"
        inkscape:transform-center-x="-39.163223"
        inkscape:transform-center-y="-5.1471636"
-       style="stroke:url(#linearGradient5065)">
+       style="stroke:#9f5c00;stroke-opacity:1">
       <g
          transform="translate(20.833127,-2.4082614)"
          id="g2955-3-5-27"
-         style="stroke:url(#linearGradient5063)">
+         style="stroke:#9f5c00;stroke-opacity:1">
         <rect
            ry="1.2075998"
            y="148.81093"
@@ -1055,15 +1018,15 @@ IXyr8f8Bs0oI269P8sMAAAAASUVORK5CYII=
            height="8.5113258"
            width="23.275684"
            id="rect2640-7-9-4-1-4"
-           style="opacity:1;fill:url(#linearGradient5061);fill-opacity:1;stroke:url(#linearGradient3585);stroke-width:0.21992263;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.7067308" />
+           style="opacity:1;fill:url(#linearGradient5061);fill-opacity:1;stroke:#c5995c;stroke-width:0.21992263;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
         <text
            id="text2613-1-5-4-9"
            y="154.39537"
            x="60.342236"
-           style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:4.12891865px;line-height:1.25;font-family:Rubik;-inkscape-font-specification:'Rubik Medium';letter-spacing:0px;word-spacing:0px;fill:#b47200;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+           style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:4.12891865px;line-height:1.25;font-family:Rubik;-inkscape-font-specification:'Rubik Medium';letter-spacing:0px;word-spacing:0px;fill:#b47200;fill-opacity:1;stroke:none;stroke-width:0.26458332;stroke-opacity:1;"
            xml:space="preserve"><tspan
              id="tspan3481"
-             style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:4.12891865px;font-family:Rubik;-inkscape-font-specification:'Rubik Medium';fill:#b47200;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+             style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:4.12891865px;font-family:Rubik;-inkscape-font-specification:'Rubik Medium';fill:#b47200;fill-opacity:1;stroke:none;stroke-width:0.26458332;stroke-opacity:1;"
              y="154.39537"
              x="60.342236"
              sodipodi:role="line">START</tspan></text>

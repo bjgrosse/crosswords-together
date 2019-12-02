@@ -11,6 +11,8 @@ import Login from '../AppFrame/Login';
 import { Div } from '../UI/StyledComponents'
 import WelcomeMessage from './WelcomeMessage';
 import NewPuzzleMessage from './NewPuzzleMessage';
+import { Typography } from '@material-ui/core';
+import InlineLogo from './InlineLogo';
 const store = PuzzlesStore.create();
 
 function Home(props) {
@@ -40,7 +42,6 @@ function Home(props) {
                             <PuzzleList key="active" puzzles={store.activePuzzles} title="My puzzles..." />
                         }
 
-                        <TemplateList key="templates" templates={store.templates} />
                     </Div>
                 </Fragment>
             </LoadingContainer>
@@ -54,6 +55,7 @@ function Home(props) {
     return (
         <AppFrameConfig showMenu={true} appBarContent={
             <Div width={[256, 256, 400]} ml={1}><img style={{ verticalAlign: 'middle' }} src="/inline-logo.png" alt="CROSSWORDS together" width="100%" /></Div>
+            // <InlineLogo />
         }>
             {content}
         </AppFrameConfig>

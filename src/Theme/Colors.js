@@ -18,6 +18,16 @@ import brown from '@material-ui/core/colors/brown';
 import grey from '@material-ui/core/colors/grey';
 import blueGrey from '@material-ui/core/colors/blueGrey';
 
+
+export const levelColors = {
+    beginner: orange,
+    easy: green,
+    medium: cyan,
+    hard: deepPurple,
+    expert: red
+}
+
+
 export default {
     "Red": red,
     "Pink": pink,

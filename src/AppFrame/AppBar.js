@@ -22,9 +22,6 @@ export default function (props) {
     const contentRef = useRef();
     const actionsRef = useRef();
 
-    function navigateTo(path) {
-        history.push(path);
-    }
     function goBack() {
         if (props.contextBar && props.contextBar.handleBack) {
             props.contextBar.handleBack()
@@ -68,7 +65,7 @@ export default function (props) {
                             }
                         </AppBarTitle>
                     </Div>
-                    <Div ref={actionsRef}>
+                    <Div flex row ref={actionsRef}>
                     </Div>
                 </AppBar>
 

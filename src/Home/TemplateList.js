@@ -11,6 +11,8 @@ import Typography from '@material-ui/core/Typography';
 import { observer } from 'mobx-react';
 import { Div, Paper, SubTitle1 } from '../UI/StyledComponents/StyledComponents'
 import CreateNewTemplate from '../EditTemplate/CreateNewTemplate'
+import { levelColors } from '../Theme/Colors';
+import { Avatar } from '../UI/StyledComponents/MaterialComponents'
 
 
 const TemplateListItem = (props) => {
@@ -26,8 +28,11 @@ const TemplateListItem = (props) => {
     return (
         <ListItem button alignItems="flex-start" onClick={() => navigateTo(`/start-puzzle/${props.id}`)}>
             <ListItemAvatar >
-                <Typography>{props.size}</Typography>
+                <Avatar bgcolor={levelColors[props.level][200]} color={levelColors[props.level][800]}>
+                    <Div fontSize=".9rem" fontWeight="bold">{props.size}</Div>
+                </Avatar>
             </ListItemAvatar>
+
             <ListItemText
                 primary={props.title}
                 secondary={
@@ -64,7 +69,11 @@ export default observer((props) => {
             <Div flex alignCenter mt={1} mb={.5}>
                 <Div grow>
                     <SubTitle1 mt={0} mb={0}>
-                        Start a new puzzle
+                        {props.templates.length === 0 ?
+                            "No matching puzzles found"
+                            :
+                            props.templates.length + " puzzle" + (props.templates.length > 1 ? "s" : "") + " found"
+                        }
                     </SubTitle1>
                 </Div>
                 <Button startIcon={<AddIcon />} onClick={() => setShowCreateNew(true)}>Create</Button>

@@ -8,16 +8,13 @@ const AppBar = types.model('AppBar', {
 })
 
 export const ApplicationStore = types.model('ApplicationStore', {
-    appBars: types.array(AppBar),
+    appBar: types.maybe(AppBar),
     snackBarMessage: types.maybe(types.string),
-    pushNotificationsAllowed: false
+    pushNotificationsAllowed: false,
+    showScrum: false
 }).actions(self => {
-    function pushAppBar(bar) {
-        self.appBars.push(bar)
-    }
-
-    function popAppBar(bar) {
-        self.appBars.pop()
+    function setAppBar(bar) {
+        self.appBar = AppBar.create(bar)
     }
 
     function setPushNotificationsAllowed (value){
@@ -31,21 +28,19 @@ export const ApplicationStore = types.model('ApplicationStore', {
     function closeSnackBar() {
         self.snackBarMessage = undefined
     }
+    
+    function setShowScrum(value) {
+        self.showScrum = value
+    }
     return {
-        pushAppBar,
-        popAppBar,
+        setAppBar,
         setPushNotificationsAllowed,
         setSnackBarMessage,
-        closeSnackBar
+        closeSnackBar,
+        setShowScrum
     }
 }).views(self => ({
-    get appBar() {
-        if (self.appBars.length === 0){
-            return null
-        }
 
-        return self.appBars[self.appBars.length - 1]
-    }
 }))
 
 export default ApplicationStore

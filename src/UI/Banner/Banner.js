@@ -17,7 +17,7 @@ const BannerDiv = posed(Div)({
 })
 const Banner = props => {
     return (
-        <BannerDiv pose={props.show ? 'show' : 'hide'} key="banner" flex wrap fullWidth alignCenter justifyEnd zIndex={20} className={props.className} >
+        <BannerDiv pose={props.show ? 'show' : 'hide'} key="banner" flex flexWrap fullWidth alignCenter justifyEnd zIndex={20} className={props.className} >
             <Div grow flex p={[1, 1, 2]}>
                 <Div grow color="text.secondary">{props.content}</Div>
                 {props.handleClose && <CloseButton size="small" handleClick={props.handleClose} />}

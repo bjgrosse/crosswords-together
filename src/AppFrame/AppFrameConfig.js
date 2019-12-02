@@ -1,4 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom'
 import ReactDOM from 'react-dom';
 import AppContext from './AppContext'
 import { AppBarTitle, AppBanner } from '../UI/StyledComponents/AppFrameComponents'
@@ -6,16 +7,25 @@ import { AppBarTitle, AppBanner } from '../UI/StyledComponents/AppFrameComponent
 const AppFrameConfig = props => {
     const context = useContext(AppContext)
     const store = context.store
+    const history = useHistory()
 
     useEffect(() => {
-        store.pushAppBar({ hideAppBar: props.hideAppBar, 
-                                showMenu: props.showMenu,
-                                showBackButton: props.showBackButton !== undefined ? props.showBackButton : !props.showMenu })
-
-        // Clean-up
-        return function () {
-            store.popAppBar()
+        // If we currently have an app bar showing,
+        // and this is an initial navigation (as opposed to browser back/forward)
+        // then we want to set a flag on the location state designating
+        // that the back button in the appbar can use history.goBack(). Otherwise
+        // the app bar's back button will simply go Home. This is to handle
+        // cases where a page is loaded via direct URL and we would want the back 
+        // button to go home, not to the previous page loaded in this browser tab
+        if (store.appBar &&  history.action === 'PUSH') {
+            window.history.replaceState({...window.history.state, appBarCanGoBack: true}, null)
         }
+        store.setAppBar({
+            hideAppBar: props.hideAppBar,
+            showMenu: props.showMenu,
+            showBackButton: props.showBackButton !== undefined ? props.showBackButton : !props.showMenu,
+        })
+
     }, [])
 
     let content = props.appBarContent
@@ -26,8 +36,9 @@ const AppFrameConfig = props => {
     let appBanners = []
     if (props.banners) {
 
-        appBanners = props.banners.map(x => (
+        appBanners = props.banners.map((x, idx) => (
             <AppBanner
+                key={idx}
                 show={x.show}
                 content={x.content}
                 actions={x.actions} />

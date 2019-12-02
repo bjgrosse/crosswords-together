@@ -22,6 +22,7 @@ import LoadingContainer from './LoadingContainer'
 import PushMessaging from './PushMessaging'
 
 import posed, { PoseGroup } from 'react-pose'
+import Scrum from '../UI/Scrum/Scrum';
 
 const RouteContainer = posed(PageContainer)({
   enter: {
@@ -87,7 +88,7 @@ class AppFrame extends React.Component {
   }
 
   handleBack = () => {
-    if (this.context.store.appBars.length > 1) {
+    if (window.history.state && window.history.state.appBarCanGoBack) {
       this.props.history.goBack()
     } else {
       this.props.history.push("/")
@@ -97,6 +98,7 @@ class AppFrame extends React.Component {
 
 
   render() {
+    console.log(window.history.state)
     let context = this.context
     if (this.state.isLoading) {
       return (
@@ -145,7 +147,6 @@ class AppFrame extends React.Component {
                 </Div>
               </>
             </AppCanvas>
-
             <AppSnackBar />
           </>
         </AppRoot>

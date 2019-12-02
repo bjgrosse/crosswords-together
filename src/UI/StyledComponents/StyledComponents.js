@@ -40,6 +40,15 @@ export const Div = styled.div`
         flex-basis: 100%;
     `};
 
+    ${is('hide')`
+        display: none;
+    `};
+
+    
+    ${is('fixed')`
+        position: fixed;
+    `};
+
     ${is('fullHeight')`
         height: 100%;
         flex-basis: 100%;
@@ -55,6 +64,10 @@ export const Div = styled.div`
         position: absolute;
         left: 0px; right: 0px; top: 0px; bottom: 0px;
     `};
+
+    ${is('fixed', 'full')`
+    left: 0px; right: 0px; top: 0px; bottom: 0px;
+`};
 
     ${isOr('inlineBlock', 'inline')`
         display: inline-block;
@@ -130,7 +143,7 @@ export const Div = styled.div`
         position: absolute;
     `};
 
-    ${is('absolute') && is('center')`
+    ${is('absolute', 'center')`
         left: 0px;
         right: 0px;
         bottom: 0px;
@@ -138,17 +151,23 @@ export const Div = styled.div`
         margin: auto;
     `}; 
 
-    ${is('absolute') && is('topRight')`
+    ${is('absolute', 'topRight')`
         right: 0px;
         top: 0px;
         margin: auto;
+    `}; 
+
+    ${is('absolute', 'right')`
+        right: 0px;
+        top: 0px;
+        bottom: 0px;
     `}; 
 
     ${is('column')`
         display: flex;
         flex-direction: column;
     `};
-    ${is('wrap')`
+    ${is('flexWrap')`
         flex-wrap: wrap;
     `};
     ${is('wrapReverse')`

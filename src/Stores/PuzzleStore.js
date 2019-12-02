@@ -2,6 +2,7 @@ import { types, flow, getParentOfType } from 'mobx-state-tree'
 import db from '../Database/Database'
 import { thisExpression } from '@babel/types'
 import colors from '../common/colors'
+import { autorun, reaction } from 'mobx'
 
 const GetRandomColor = () => {
     return colors[Math.floor(Math.random() * colors.length)]
@@ -66,17 +67,53 @@ const Word = types.model('Word', {
     isSelected: false,
     cells: types.array(types.reference(Cell))
 }).actions(self => {
+    let disposeCompletedWatch;
+    let savedValue;
+
+    function afterCreate() {
+
+        savedValue = self.getWordValue()
+
+        // We want to watch the isCompleted property and if it changes
+        // push to the server updating the status of the word
+        disposeCompletedWatch = reaction(() => [self.isCompleted], () => {
+            saveWordValue()
+        }, { delay: 30000 })
+    }
+
+    function beforeDestroy() {
+        disposeCompletedWatch()
+    }
+
     function setSelected(value) {
         self.isSelected = value
         self.cells.forEach(x => x.isSelected = value);
+
+        // If we're being deselected
+        // push any changes to the server
+        if (!value) {
+            saveWordValue()
+        }
     }
+
+    function saveWordValue() {
+        let wordValue = self.isCompleted ? self.getWordValue() : null
+        if (wordValue !== savedValue) {
+            savedValue = wordValue
+            db.saveCompletedWord(self.id, getParentOfType(self, Puzzle).id, wordValue)
+        }
+    }
+
     function setClue(value) {
         self.clue = value
     }
-    return { setSelected, setClue }
+    return { afterCreate, beforeDestroy, setSelected, setClue }
 }).views(self => ({
     get isCompleted() {
         return !self.cells.find(x => !x.value)
+    },
+    getWordValue() {
+        return self.cells.reduce((wordValue, cell) => wordValue += cell.value, '')
     }
 }))
 
@@ -84,7 +121,7 @@ const Word = types.model('Word', {
 const Player = types.model('Player', {
     id: types.maybe(types.string),
     name: types.string,
-    color: 'Grey',
+    color: 'Red',
     pending: false,
     invitationId: types.maybe(types.string)
 }).views(self => ({
@@ -102,6 +139,14 @@ const Invitation = types.model('Invitation', {
     senderName: types.string
 })
 
+
+const ActivityEntry = types.model('ActivityEntry', {
+    id: types.identifier,
+    userId: types.string,
+    userName: types.string,
+    message: types.string,
+    type: types.string
+})
 
 const Puzzle = types.model('Puzzle', {
     id: types.identifier,
@@ -337,6 +382,17 @@ const Puzzle = types.model('Puzzle', {
         return db.leaveGame(self.id);
     }
 
+    const loadActivity = flow(function* () {
+        let userId = db.getCurrentUserId()
+        let link = self.invitationLinks.get(userId)
+        if (!link) {
+            link = yield db.createInvitationLink(self.id)
+            self.invitationLinks.set(userId, link);
+        }
+
+        return link
+    })
+
     return {
         selectCell,
         selectWord,
@@ -348,7 +404,8 @@ const Puzzle = types.model('Puzzle', {
         startPuzzle,
         getInviteLink,
         acceptInvitation,
-        leaveGame
+        leaveGame,
+        loadActivity
     }
 }).views(self => ({
     wordsByDirection(dir) {
@@ -358,6 +415,7 @@ const Puzzle = types.model('Puzzle', {
                 result.push(word);
             }
         })
+        result.sort((x, y) => x.number - y.number)
         return result
     },
     wordsAcross() {

@@ -16,7 +16,7 @@ import is, { isNot } from 'styled-is';
 import { Div } from './StyledComponents';
 
 export const IconButton = styled(MatIconButton).attrs(props => ({
-    color: props.color !== undefined ? props.color : "text.primary"
+    color: props.color !== undefined ? props.color : "primary"
 }))`
 &&{
     ${palette}

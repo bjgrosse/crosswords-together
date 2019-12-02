@@ -16,6 +16,7 @@ import './CrosswordPuzzle.css';
 
 import { safeHandlerWarn } from '../Utility/useSafeHandler'
 import HideScrollBars from '../UI/HideScrollBars/HideScrollBars';
+import { Button } from '../UI/StyledComponents/MaterialComponents';
 
 
 class Page extends React.Component {
@@ -182,9 +183,10 @@ class Page extends React.Component {
                                 <Div style={{ position: 'fixed', width: '100%', bottom: '0px', left: '50%', transform: 'translateX(-50%)' }}>
                                     {keyboard}
                                 </Div>
-                                {keyboardFab}
+                                {keyboardFab} 
                             </Div>
                         </Split>
+                        
                     </>
 
                 </MediaQuery>

@@ -90,7 +90,15 @@
     }
 }
 
-
+@keyframes rotation {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(359deg);
+    }
+  }
+  
 .ResizeBarHorizontal {
     width: 12px;
     margin-left: -6px;
