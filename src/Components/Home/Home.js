@@ -1,14 +1,14 @@
 import React, { Fragment, useContext } from 'react';
 import { observer } from 'mobx-react'
-import { AppContext } from '../../AppFrame/AppContext';
+import { AppContext } from 'AppFrame/AppContext';
 
-import PuzzlesStore from '../../Stores/PuzzlesStore';
+import PuzzlesStore from 'Stores/PuzzlesStore';
 import PuzzleList from './PuzzleList'
 import TemplateList from './TemplateList'
-import LoadingContainer from '../../AppFrame/LoadingContainer';
-import AppFrameConfig from '../../AppFrame/AppFrameConfig'
-import Login from '../../AppFrame/Login';
-import { Div } from '../../UI/StyledComponents/StyledComponents'
+import LoadingContainer from 'AppFrame/LoadingContainer';
+import AppFrameConfig from 'AppFrame/AppFrameConfig'
+import Login from 'AppFrame/Login';
+import { Div } from 'UI/StyledComponents/StyledComponents'
 import WelcomeMessage from './WelcomeMessage';
 import NewPuzzleMessage from './NewPuzzleMessage';
 import { Typography } from '@material-ui/core';

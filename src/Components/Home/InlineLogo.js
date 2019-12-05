@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import styled from 'styled-components'
-import { Div } from '../../UI/StyledComponents/StyledComponents';
+import { Div } from 'UI/StyledComponents/StyledComponents';
 
 const Part1 = styled(Div).attrs(props => ({
     color: "primary.main",

@@ -1,10 +1,10 @@
 import React, { useRef, useEffect } from 'react';
-import PinchPanZoom from '../../UI/PinchZoomPan/PinchZoomPan';
-import ScaleBox from '../../UI/ScaleBox/ScaleBox';
-import { Paper } from '../../UI/StyledComponents/StyledComponents'
+import PinchPanZoom from 'UI/PinchZoomPan/PinchZoomPan';
+import ScaleBox from 'UI/ScaleBox/ScaleBox';
+import { Paper } from 'UI/StyledComponents/StyledComponents'
 import styled from 'styled-components';
 import { observer } from 'mobx-react'
-import Colors from '../../Theme/Colors';
+import Colors from 'Theme/Colors';
 
 const RowDiv = styled.div`
     display: table-row;

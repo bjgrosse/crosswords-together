@@ -3,7 +3,7 @@ import { useHistory, useParams } from 'react-router-dom';
 import { reaction } from 'mobx'
 import { observer } from 'mobx-react';
 
-import useRunOnce from '../../Utility/useRunOnce'
+import useRunOnce from 'Utility/useRunOnce'
 import useSafeHandler from 'Utility/useSafeHandler';
 import db from 'Database/Database';
 

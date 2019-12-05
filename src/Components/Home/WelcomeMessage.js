@@ -1,8 +1,8 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { Div } from '../../UI/StyledComponents/StyledComponents';
-import { LightContainer, Button } from '../../UI/MaterialComponents/MaterialComponents';
+import { Div } from 'UI/StyledComponents/StyledComponents';
+import { LightContainer, Button } from 'UI/MaterialComponents/MaterialComponents';
 import { Typography } from '@material-ui/core';
-import useNavigateTo from '../../Utility/useNavigateTo'
+import useNavigateTo from 'Utility/useNavigateTo'
 
 const WelcomeMessage = props => {
     return (

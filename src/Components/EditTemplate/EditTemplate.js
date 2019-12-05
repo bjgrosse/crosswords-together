@@ -1,21 +1,21 @@
 import React, { useContext, useState, useEffect, useRef, useCallback } from 'react';
 import { useParams, useHistory } from "react-router-dom";
 import { observer } from 'mobx-react'
-import PuzzleStore from '../../Stores/PuzzleStore'
-import AppContext from '../../AppFrame/AppContext'
+import PuzzleStore from 'Stores/PuzzleStore'
+import AppContext from 'AppFrame/AppContext'
 import Button from '@material-ui/core/Button';
 import Puzzle from '../CrosswordPuzzle/CrosswordPuzzle'
-import LoadingContainer from '../../AppFrame/LoadingContainer';
+import LoadingContainer from 'AppFrame/LoadingContainer';
 import TextField from '@material-ui/core/TextField';
 import EditIcon from '@material-ui/icons/Edit';
-import AppDialog from '../../AppFrame/AppDialog'
-import AppFrameConfig from '../../AppFrame/AppFrameConfig'
+import AppDialog from 'AppFrame/AppDialog'
+import AppFrameConfig from 'AppFrame/AppFrameConfig'
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import { Div } from '../../UI/StyledComponents/StyledComponents'
-import { IconButton } from '../../UI/MaterialComponents/MaterialComponents'
-import { AppBarTitle } from '../../Theme/AppFrameComponents'
+import { Div } from 'UI/StyledComponents/StyledComponents'
+import { IconButton } from 'UI/MaterialComponents/MaterialComponents'
+import { AppBarTitle } from 'Theme/AppFrameComponents'
 
 
 const EditTemplate = props => {

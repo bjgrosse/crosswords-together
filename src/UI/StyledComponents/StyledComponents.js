@@ -9,7 +9,7 @@ import {
     sizing,
     typography
 } from '@material-ui/system';
-import is, { isOr, isNot } from '../../Utility/styledIs';
+import is, { isOr, isNot } from 'Utility/styledIs';
 import { Typography } from '@material-ui/core';
 
 function designMode() { return () => (true) };
