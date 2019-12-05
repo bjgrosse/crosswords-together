@@ -7,10 +7,10 @@ import { Route } from 'react-router-dom'
 import * as firebase from 'firebase/app';
 import AppFrame from './AppFrame/AppFrame';
 import Login from './AppFrame/Login';
-import Home from './Home/Home';
-import Settings from './Settings/Settings';
-import PlayPuzzle from './PlayPuzzle/PlayPuzzle';
-import EditTemplate from './EditTemplate/EditTemplate'
+import Home from './Components/Home/Home';
+import Settings from './Components/Settings/Settings';
+import PlayPuzzle from './Components/PlayPuzzle/PlayPuzzle';
+import EditTemplate from './Components/EditTemplate/EditTemplate'
 import { TestPage1, TestPage2 } from './Temp/Temp'
 import Theme from "./Theme/Theme"
 
@@ -18,7 +18,7 @@ import Theme from "./Theme/Theme"
 import MenuItems from './MenuItems';
 import { AppContext, AppContextManager } from './AppFrame/AppContext';
 import './UI/Animations/Animations.css'
-import StartNewPuzzle from './Home/StartNewPuzzle';
+import StartNewPuzzle from './Components/Home/StartNewPuzzle';
 
 
 export default function (props) {

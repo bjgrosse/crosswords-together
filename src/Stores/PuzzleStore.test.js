@@ -48,14 +48,13 @@ database.saveCompletedWord.mockResolvedValue(undefined);
 
 jest.useFakeTimers()
 
-test.only('word completion', async () => {
+test('word completion', async () => {
 
     database.saveCompletedWord.mockClear()
 
     let store = PuzzleStore.create();
     await store.fetch('test')
     let puzzle = store.puzzle;
-    console.log(puzzle.wordsAcross()[0].cells)
 
     let word = puzzle.wordsDown()[3];
     store.puzzle.selectWord(word)

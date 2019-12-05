@@ -9,10 +9,10 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Typography from '@material-ui/core/Typography';
 import { observer } from 'mobx-react';
-import { Div, Paper, SubTitle1 } from '../UI/StyledComponents/StyledComponents'
+import { Div, Paper, SubTitle1 } from '../../UI/StyledComponents/StyledComponents'
 import CreateNewTemplate from '../EditTemplate/CreateNewTemplate'
-import { levelColors } from '../Theme/Colors';
-import { Avatar } from '../UI/StyledComponents/MaterialComponents'
+import { levelColors } from '../../Theme/Colors';
+import { Avatar } from '../../UI/MaterialComponents/MaterialComponents'
 
 
 const TemplateListItem = (props) => {

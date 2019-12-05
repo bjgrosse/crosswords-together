@@ -8,7 +8,7 @@ import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import BackIcon from '@material-ui/icons/Backspace';
 import DownIcon from '@material-ui/icons/ExpandMore';
-import { Paper, Div } from "../UI/StyledComponents/StyledComponents"
+import { Paper, Div } from "../../UI/StyledComponents/StyledComponents"
 import styled from 'styled-components'
 
 import './Keyboard.css';

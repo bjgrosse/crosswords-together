@@ -3,7 +3,7 @@ import Divider from '@material-ui/core/Divider';
 import List from '@material-ui/core/List';
 import PuzzleListItem from './PuzzleListItem';
 import { observer } from 'mobx-react';
-import { Div, Paper, SubTitle1 } from '../UI/StyledComponents/StyledComponents'
+import { Div, Paper, SubTitle1 } from '../../UI/StyledComponents/StyledComponents'
 
 export default observer((props) => {
 

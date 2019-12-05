@@ -11,8 +11,8 @@ import BackIcon from '@material-ui/icons/ArrowBack';
 import Menu from './AppMenu';
 import Config from '../config';
 import { Div, Paper } from '../UI/StyledComponents/StyledComponents';
-import { AppBar, AppBarTitle } from '../UI/StyledComponents/AppFrameComponents';
-import { IconButton } from '../UI/StyledComponents/MaterialComponents';
+import { AppBar, AppBarTitle } from '../Theme/AppFrameComponents';
+import { IconButton } from '../UI/MaterialComponents/MaterialComponents';
 
 
 export default function (props) {

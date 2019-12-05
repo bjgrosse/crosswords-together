@@ -7,8 +7,8 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import Input from '@material-ui/core/Input';
-import { Div } from '../UI/StyledComponents'
-import AppDialog from '../AppFrame/AppDialog'
+import { Div } from '../../UI/StyledComponents'
+import AppDialog from '../../AppFrame/AppDialog'
 
 const inputConfig = {
     step: 1,

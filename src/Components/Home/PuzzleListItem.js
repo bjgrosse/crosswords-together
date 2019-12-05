@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { observer } from 'mobx-react'
-import { Div } from '../UI/StyledComponents/StyledComponents'
-import { ListItem, Avatar } from '../UI/StyledComponents/MaterialComponents'
+import { Div } from '../../UI/StyledComponents/StyledComponents'
+import { ListItem, Avatar } from '../../UI/MaterialComponents/MaterialComponents'
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -13,8 +13,8 @@ import CheckIcon from '@material-ui/icons/Check';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import styled from 'styled-components'
-import useSafeHandler, { useSafeHandlerWarn } from '../Utility/useSafeHandler'
-import AppDialog from '../AppFrame/AppDialog';
+import useSafeHandler, { useSafeHandlerWarn } from '../../Utility/useSafeHandler'
+import AppDialog from '../../AppFrame/AppDialog';
 
 const Progress = styled(CircularProgress)`${({ theme }) => `
 &{

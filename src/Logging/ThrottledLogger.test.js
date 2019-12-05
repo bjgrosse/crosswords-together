@@ -48,7 +48,7 @@ it('ThrottledLogger does not throttle spaced entries', (done) => {
 
     const output = { entries: [] }
     let logger = createThrottledLogger({ 
-        throttle: {provideKey: () => 'test'},
+        throttle: {provideKey: () => 'test', minTime: throttleTime},
         transports: [new TestTransport(output)] 
     })
 

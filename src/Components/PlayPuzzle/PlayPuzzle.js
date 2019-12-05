@@ -1,31 +1,28 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
-import LoadingContainer from '../AppFrame/LoadingContainer';
+import { reaction } from 'mobx'
+import LoadingContainer from 'AppFrame/LoadingContainer';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import Box from '@material-ui/core/Box';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import { useParams } from "react-router-dom";
-import { AppContext } from '../AppFrame/AppContext';
-import PuzzleStore from '../Stores/PuzzleStore';
+import { AppContext } from 'AppFrame/AppContext';
+import PuzzleStore from 'Stores/PuzzleStore';
 import Divider from '@material-ui/core/Divider';
-// import Drawer from '@material-ui/core/Drawer';
 import PeopleIcon from '@material-ui/icons/GroupAdd';
 import { observer } from 'mobx-react';
-import Login from '../AppFrame/Login'
+import Login from 'AppFrame/Login'
 import Puzzle from '../CrosswordPuzzle/CrosswordPuzzle';
 import PlayerList from './PlayerList';
-import { Div, Paper, SubTitle2, Span } from '../UI/StyledComponents';
-import { IconButton, Button } from '../UI/StyledComponents/MaterialComponents';
-import AppFrameConfig from '../AppFrame/AppFrameConfig'
-import useSafeHandler from '../Utility/useSafeHandler';
-import Drawer from '../UI/Drawer'
+import { Div, Paper, SubTitle2, Span } from 'UI/StyledComponents';
+import { IconButton, Button } from 'UI/MaterialComponents';
+import AppFrameConfig from 'AppFrame/AppFrameConfig'
+import useSafeHandler from 'Utility/useSafeHandler';
+import Drawer from 'UI/Drawer/Drawer'
 
-import { reaction } from 'mobx'
-import db from '../Database/Database';
-import Scrum from '../UI/Scrum/Scrum';
+import db from 'Database/Database';
 
 const store = PuzzleStore.create();
 

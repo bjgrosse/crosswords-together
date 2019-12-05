@@ -14,15 +14,15 @@ import 'firebase/auth';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import Snackbar from '@material-ui/core/Snackbar';
-import { Div } from "../UI/StyledComponents"
-import Placeholder from "../UI/Placeholder"
-import { AppRoot, AppCanvas, PageContainer, AppBanner } from "../UI/StyledComponents/AppFrameComponents"
+import { Div } from "UI/StyledComponents"
+import Placeholder from "UI/Placeholder"
+import { AppRoot, AppCanvas, PageContainer, AppBanner } from "Theme/AppFrameComponents"
 import AppSnackBar from './AppSnackBar'
 import LoadingContainer from './LoadingContainer'
 import PushMessaging from './PushMessaging'
 
 import posed, { PoseGroup } from 'react-pose'
-import Scrum from '../UI/Scrum/Scrum';
+import Scrum from 'UI/Scrum/Scrum';
 
 const RouteContainer = posed(PageContainer)({
   enter: {

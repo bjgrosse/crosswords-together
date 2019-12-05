@@ -1,10 +1,10 @@
 
 import React, { useContext, useState, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
-import { AppContext } from '../AppFrame/AppContext';
-import { Div } from '../UI/StyledComponents';
+import { AppContext } from '../../AppFrame/AppContext';
+import { Div } from '../../UI/StyledComponents/StyledComponents';
 
-const component = props => {
+const Settings = props => {
     const context = useContext(AppContext)
     const displayName = useState()
     return (
@@ -21,4 +21,4 @@ const component = props => {
         </Div>
     );
 }
-export default component;
+export default Settings;

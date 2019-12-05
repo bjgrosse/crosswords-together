@@ -6,11 +6,9 @@ import AddPlayer from './AddPlayer'
 import AddIcon from '@material-ui/icons/AddCircle';
 import styled from 'styled-components';
 import Avatar from '@material-ui/core/Avatar';
-import ListItem from '@material-ui/core/ListItem';
 import List from '@material-ui/core/List';
-import ListItemText from '@material-ui/core/ListItemText';
-import { Button } from '../UI/StyledComponents/MaterialComponents';
-import { Div } from '../UI/StyledComponents/StyledComponents';
+import { Button } from 'UI/MaterialComponents';
+import { Div } from 'UI/StyledComponents';
 
 
 const Header = styled.div`

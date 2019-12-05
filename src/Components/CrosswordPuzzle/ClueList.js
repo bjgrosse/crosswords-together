@@ -11,8 +11,8 @@ import DialogContent from '@material-ui/core/DialogContent';
 import styled from 'styled-components';
 import { observer } from 'mobx-react';
 
-import LoadingContainer from '../AppFrame/LoadingContainer';
-import { Paper, Div, SubTitle2 } from '../UI/StyledComponents';
+import LoadingContainer from '../../AppFrame/LoadingContainer';
+import { Paper, Div, SubTitle2 } from '../../UI/StyledComponents/StyledComponents';
 
 import TextField from '@material-ui/core/TextField';
 

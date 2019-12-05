@@ -13,7 +13,7 @@ import {
     typography
 } from '@material-ui/system';
 import is, { isNot } from 'styled-is';
-import { Div } from './StyledComponents';
+import { Div } from '../StyledComponents/StyledComponents';
 
 export const IconButton = styled(MatIconButton).attrs(props => ({
     color: props.color !== undefined ? props.color : "primary"

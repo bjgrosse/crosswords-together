@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom'
 import ReactDOM from 'react-dom';
 import AppContext from './AppContext'
-import { AppBarTitle, AppBanner } from '../UI/StyledComponents/AppFrameComponents'
+import { AppBarTitle, AppBanner } from '../Theme/AppFrameComponents'
 
 const AppFrameConfig = props => {
     const context = useContext(AppContext)

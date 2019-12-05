@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { IconButton } from '../StyledComponents/MaterialComponents'
+import { IconButton } from '../MaterialComponents/MaterialComponents'
 
 
 import CloseIcon from '@material-ui/icons/Close';

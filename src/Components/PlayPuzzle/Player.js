@@ -3,13 +3,12 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import DeleteIcon from '@material-ui/icons/Delete';
 import MenuIcon from '@material-ui/icons/MoreVert';
 import PersonIcon from '@material-ui/icons/Person';
 import MailIcon from '@material-ui/icons/Mail';
 import styled from 'styled-components';
-import Colors from '../Theme/Colors';
-import { IconButton } from '../UI/StyledComponents/MaterialComponents'
+import Colors from 'Theme/Colors';
+import { IconButton } from 'UI/MaterialComponents'
 
 const Action = styled(ListItemSecondaryAction)`
     display: block;

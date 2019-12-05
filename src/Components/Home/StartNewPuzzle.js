@@ -1,15 +1,15 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
-import useRunOnce from '../Utility/useRunOnce'
-import AppFrameConfig from '../AppFrame/AppFrameConfig'
-import { Div } from '../UI/StyledComponents/StyledComponents';
-import LoadingContainer from '../AppFrame/LoadingContainer';
-import TemplatesStore from '../Stores/TemplatesStore'
+import useRunOnce from '../../Utility/useRunOnce'
+import AppFrameConfig from '../../AppFrame/AppFrameConfig'
+import { Div } from '../../UI/StyledComponents/StyledComponents';
+import LoadingContainer from '../../AppFrame/LoadingContainer';
+import TemplatesStore from '../../Stores/TemplatesStore'
 import TemplateList from './TemplateList'
 import { observer } from 'mobx-react'
 import Chip from '@material-ui/core/Chip';
 import styled from 'styled-components'
-import useSafeHandler from '../Utility/useSafeHandler';
-import { levelColors } from '../Theme/Colors';
+import useSafeHandler from '../../Utility/useSafeHandler';
+import { levelColors } from '../../Theme/Colors';
 
 const filterColors = {Levels: levelColors}
 

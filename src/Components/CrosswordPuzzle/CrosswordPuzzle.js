@@ -6,7 +6,7 @@ import Debounce from 'lodash.debounce';
 import Fab from '@material-ui/core/Fab';
 import KeyboardIcon from '@material-ui/icons/Keyboard';
 
-import { Div, Paper } from '../UI/StyledComponents';
+import { Div, Paper } from '../../UI/StyledComponents/StyledComponents';
 
 import PuzzleBoard from './PuzzleBoard';
 import Keyboard from './Keyboard';
@@ -14,9 +14,9 @@ import ClueLists from './ClueLists';
 
 import './CrosswordPuzzle.css';
 
-import { safeHandlerWarn } from '../Utility/useSafeHandler'
-import HideScrollBars from '../UI/HideScrollBars/HideScrollBars';
-import { Button } from '../UI/StyledComponents/MaterialComponents';
+import { safeHandlerWarn } from '../../Utility/useSafeHandler'
+import HideScrollBars from '../../UI/HideScrollBars/HideScrollBars';
+import { Button } from '../../UI/MaterialComponents/MaterialComponents';
 
 
 class Page extends React.Component {
