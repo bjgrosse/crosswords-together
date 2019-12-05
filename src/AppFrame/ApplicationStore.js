@@ -10,8 +10,7 @@ const AppBar = types.model('AppBar', {
 export const ApplicationStore = types.model('ApplicationStore', {
     appBar: types.maybe(AppBar),
     snackBarMessage: types.maybe(types.string),
-    pushNotificationsAllowed: false,
-    showScrum: false
+    pushNotificationsAllowed: false
 }).actions(self => {
     function setAppBar(bar) {
         self.appBar = AppBar.create(bar)
@@ -29,15 +28,11 @@ export const ApplicationStore = types.model('ApplicationStore', {
         self.snackBarMessage = undefined
     }
     
-    function setShowScrum(value) {
-        self.showScrum = value
-    }
     return {
         setAppBar,
         setPushNotificationsAllowed,
         setSnackBarMessage,
-        closeSnackBar,
-        setShowScrum
+        closeSnackBar
     }
 }).views(self => ({
 
