@@ -6,7 +6,7 @@ import { AppBarTitle, AppBanner } from '../Theme/AppFrameComponents'
 
 const AppFrameConfig = props => {
     const context = useContext(AppContext)
-    const store = context.store
+    const store = context.AppFrameState
     const history = useHistory()
 
     useEffect(() => {

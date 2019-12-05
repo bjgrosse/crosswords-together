@@ -1,41 +1,46 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { reaction } from 'mobx'
+import { observer } from 'mobx-react';
+
+import useRunOnce from '../../Utility/useRunOnce'
+import useSafeHandler from 'Utility/useSafeHandler';
+import db from 'Database/Database';
+
+// MUI
 import LoadingContainer from 'AppFrame/LoadingContainer';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-import { useParams } from "react-router-dom";
-import { AppContext } from 'AppFrame/AppContext';
-import PuzzleStore from 'Stores/PuzzleStore';
 import Divider from '@material-ui/core/Divider';
 import PeopleIcon from '@material-ui/icons/GroupAdd';
-import { observer } from 'mobx-react';
-import Login from 'AppFrame/Login'
-import Puzzle from '../CrosswordPuzzle/CrosswordPuzzle';
-import PlayerList from './PlayerList';
+
+// UI
 import { Div, Paper, SubTitle2, Span } from 'UI/StyledComponents';
 import { IconButton, Button } from 'UI/MaterialComponents';
-import AppFrameConfig from 'AppFrame/AppFrameConfig'
-import useSafeHandler from 'Utility/useSafeHandler';
 import Drawer from 'UI/Drawer/Drawer'
 
-import db from 'Database/Database';
+// App Frame
+import AppFrameConfig from 'AppFrame/AppFrameConfig'
+import { AppContext } from 'AppFrame/AppContext';
+import Login from 'AppFrame/Login'
+import PuzzleStore from 'Stores/PuzzleStore';
 
-const store = PuzzleStore.create();
+import Puzzle from '../CrosswordPuzzle/CrosswordPuzzle';
+import PlayerList from './PlayerList';
+
 
 export default observer(props => {
+  const store = useRunOnce(()=>PuzzleStore.create());
   const promptedForNotifications = useRef()
   const context = useContext(AppContext);
   const [playerListOpen, setPlayerListOpen] = useState(false)
-  const [isPermissionPromptOpen, setisPermissionPromptOpen] = useState(false)
   const [showNotificationBanner, setShowNotificationBanner] = useState(false)
   const [invitationSender, setInvitationSender] = useState()
 
   const { id, templateId } = useParams();
-  const isPortrait = useMediaQuery('(orientation: portrait)')
 
   const history = useHistory();
   function navigateTo(path) {
@@ -92,15 +97,9 @@ export default observer(props => {
     store.puzzle.startPuzzle()
   }
 
-  const handleClosePermissionPrompt = () => setisPermissionPromptOpen(false)
-  const handlePermissionsGranted = useSafeHandler(() => {
-    store.puzzle.saveNotificationOption(true)
-  })
-
   const hideNotificationBanner = useSafeHandler(() => {
     setShowNotificationBanner(false)
   })
-
 
   const turnOnNotifications = useSafeHandler(() => {
     context.PushMessaging.requestPermissions()

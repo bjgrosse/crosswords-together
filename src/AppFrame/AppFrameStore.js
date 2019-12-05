@@ -7,7 +7,7 @@ const AppBar = types.model('AppBar', {
     showBackButton: false
 })
 
-export const ApplicationStore = types.model('ApplicationStore', {
+export const AppFrameStore = types.model('ApplicationStore', {
     appBar: types.maybe(AppBar),
     snackBarMessage: types.maybe(types.string),
     pushNotificationsAllowed: false
@@ -38,5 +38,5 @@ export const ApplicationStore = types.model('ApplicationStore', {
 
 }))
 
-export default ApplicationStore
+export default AppFrameStore
 

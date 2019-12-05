@@ -1,13 +1,14 @@
 import React from 'react';
 import PushMessaging from './PushMessaging'
-import ApplicationStore from './ApplicationStore'
+import AppFrameStore from './AppFrameStore'
+import ApplicationStore from 'Stores/ApplicationStore'
 
 const defaultState = {
   user: null,
   appBarContentNode: null,
   appBarActionsNode: null,
   bannerNode: null,
-  store: null
+  appFrameStore: null
 }
 
 // Make sure the shape of the default value passed to
@@ -25,8 +26,9 @@ export class AppContextManager extends React.Component {
   constructor(props) {
     super(props)
     this.state = { ...defaultState }
-    this.store = ApplicationStore.create()
-    this.PushMessaging = new PushMessaging({setPushMessagingEnabled: this.store.setPushNotificationsAllowed })
+    this.appFrameStore = AppFrameStore.create()
+    this.appStore = ApplicationStore.create()
+    this.PushMessaging = new PushMessaging({setPushMessagingEnabled: this.appFrameStore.setPushNotificationsAllowed })
   }
 
   setAppBarContentNode = (ref) => {
@@ -55,7 +57,8 @@ export class AppContextManager extends React.Component {
     
     return {
       ...this.state, ...{
-        store: this.store,
+        AppFrameState: this.appFrameStore,
+        AppState: this.appStore,
         PushMessaging: this.PushMessaging,
         setUser: this.setUser,
         setAppBarContentNode: this.setAppBarContentNode,

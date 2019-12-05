@@ -2,27 +2,23 @@ import React, { Fragment } from 'react';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom'
 import { observer } from 'mobx-react'
 
-import AppBar from './AppBar';
-import Login from './Login'
-import { AppContext } from './AppContext';
-import './AppFrame.css';
-import '../Theme/Theme.css';
-
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
 
-import CircularProgress from '@material-ui/core/CircularProgress';
+import { AppContext } from './AppContext';
 
-import Snackbar from '@material-ui/core/Snackbar';
+import './AppFrame.css';
+import '../Theme/Theme.css';
+import { AppRoot, AppCanvas, PageContainer, AppBanner } from "Theme/AppFrameComponents"
 import { Div } from "UI/StyledComponents"
 import Placeholder from "UI/Placeholder"
-import { AppRoot, AppCanvas, PageContainer, AppBanner } from "Theme/AppFrameComponents"
+
 import AppSnackBar from './AppSnackBar'
 import LoadingContainer from './LoadingContainer'
-import PushMessaging from './PushMessaging'
+import AppBar from './AppBar';
+import Login from './Login'
 
 import posed, { PoseGroup } from 'react-pose'
-import Scrum from 'UI/Scrum/Scrum';
 
 const RouteContainer = posed(PageContainer)({
   enter: {
@@ -34,8 +30,6 @@ const RouteContainer = posed(PageContainer)({
     opacity: 0
   }
 })
-
-
 
 class AppFrame extends React.Component {
 
@@ -68,9 +62,7 @@ class AppFrame extends React.Component {
   // Make sure we un-register Firebase observers when the component unmounts.
   componentWillUnmount() {
     this.unregisterAuthObserver();
-    window.onpopstate = (e) => {
-      console.log(e)
-    };
+
   }
 
   handlePopState(event) {
@@ -130,7 +122,7 @@ class AppFrame extends React.Component {
             <AppCanvas>
               <>
                 <AppBar
-                  config={context.store.appBar}
+                  config={context.AppFrameState.appBar}
                   setContentNodeRef={context.setAppBarContentNode}
                   setActionsNodeRef={context.setAppBarActionsNode}
                   handleBack={this.handleBack}

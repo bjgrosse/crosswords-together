@@ -7,7 +7,7 @@ import CloseIcon from '@material-ui/icons/Close';
 
 import { AppContext } from './AppContext';
 export const AppSnackBar = observer(props => {
-    const context = useContext(AppContext)
+    const { AppFrameState } = useContext(AppContext)
 
     return (
         <Snackbar
@@ -15,19 +15,19 @@ export const AppSnackBar = observer(props => {
                 vertical: 'bottom',
                 horizontal: 'left',
             }}
-            open={context.store.snackBarMessage ? true : false}
+            open={AppFrameState.snackBarMessage ? true : false}
             autoHideDuration={6000}
-            onClose={context.store.closeSnackBar}
+            onClose={AppFrameState.closeSnackBar}
             ContentProps={{
                 'aria-describedby': 'message-id',
             }}
-            message={<span id="message-id">{context.store.snackBarMessage}</span>}
+            message={<span id="message-id">{AppFrameState.snackBarMessage}</span>}
             action={[
                 <IconButton
                     key="close"
                     aria-label="close"
                     color="inherit"
-                    onClick={context.store.closeSnackBar}
+                    onClick={AppFrameState.closeSnackBar}
                 >
                     <CloseIcon />
                 </IconButton>,
