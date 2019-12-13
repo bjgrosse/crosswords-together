@@ -1,10 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
+import AppDialog from "AppFrame/AppDialog";
 import LoadingContainer from "AppFrame/LoadingContainer";
 import CopyIcon from "@material-ui/icons/FileCopy";
 import useSafeHandler from "Utility/useSafeHandler";
@@ -31,46 +28,41 @@ const AddPlayer = props => {
   };
 
   return (
-    <Dialog
+    <AppDialog
       open={props.open}
-      onClose={handleClose}
+      handleCancel={handleClose}
       aria-labelledby="form-dialog-title"
+      text="Copy this link and send it to your friends"
+      actions={
+        <Button onClick={handleClose} color="primary">
+          Close
+        </Button>
+      }
     >
       <LoadingContainer
         provideWorkPromise={getLinkId}
         message="Generating invitation..."
       >
-        <DialogContent>
-          <DialogContentText>
-            Copy this link and send it to your friends
-          </DialogContentText>
-
-          <Div fullWidth flex>
-            <Div grow>
-              <TextField
-                autoFocus
-                margin="dense"
-                id="link"
-                type="text"
-                fullWidth
-                value={link}
-                helperText={linkCopied ? "Link copied" : null}
-              />
-            </Div>
-            <Div>
-              <IconButton onClick={handleCopy}>
-                <CopyIcon color="secondary" />
-              </IconButton>
-            </Div>
+        <Div fullWidth flex>
+          <Div grow>
+            <TextField
+              autoFocus
+              margin="dense"
+              id="link"
+              type="text"
+              fullWidth
+              value={link}
+              helperText={linkCopied ? "Link copied" : null}
+            />
           </Div>
-        </DialogContent>
+          <Div>
+            <IconButton onClick={handleCopy}>
+              <CopyIcon color="secondary" />
+            </IconButton>
+          </Div>
+        </Div>
       </LoadingContainer>
-      <DialogActions>
-        <Button onClick={handleClose} color="primary">
-          Close
-        </Button>
-      </DialogActions>
-    </Dialog>
+    </AppDialog>
   );
 };
 

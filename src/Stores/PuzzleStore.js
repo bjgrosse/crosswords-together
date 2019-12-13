@@ -564,6 +564,7 @@ const PuzzleStore = types
         notes: "",
         ownerId: db.getCurrentUserId(),
         squares: rows,
+        public: true,
         size: `${rowCount}x${columnCount}`,
         dateAdded: Date.now(),
         cluesAcross: {},

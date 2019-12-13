@@ -22,6 +22,7 @@ import Select from "@material-ui/core/Select";
 import { Div } from "UI/StyledComponents/StyledComponents";
 import { IconButton } from "UI/MaterialComponents/MaterialComponents";
 import { AppBarTitle } from "Theme/AppFrameComponents";
+import { useSafeHandlerWarn } from "Utility/useSafeHandler";
 
 const EditTemplate = props => {
   const titleRef = useRef();
@@ -47,7 +48,7 @@ const EditTemplate = props => {
 
   const appContext = useContext(AppContext);
 
-  const handleSave = () => {
+  const handleSave = useSafeHandlerWarn(() => {
     let store = storeRef.current;
     let data = {
       title: title,
@@ -57,16 +58,14 @@ const EditTemplate = props => {
     };
 
     let promise = puzzle.saveTemplate(data).then(() => {
-      appContext.popContextBar();
-
       if (props.onSaved) {
         props.onSaved(puzzle.template);
       } else {
-        history.push("/");
+        history.push("/start");
       }
     });
     setLoadingPromise(promise);
-  };
+  });
 
   function handleEditInfoClick() {
     setEditInfoOpen(true);

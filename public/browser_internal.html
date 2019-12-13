@@ -13,9 +13,7 @@
         console.log("bad browser");
         window.location.replace("/browser.html");
       } else if (!internalBrowsers.test(navigator.userAgent)) {
-        let idx = window.location.href.indexOf("?");
-        let redir = idx > 0 ? window.location.href.substr(idx + 1) : "/";
-        window.location.replace(redir);
+        window.location.replace(window.location.search.substr(1));
       }
     </script>
     <link href="browser.css" rel="stylesheet" />

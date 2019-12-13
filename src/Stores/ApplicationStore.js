@@ -2,8 +2,8 @@ import { types, flow } from "mobx-state-tree";
 import GetTheme from "Theme/Theme";
 import db from "Database";
 const User = types.model("User", {
-  displayName: types.string,
-  email: types.string,
+  displayName: types.maybe(types.string),
+  email: types.maybe(types.string),
   preferredColors: types.maybe(types.array(types.string))
 });
 
@@ -23,12 +23,15 @@ const ApplicationStore = types
     useLightTheme: GetUseLightTheme()
   })
   .actions(self => {
+    const updateUser = userData => {
+      self.user = User.create(userData);
+    };
+
     const setUser = flow(function*(user) {
       if (!user) {
         self.user = undefined;
       } else {
-        const userData = yield db.getUser(user.uid);
-        self.user = User.create(userData);
+        self.updateUser(yield db.getUser(user.uid, self.updateUser));
       }
     });
 
@@ -42,7 +45,7 @@ const ApplicationStore = types
       window.localStorage.setItem("useLightTheme", value ? "1" : "0");
     };
 
-    return { setUser, saveSettings, setUseLightTheme };
+    return { setUser, saveSettings, setUseLightTheme, updateUser };
   })
   .views(self => ({
     get Theme() {

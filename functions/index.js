@@ -421,7 +421,7 @@ const saveFcmToken = async (data, context) => {
       .catch(error => {
         console.error(error);
         console.log(error.response.data);
-        throw error;
+        //throw error;
       });
   }
 

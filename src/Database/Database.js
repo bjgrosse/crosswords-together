@@ -15,14 +15,29 @@ function retrieveAndListen(ref, listenForChanges, prepRecord) {
 
   ref.onSnapshot(
     snapshot => {
-      let result = snapshot.docs.map(doc => ({
-        ...doc.data(),
-        ...{ id: doc.id }
-      }));
+      let singleDoc = snapshot.data !== undefined;
 
-      if (prepRecord) {
-        result = result.map(r => prepRecord(r));
+      let result;
+
+      if (singleDoc) {
+        result = {
+          ...snapshot.data(),
+          ...{ id: snapshot.id }
+        };
+
+        if (prepRecord) {
+          result = prepRecord(result);
+        }
+      } else {
+        result = snapshot.docs.map(doc => ({
+          ...doc.data(),
+          ...{ id: doc.id }
+        }));
+        if (prepRecord) {
+          result = result.map(r => prepRecord(r));
+        }
       }
+
       // If this is our initial response
       // then resolve the promise that is waiting
       if (handle) {
@@ -31,7 +46,7 @@ function retrieveAndListen(ref, listenForChanges, prepRecord) {
 
         // Otherwise, call the change listener
       } else {
-        listenForChanges(result);
+        if (listenForChanges) listenForChanges(result);
       }
     },
     error => {
@@ -57,13 +72,12 @@ export default {
       token: token
     });
   },
-  getUser: async id => {
-    let doc = await firebase
+  getUser: async (id, listenForChanges) => {
+    let ref = await firebase
       .firestore()
       .collection("users")
-      .doc(id)
-      .get();
-    return { ...doc.data(), ...{ id: doc.id } };
+      .doc(id);
+    return retrieveAndListen(ref, listenForChanges);
   },
   saveUser: data => {
     console.log("saving user: ", data);

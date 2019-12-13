@@ -1,4 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
+import { observer } from "mobx-react";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import Avatar from "@material-ui/core/Avatar";
@@ -45,16 +46,14 @@ const Text = styled(ListItemText)`
   white-space: nowrap;
   overflow: hidden;
 `;
-const Player = props => {
+const Player = observer(props => {
   const getColor = name => {
     return colors[name][context.appState.useLightTheme ? 300 : 900];
   };
   const theme = useTheme();
   const context = useContext(AppContext);
-  const [color, setColor] = useState(props.player.color);
   const handleColorChange = event => {
     let newColor = event.target.id;
-    setColor(newColor);
     props.player.setColor(newColor);
   };
   return (
@@ -78,7 +77,7 @@ const Player = props => {
           }
         }}
         renderButton={(toggleOpen, ref) => (
-          <MyAvatar color={getColor(color)} onClick={toggleOpen}>
+          <MyAvatar color={getColor(props.player.color)} onClick={toggleOpen}>
             {props.player.pending ? (
               <MailIcon size="small" ref={ref} />
             ) : (
@@ -109,7 +108,7 @@ const Player = props => {
               <CheckIcon
                 style={{ pointerEvents: "none" }}
                 htmlColor={
-                  color === name
+                  props.player.color === name
                     ? "white"
                     : colors[name][context.appState.useLightTheme ? 300 : 900]
                 }
@@ -132,5 +131,5 @@ const Player = props => {
       )} */}
     </Item>
   );
-};
+});
 export default Player;

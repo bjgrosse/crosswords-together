@@ -54,17 +54,11 @@ const Settings = observer(props => {
   console.log(context.appState.user);
 
   const reduceState = ({ displayName, email, preferredColors }) => ({
-    displayName,
-    email,
-    preferredColors: preferredColors || [],
     isDirty: false
   });
 
   const [state, setState] = useState(reduceState(context.appState.user));
 
-  const [preferredColors, setPreferredColors] = useState(
-    context.appState.user.preferredColors || []
-  );
   const handleColorChange = useSafeHandler(event => {
     setState(state => ({
       ...state,
@@ -89,7 +83,8 @@ const Settings = observer(props => {
   const handleLightThemeChanged = useSafeHandler(event => {
     context.appState.setUseLightTheme(!event.target.checked);
   });
-
+  const preferredColors =
+    state.preferredColors || context.appState.user.preferredColors || [];
   return (
     <AppFrameConfig appBarContent="Settings">
       <LightContainer>
@@ -104,7 +99,7 @@ const Settings = observer(props => {
         <Row>
           <TextField
             label="Display name"
-            value={state.displayName}
+            value={state.displayName || context.appState.user.displayName}
             id="displayName"
             onChange={handleChange}
             fullWidth
@@ -114,7 +109,7 @@ const Settings = observer(props => {
           <TextField
             label="Email"
             id="email"
-            value={state.email}
+            value={state.email || context.appState.user.email}
             onChange={handleChange}
             fullWidth
           />
@@ -125,7 +120,7 @@ const Settings = observer(props => {
             <InputLabel>Preferred tile color(s)</InputLabel>
             <Select
               multiple
-              value={state.preferredColors}
+              value={preferredColors}
               onChange={handleColorChange}
               MenuProps={{
                 PaperProps: {
@@ -134,6 +129,7 @@ const Settings = observer(props => {
                     width: 200
                   }
                 },
+                BackdropProps: { invisible: false },
                 MenuListProps: {
                   component: "div",
                   style: {
@@ -159,7 +155,7 @@ const Settings = observer(props => {
                       size="small"
                       style={{ margin: "auto" }}
                       htmlColor={
-                        state.preferredColors.indexOf(name) > -1
+                        preferredColors.indexOf(name) > -1
                           ? "white"
                           : colors[name][
                               context.appState.useLightTheme ? 300 : 900

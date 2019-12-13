@@ -11,12 +11,14 @@ import { Div } from "../UI/StyledComponents";
 import useSafeHandler from "Utility/useSafeHandler";
 const AppDialog = props => {
   const history = useHistory();
-
+  const isOpen = useRef(props.open);
   useEffect(() => {
     if (props.open) {
+      isOpen.current = true;
       window.history.pushState({}, null, null);
       window.onpopstate = e => {
-        if (props.open) {
+        if (isOpen.current) {
+          isOpen.current = false;
           props.handleCancel();
         }
       };
@@ -25,7 +27,12 @@ const AppDialog = props => {
 
   const handleCancel = useSafeHandler(() => {
     props.handleCancel();
-    history.goBack();
+  });
+
+  const handleExit = useSafeHandler(() => {
+    if (isOpen.current) {
+      history.goBack();
+    }
   });
 
   return (
@@ -33,6 +40,7 @@ const AppDialog = props => {
       fullScreen={props.fullScreen}
       open={props.open}
       onClose={handleCancel}
+      onExit={handleExit}
       aria-labelledby="dialog-title"
     >
       {props.title && (
