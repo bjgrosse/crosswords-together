@@ -1,16 +1,57 @@
-import { types } from 'mobx-state-tree'
+import { types, flow } from "mobx-state-tree";
+import GetTheme from "Theme/Theme";
+import db from "Database";
+const User = types.model("User", {
+  displayName: types.string,
+  email: types.string,
+  preferredColors: types.maybe(types.array(types.string))
+});
 
+const GetUseLightTheme = function() {
+  const setting = window.localStorage.getItem("useLightTheme");
 
-const User = types.model('User', {
-    displayName: types.string,
-    email: types.string,
-    preferredColors: types.maybe(types.array(types.string))
-})
+  if (setting === null) {
+    return !window.matchMedia("(prefers-color-scheme: dark)").matches;
+  }
 
+  return setting === "1";
+};
 
-const ApplicationStore = types.model('ApplicationStore', {
-    user: types.maybe(User)
-})
+const ApplicationStore = types
+  .model("ApplicationStore", {
+    user: types.maybe(User),
+    useLightTheme: GetUseLightTheme()
+  })
+  .actions(self => {
+    const setUser = flow(function*(user) {
+      if (!user) {
+        self.user = undefined;
+      } else {
+        const userData = yield db.getUser(user.uid);
+        self.user = User.create(userData);
+      }
+    });
 
+    const saveSettings = flow(function*(settings) {
+      self.user = { ...self.user, ...settings };
+      yield db.saveUser(settings);
+    });
+
+    const setUseLightTheme = value => {
+      self.useLightTheme = value;
+      window.localStorage.setItem("useLightTheme", value ? "1" : "0");
+    };
+
+    return { setUser, saveSettings, setUseLightTheme };
+  })
+  .views(self => ({
+    get Theme() {
+      return GetTheme(self.useLightTheme);
+    },
+
+    get Test() {
+      return self.useLightTheme ? "yes" : "no";
+    }
+  }));
 
 export default ApplicationStore;

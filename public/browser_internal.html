@@ -1,59 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <title>
-        CrosswordsTogether.com
+      CrosswordsTogether.com
     </title>
-    <link href="browser.css" rel="stylesheet">
+
+    <script>
+      var supportedBrowsers = /((CPU[ +]OS|iPhone[ +]OS|CPU[ +]iPhone|CPU IPhone OS)[ +]+(11[_\.]0|11[_\.]([1-9]|\d{2,})|11[_\.]2|11[_\.]([3-9]|\d{2,})|(1[2-9]|[2-9]\d|\d{3,})[_\.]\d+|12[_\.]0|12[_\.]([1-9]|\d{2,})|12[_\.]4|12[_\.]([5-9]|\d{2,})|(1[3-9]|[2-9]\d|\d{3,})[_\.]\d+|13[_\.]0|13[_\.]([1-9]|\d{2,})|(1[4-9]|[2-9]\d|\d{3,})[_\.]\d+)(?:[_\.]\d+)?)|(CFNetwork\/8.* Darwin\/17\.0\.\d+)|(CFNetwork\/8.* Darwin\/17\.2\.\d+)|(CFNetwork\/8.* Darwin\/17\.3\.\d+)|(CFNetwork\/8.* Darwin\/17\.\d+)|(SamsungBrowser\/(9\.2|9\.([3-9]|\d{2,})|([1-9]\d|\d{3,})\.\d+|10\.1|10\.([2-9]|\d{2,})|(1[1-9]|[2-9]\d|\d{3,})\.\d+))|(Edge\/(17(?:\.0)?|17(?:\.([1-9]|\d{2,}))?|(1[8-9]|[2-9]\d|\d{3,})(?:\.\d+)?))|(HeadlessChrome((?:\/49\.0\.\d+)?|(?:\/49\.([1-9]|\d{2,})\.\d+)?|(?:\/([5-9]\d|\d{3,})\.\d+\.\d+)?|(?:\/61\.0\.\d+)?|(?:\/61\.([1-9]|\d{2,})\.\d+)?|(?:\/(6[2-9]|[7-9]\d|\d{3,})\.\d+\.\d+)?|(?:\/63\.0\.\d+)?|(?:\/63\.([1-9]|\d{2,})\.\d+)?|(?:\/(6[4-9]|[7-9]\d|\d{3,})\.\d+\.\d+)?|(?:\/71\.0\.\d+)?|(?:\/71\.([1-9]|\d{2,})\.\d+)?|(?:\/(7[2-9]|[8-9]\d|\d{3,})\.\d+\.\d+)?))|((Chromium|Chrome)\/(49\.0|49\.([1-9]|\d{2,})|([5-9]\d|\d{3,})\.\d+|61\.0|61\.([1-9]|\d{2,})|(6[2-9]|[7-9]\d|\d{3,})\.\d+|63\.0|63\.([1-9]|\d{2,})|(6[4-9]|[7-9]\d|\d{3,})\.\d+|71\.0|71\.([1-9]|\d{2,})|(7[2-9]|[8-9]\d|\d{3,})\.\d+)(?:\.\d+)?([\d.]+$|.*Safari\/(?![\d.]+ Edge\/[\d.]+$)))|(Version\/(11\.1|11\.([2-9]|\d{2,})|(1[2-9]|[2-9]\d|\d{3,})\.\d+|12\.0|12\.([1-9]|\d{2,})|(1[3-9]|[2-9]\d|\d{3,})\.\d+|13\.0|13\.([1-9]|\d{2,})|(1[4-9]|[2-9]\d|\d{3,})\.\d+)(?:\.\d+)?.*Safari\/)|(Firefox\/(68\.0|68\.([1-9]|\d{2,})|(69|[7-9]\d|\d{3,})\.\d+)\.\d+)|(Firefox\/(68\.0|68\.([1-9]|\d{2,})|(69|[7-9]\d|\d{3,})\.\d+)(pre|[ab]\d+[a-z]*)?)/;
+
+      var internalBrowsers = /Instagram|Snapchat|Pinterest|FBAV|FB_IAB/;
+      if (!supportedBrowsers.test(navigator.userAgent)) {
+        console.log("bad browser");
+        window.location.replace("/browser.html");
+      } else if (!internalBrowsers.test(navigator.userAgent)) {
+        let idx = window.location.href.indexOf("?");
+        let redir = idx > 0 ? window.location.href.substr(idx + 1) : "/";
+        window.location.replace(redir);
+      }
+    </script>
+    <link href="browser.css" rel="stylesheet" />
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <!-- <link href="https://fonts.googleapis.com/css?family=Rubik&display=swap" rel="stylesheet"> -->
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
     <meta name="theme-color" content="#000000" />
-    <meta name="description" content="Solve crossword puzzles together with your friends!" />
-</head>
+    <meta
+      name="description"
+      content="Solve crossword puzzles together with your friends!"
+    />
+  </head>
 
-<body>
+  <body>
     <div class="container">
-        <script>
-            //document.write("your browser ua is " + navigator.userAgent)
-
-        </script>
-        <div class="row">
-            <div class="sideBar">
-
+      <script>
+        //document.write("your browser ua is " + navigator.userAgent)
+      </script>
+      <div class="row">
+        <div class="sideBar"></div>
+        <div class="notice">
+          <div>
+            <div class="line1">
+              <span class="bold">To continue</span>, open this site<br />
+              in your regular browser:
             </div>
-            <div class="notice">
-                <div>
-                    <div class="line1">
-                        <span class="bold">To continue</span>, open this site<br /> in your regular browser:
-                    </div>
-                </div>
-                <div class="cell">
-                    <div style="margin-right: -50px">
-                        1. Tap the menu button
-                    </div>
-                </div>
-                <div class="cell" colspan="2">2. Select <span class="menuItem">Open&nbsp;in...</span>
-                    or <span class="menuItem">Open&nbsp;with...</span></div>
+          </div>
+          <div class="cell">
+            <div style="margin-right: -50px">
+              1. Tap the menu button
             </div>
+          </div>
+          <div class="cell" colspan="2">
+            2. Select <span class="menuItem">Open&nbsp;in...</span> or
+            <span class="menuItem">Open&nbsp;with...</span>
+          </div>
+        </div>
 
-            <div class="sideBar" style="padding-right: 16px">
-                <div class="arrow">
-                </div>
-            </div>
+        <div class="sideBar" style="padding-right: 16px">
+          <div class="arrow"></div>
         </div>
-        <div class="logo">
-        </div>
-        <div class="tagline">
-            It's more fun together!
-        </div>
-        <!-- <div maxWidth="256px" maxHeight="256px">
+      </div>
+      <div class="logo"></div>
+      <div class="tagline">
+        It's more fun together!
+      </div>
+      <!-- <div maxWidth="256px" maxHeight="256px">
             <img width="100%" src="/logo512.png" />
         </div> -->
     </div>
-</body>
-
+  </body>
 </html>

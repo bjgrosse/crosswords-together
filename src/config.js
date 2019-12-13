@@ -1,4 +1,3 @@
-
-export default  {
-    appName: 'Crosswords Together'
-}
+export default {
+  appName: "Crosswords Together"
+};

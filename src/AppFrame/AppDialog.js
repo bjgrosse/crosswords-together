@@ -1,51 +1,67 @@
-import React, { useContext, useState, useEffect } from 'react';
-import AppBar from './AppBar'
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import { Div } from '../UI/StyledComponents'
+import React, { useContext, useState, useEffect, useRef } from "react";
+import { Route, useHistory, withRouter } from "react-router-dom";
+import AppBar from "./AppBar";
+import Button from "@material-ui/core/Button";
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import { Div } from "../UI/StyledComponents";
+import useSafeHandler from "Utility/useSafeHandler";
 const AppDialog = props => {
-    return (
-        <Dialog
-            fullScreen={props.fullScreen}
-            open={props.open}
-            onClose={props.handleCancel} aria-labelledby="dialog-title">
-            {props.title && <DialogTitle id="dialog-title">{props.title}</DialogTitle>}
+  const history = useHistory();
 
-            {props.fullScreen &&
-                <AppBar contextBar={props.contextBar} />
-            }
+  useEffect(() => {
+    if (props.open) {
+      window.history.pushState({}, null, null);
+      window.onpopstate = e => {
+        if (props.open) {
+          props.handleCancel();
+        }
+      };
+    }
+  }, [props.open]);
 
-            <DialogContent>
-                {props.text &&
-                    <DialogContentText>
-                        {props.text}
-                    </DialogContentText>
-                }
-                {props.children}
-            </DialogContent >
-            {(!props.hideActions || props.actions !== undefined) &&
-                <DialogActions>
-                    {props.actions ?
-                        props.actions
+  const handleCancel = useSafeHandler(() => {
+    props.handleCancel();
+    history.goBack();
+  });
 
-                        :
-                        <>
-                            <Button onClick={props.handleCancel} >
-                                Cancel
-                            </Button>
-                            <Button onClick={props.handleSave} >
-                                {props.saveText || 'Save'}
-                            </Button>
-                        </>
-                    }
+  return (
+    <Dialog
+      fullScreen={props.fullScreen}
+      open={props.open}
+      onClose={handleCancel}
+      aria-labelledby="dialog-title"
+    >
+      {props.title && (
+        <DialogTitle id="dialog-title">{props.title}</DialogTitle>
+      )}
 
-                </DialogActions>
-            }
-        </Dialog>
-    );
-}
+      {props.fullScreen && <AppBar contextBar={props.contextBar} />}
+
+      <DialogContent>
+        {props.text && <DialogContentText>{props.text}</DialogContentText>}
+        {props.children}
+      </DialogContent>
+      {(!props.hideActions || props.actions !== undefined) && (
+        <DialogActions>
+          {props.actions ? (
+            props.actions
+          ) : (
+            <>
+              <Button color="primary" onClick={handleCancel}>
+                Cancel
+              </Button>
+              <Button color="primary" onClick={props.handleSave}>
+                {props.saveText || "Save"}
+              </Button>
+            </>
+          )}
+        </DialogActions>
+      )}
+    </Dialog>
+  );
+};
 export default AppDialog;

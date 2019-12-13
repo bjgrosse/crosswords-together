@@ -1,120 +1,103 @@
-import React, { Fragment } from 'react';
-import { Switch, Route, Redirect, withRouter } from 'react-router-dom'
-import { observer } from 'mobx-react'
+import React from "react";
+import { Switch, Route, Redirect, withRouter } from "react-router-dom";
+import { observer } from "mobx-react";
 
-import * as firebase from 'firebase/app';
-import 'firebase/auth';
+import * as firebase from "firebase/app";
+import "firebase/auth";
 
-import { AppContext } from './AppContext';
+import { AppContext } from "./AppContext";
 
-import './AppFrame.css';
-import '../Theme/Theme.css';
-import { AppRoot, AppCanvas, PageContainer, AppBanner } from "Theme/AppFrameComponents"
-import { Div } from "UI/StyledComponents"
-import Placeholder from "UI/Placeholder"
+import "./AppFrame.css";
+import "../Theme/Theme.css";
+import { AppRoot, AppCanvas, PageContainer } from "Theme/AppFrameComponents";
+import { Div } from "UI/StyledComponents";
+import Placeholder from "UI/Placeholder";
 
-import AppSnackBar from './AppSnackBar'
-import LoadingContainer from './LoadingContainer'
-import AppBar from './AppBar';
-import Login from './Login'
+import AppSnackBar from "./AppSnackBar";
+import LoadingContainer from "./LoadingContainer";
+import AppBar from "./AppBar";
+import Login from "./Login";
 
-import posed, { PoseGroup } from 'react-pose'
+import posed from "react-pose";
 
 const RouteContainer = posed(PageContainer)({
   enter: {
     x: 0,
-    opacity: 1,
+    opacity: 1
   },
   exit: {
     x: -300,
     opacity: 0
   }
-})
+});
 
 class AppFrame extends React.Component {
-
-
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       isLoading: true
-    }
+    };
 
     this.bannerRef = React.createRef();
     this.handlePopState = this.handlePopState.bind(this);
   }
 
-
   // Listen to the Firebase Auth state and set the local state.
   componentDidMount() {
-    this.context.setUser(firebase.auth().user)
-    this.unregisterAuthObserver = firebase.auth().onAuthStateChanged(
-      (user) => {
-        this.context.setUser(user)
-        this.setState({ isLoading: false });
-      }
-    );
+    this.context.appState.setUser(firebase.auth().user);
+    this.unregisterAuthObserver = firebase.auth().onAuthStateChanged(user => {
+      this.setState({ isLoading: true });
+      this.context.appState
+        .setUser(user)
+        .then(() => this.setState({ isLoading: false }));
+    });
     window.onpopstate = this.handlePopState;
-
-
   }
 
   // Make sure we un-register Firebase observers when the component unmounts.
   componentWillUnmount() {
-    this.unregisterAuthObserver();
-
+    if (this.unregisterAuthObserver) {
+      this.unregisterAuthObserver();
+    }
   }
 
   handlePopState(event) {
-    console.log(event)
+    // console.log(event);
   }
 
   logout = () => {
-    if (this.context.user) {
+    if (this.context.appState.user) {
       firebase.auth().signOut(); //.then(()=> this.props.history.push('/login'));
       return <div>Logging out...</div>;
-
     } else {
-      return <Redirect to="/" />
+      return <Redirect to="/" />;
     }
-  }
-
-  handleBack = () => {
-    if (window.history.state && window.history.state.appBarCanGoBack) {
-      this.props.history.goBack()
-    } else {
-      this.props.history.push("/")
-    }
-
-  }
-
+  };
 
   render() {
-    console.log(window.history.state)
-    let context = this.context
+    let context = this.context;
     if (this.state.isLoading) {
       return (
-
         <AppRoot>
-          <LoadingContainer isLoading={true}/>
+          <LoadingContainer isLoading={true} />
         </AppRoot>
-      )
+      );
     } else {
       let routes = [
-        <Route key="login" path='/login' >
-          {this.context.user ?
-            <Redirect to="/" />
-            :
-            <Login />
-          }
+        <Route key="login" path="/login">
+          {this.context.user ? <Redirect to="/" /> : <Login />}
         </Route>,
-        <Route key="logout" path='/logout' render={this.logout} />
-      ]
+        <Route key="logout" path="/logout" render={this.logout} />
+      ];
 
-      routes.push(this.props.getRoutes())
+      routes.push(this.props.getRoutes());
 
       //catch all
-      routes.push(<Route key="catchall"><Login /></Route>)
+      routes.push(
+        <Route key="catchall">
+          <Login />
+        </Route>
+      );
 
       return (
         <AppRoot>
@@ -122,19 +105,17 @@ class AppFrame extends React.Component {
             <AppCanvas>
               <>
                 <AppBar
-                  config={context.AppFrameState.appBar}
+                  config={context.appFrameState.appBar}
                   setContentNodeRef={context.setAppBarContentNode}
                   setActionsNodeRef={context.setAppBarActionsNode}
-                  handleBack={this.handleBack}
-                  menuItems={this.props.menuItems} />
+                  handleBack={this.context.goBack}
+                  menuItems={this.props.menuItems}
+                />
 
                 <Placeholder onDomNodeLoaded={context.setBannerNode} />
                 <Div grow relative>
                   <RouteContainer key={this.props.location.key}>
-
-                    <Switch>
-                      {routes}
-                    </Switch>
+                    <Switch>{routes}</Switch>
                   </RouteContainer>
                 </Div>
               </>
@@ -147,7 +128,6 @@ class AppFrame extends React.Component {
   }
 }
 
-AppFrame.contextType = AppContext
+AppFrame.contextType = AppContext;
 
 export default withRouter(observer(AppFrame));
-

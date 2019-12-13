@@ -1,42 +1,41 @@
-import { types, flow, getParentOfType } from 'mobx-state-tree'
+import { types, flow, getParentOfType } from "mobx-state-tree";
 
+const AppBar = types.model("AppBar", {
+  hideAppBar: false,
+  showMenu: false,
+  showBackButton: false
+});
 
-const AppBar = types.model('AppBar', {
-    hideAppBar: false,
-    showMenu: false,
-    showBackButton: false
-})
-
-export const AppFrameStore = types.model('ApplicationStore', {
+export const AppFrameStore = types
+  .model("ApplicationStore", {
     appBar: types.maybe(AppBar),
     snackBarMessage: types.maybe(types.string),
     pushNotificationsAllowed: false
-}).actions(self => {
+  })
+  .actions(self => {
     function setAppBar(bar) {
-        self.appBar = AppBar.create(bar)
+      self.appBar = AppBar.create(bar);
     }
 
-    function setPushNotificationsAllowed (value){
-        self.pushNotificationsAllowed = value
+    function setPushNotificationsAllowed(value) {
+      self.pushNotificationsAllowed = value;
     }
 
     function setSnackBarMessage(value) {
-        self.snackBarMessage = value
+      self.snackBarMessage = value;
     }
 
     function closeSnackBar() {
-        self.snackBarMessage = undefined
+      self.snackBarMessage = undefined;
     }
-    
+
     return {
-        setAppBar,
-        setPushNotificationsAllowed,
-        setSnackBarMessage,
-        closeSnackBar
-    }
-}).views(self => ({
+      setAppBar,
+      setPushNotificationsAllowed,
+      setSnackBarMessage,
+      closeSnackBar
+    };
+  })
+  .views(self => ({}));
 
-}))
-
-export default AppFrameStore
-
+export default AppFrameStore;

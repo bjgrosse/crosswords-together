@@ -1,30 +1,29 @@
+import React from "react";
+import AddIcon from "@material-ui/icons/Add";
+import HomeIcon from "@material-ui/icons/Home";
+import SettingsIcon from "@material-ui/icons/Settings";
+import LogoutIcon from "@material-ui/icons/ExitToApp";
 
-import React from 'react';
-import AddIcon from '@material-ui/icons/Add';
-import HomeIcon from '@material-ui/icons/Home';
-import SettingsIcon from '@material-ui/icons/Settings';
-import LogoutIcon from '@material-ui/icons/ExitToApp';
+const MenuItems = function() {
+  let lists = [];
 
-const MenuItems = function () {
+  function addList(names, icons, routes) {
+    lists.push(
+      names.map((name, index) => {
+        return { text: name, icon: icons[index], route: routes[index] };
+      })
+    );
+  }
 
-    let lists = [];
+  addList(
+    ["Home", "Settings"],
+    [() => <HomeIcon />, () => <SettingsIcon />],
+    ["/", "/settings"]
+  );
 
-    function addList(names, icons, routes) {
-        lists.push(names.map((name, index) => {
-            return { text: name, icon: icons[index], route: routes[index] }
-        }))
-    }
+  addList(["Log out"], [() => <LogoutIcon />], ["/logout"]);
 
-    addList(['Home', 'Settings'],
-        [() => <HomeIcon />, () => <SettingsIcon />],
-        ['/', '/settings']);
-
-
-    addList(['Log out'],
-        [() => <LogoutIcon />],
-        ['/logout']);
-
-    return lists;
-}
+  return lists;
+};
 
 export default MenuItems();
