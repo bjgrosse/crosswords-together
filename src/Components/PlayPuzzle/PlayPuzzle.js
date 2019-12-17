@@ -16,11 +16,13 @@ import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import PeopleIcon from "@material-ui/icons/GroupAdd";
+import ColorLensIcon from "@material-ui/icons/ColorLens";
 
 // UI
 import { Div, Paper, SubTitle2, Span } from "UI/StyledComponents";
 import { IconButton, Button } from "UI/MaterialComponents";
 import Drawer from "UI/Drawer/Drawer";
+import MenuButton from "UI/MenuButton";
 import { getRandomPlayerColor } from "Theme/Colors";
 
 // App Frame
@@ -47,7 +49,7 @@ export default observer(props => {
     history.push(path);
   }
 
-  let disposeAutoRun = () => {};
+  let disposeAutoRun = () => { };
   useEffect(() => {
     return () => {
       disposeAutoRun();
@@ -280,6 +282,14 @@ export default observer(props => {
       <AppFrameConfig
         appBarContent={store.puzzle && store.puzzle.title}
         appBarActions={[
+          <MenuButton
+            renderButton={(onClick, ref) => (
+              <IconButton ref={ref}>
+                <ColorLensIcon onClick={onClick} />
+              </IconButton>
+            )}
+            renderMenuItems={onClick => <Div />}
+          />,
           <IconButton
             key="players"
             display={{ xs: "block", md: "none" }}

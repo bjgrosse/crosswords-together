@@ -42,6 +42,9 @@ const ClueLists = observer(props => {
 
   const handleChange = (event, newValue) => {
     setSelectedList(wordLists[newValue]);
+    props.puzzle.setDefaultWordDirection(
+      wordLists[newValue].title === "Across" ? "h" : "v"
+    );
   };
 
   const sizeChanged = new ResizeObserver((entries, observer) => {

@@ -14,6 +14,9 @@
         window.location.replace("/browser.html");
       } else if (!internalBrowsers.test(navigator.userAgent)) {
         window.location.replace(window.location.search.substr(1));
+      } else {
+        var arrowLeft = /Snapchat/.test(navigator.userAgent);
+        var arrowRight = /Instagram|FBAV|FB_IAB/.test(navigator.userAgent);
       }
     </script>
     <link href="browser.css" rel="stylesheet" />
@@ -37,7 +40,13 @@
         //document.write("your browser ua is " + navigator.userAgent)
       </script>
       <div class="row">
-        <div class="sideBar"></div>
+        <div class="sideBar" style="padding-left: 16px">
+          <script>
+            if (arrowLeft) {
+              document.write('<div class="arrow flip"></div>');
+            }
+          </script>
+        </div>
         <div class="notice">
           <div>
             <div class="line1">
@@ -57,7 +66,11 @@
         </div>
 
         <div class="sideBar" style="padding-right: 16px">
-          <div class="arrow"></div>
+          <script>
+            if (arrowRight) {
+              document.write('<div class="arrow "></div>');
+            }
+          </script>
         </div>
       </div>
       <div class="logo"></div>

@@ -92,6 +92,11 @@ const Word = types
       self.isSelected = value;
       self.cells.forEach(x => (x.isSelected = value));
 
+      if (value) {
+        let parent = getParentOfType(self, Puzzle);
+        parent.defaultWordDirection = self.id.substr(0, 1);
+      }
+
       // If we're being deselected
       // push any changes to the server
       if (!value) {
@@ -181,10 +186,11 @@ const Puzzle = types
     players: types.array(Player),
     invitationLinks: types.map(types.string),
     template: PuzzleTemplate,
-    lastCompletedWord: types.maybe(types.reference(Word))
+    lastCompletedWord: types.maybe(types.reference(Word)),
+    defaultWordDirection: "h"
   })
   .actions(self => {
-    function selectCell(cell, selectedDirectly, preferVertical) {
+    function selectCell(cell, selectedDirectly) {
       if (cell.isBlocked || !self.isActivePlayer) return;
 
       if (self.focusedCell && self.focusedCell !== cell) {
@@ -203,12 +209,13 @@ const Puzzle = types
           (cell.horizontalWord !== currentWordId &&
             cell.verticalWord !== currentWordId)
         ) {
-          // If we have the horizontal word already selected, or we're instructed to
-          // select the vertical word by default and we don't already have the vertical word selected..
+          // If we have the horizontal word already selected, or the currently selected word is vertical,
+          // then select the vertical
           if (
             currentWordId == cell.horizontalWord ||
             !cell.horizontalWord ||
-            (preferVertical && currentWordId !== cell.verticalWord)
+            (self.defaultWordDirection === "v" &&
+              currentWordId !== cell.verticalWord)
           ) {
             newSelectedWord = cell.verticalWord;
           } else {
@@ -229,6 +236,9 @@ const Puzzle = types
       self.focusedCell = cell;
     }
 
+    function setDefaultWordDirection(direction) {
+      self.defaultWordDirection = direction;
+    }
     function selectWord(word) {
       if (self.selectedWord) self.selectedWord.setSelected(false);
       word.setSelected(true);
@@ -457,7 +467,8 @@ const Puzzle = types
       getInviteLink,
       acceptInvitation,
       leaveGame,
-      loadActivity
+      loadActivity,
+      setDefaultWordDirection
     };
   })
   .views(self => ({

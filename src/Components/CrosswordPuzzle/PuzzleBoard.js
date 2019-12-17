@@ -135,7 +135,7 @@ export default observer(props => {
     if (e.ctrlKey && props.puzzle.editMode) {
       props.puzzle.toggleCellBlocked(cell);
     } else {
-      props.puzzle.selectCell(cell, true, e.button === 2);
+      props.puzzle.selectCell(cell, true);
     }
   };
   return (
