@@ -15,8 +15,8 @@ import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
-import PeopleIcon from "@material-ui/icons/GroupAdd";
-import ColorLensIcon from "@material-ui/icons/ColorLens";
+import PeopleIcon from "@material-ui/icons/PeopleAlt";
+import AddPeopleIcon from "@material-ui/icons/GroupAdd";
 
 // UI
 import { Div, Paper, SubTitle2, Span } from "UI/StyledComponents";
@@ -33,6 +33,8 @@ import PuzzleStore from "Stores/PuzzleStore";
 
 import Puzzle from "../CrosswordPuzzle/CrosswordPuzzle";
 import PlayerList from "./PlayerList";
+import PlayerColorPicker from "./PlayerColorPicker";
+import AddPlayer from "./AddPlayer";
 
 export default observer(props => {
   const store = useRunOnce(() => PuzzleStore.create());
@@ -41,15 +43,23 @@ export default observer(props => {
   const [playerListOpen, setPlayerListOpen] = useState(false);
   const [showNotificationBanner, setShowNotificationBanner] = useState(false);
   const [invitationSender, setInvitationSender] = useState();
-
+  const [addPlayerOpen, setAddPlayerOpen] = React.useState(false);
   const { id, templateId } = useParams();
+
+  const addPlayer = () => {
+    setAddPlayerOpen(true);
+  };
+
+  const handleAddPlayerClose = () => {
+    setAddPlayerOpen(false);
+  };
 
   const history = useHistory();
   function navigateTo(path) {
     history.push(path);
   }
 
-  let disposeAutoRun = () => { };
+  let disposeAutoRun = () => {};
   useEffect(() => {
     return () => {
       disposeAutoRun();
@@ -232,10 +242,62 @@ export default observer(props => {
     }
   }
 
+  const playersButton =
+    store.puzzle && store.puzzle.players.length > 1 ? (
+      <IconButton
+        key="players"
+        display={{ xs: "block", md: "none" }}
+        size="small"
+        onClick={() => setPlayerListOpen(!playerListOpen)}
+      >
+        <PeopleIcon />
+      </IconButton>
+    ) : (
+      <IconButton
+        key="players"
+        display={{ xs: "block", md: "none" }}
+        size="small"
+        onClick={addPlayer}
+      >
+        <AddPeopleIcon />
+      </IconButton>
+    );
+
   return (
-    <>
-      <LoadingContainer key="loadingPuzzle" provideWorkPromise={fetchPuzzle}>
-        {store.puzzle ? (
+    <LoadingContainer key="loadingPuzzle" provideWorkPromise={fetchPuzzle}>
+      {store.puzzle && (
+        <AppFrameConfig
+          appBarContent={store.puzzle && store.puzzle.title}
+          appBarActions={[
+            <PlayerColorPicker player={store.puzzle.currentPlayer} />,
+            playersButton
+          ]}
+          banners={[
+            {
+              show: showNotificationBanner,
+              content:
+                "Turn on notifications to be alerted when a teammate makes progress or sends a message",
+              content: "Do you want notifications of activity from teammates?",
+              actions: [
+                <Button
+                  key="no"
+                  onClick={hideNotificationBanner}
+                  color="secondary"
+                  fontWeight="normal"
+                >
+                  no, thanks
+                </Button>,
+                <Button
+                  key="yes"
+                  onClick={turnOnNotifications}
+                  color="secondary"
+                >
+                  Yes
+                </Button>
+              ]
+            }
+          ]}
+        >
           <Div id="PlayPuzzle" full flex>
             <Div
               display={{ xs: "none", md: "block" }}
@@ -276,51 +338,14 @@ export default observer(props => {
                 }
               />
             </Div>
+            <AddPlayer
+              puzzle={store.puzzle}
+              open={addPlayerOpen}
+              handleClose={handleAddPlayerClose}
+            />
           </Div>
-        ) : null}
-      </LoadingContainer>
-      <AppFrameConfig
-        appBarContent={store.puzzle && store.puzzle.title}
-        appBarActions={[
-          <MenuButton
-            renderButton={(onClick, ref) => (
-              <IconButton ref={ref}>
-                <ColorLensIcon onClick={onClick} />
-              </IconButton>
-            )}
-            renderMenuItems={onClick => <Div />}
-          />,
-          <IconButton
-            key="players"
-            display={{ xs: "block", md: "none" }}
-            size="small"
-            onClick={() => setPlayerListOpen(!playerListOpen)}
-          >
-            <PeopleIcon />
-          </IconButton>
-        ]}
-        banners={[
-          {
-            show: showNotificationBanner,
-            content:
-              "Turn on notifications to be alerted when a teammate makes progress or sends a message",
-            content: "Do you want notifications of activity from teammates?",
-            actions: [
-              <Button
-                key="no"
-                onClick={hideNotificationBanner}
-                color="secondary"
-                fontWeight="normal"
-              >
-                no, thanks
-              </Button>,
-              <Button key="yes" onClick={turnOnNotifications} color="secondary">
-                Yes
-              </Button>
-            ]
-          }
-        ]}
-      />
-    </>
+        </AppFrameConfig>
+      )}
+    </LoadingContainer>
   );
 });

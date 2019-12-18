@@ -12,7 +12,7 @@ const DrawerDiv = posed(styled.div`
   bottom: 0px;
   top: 0px;
   background: ${({ color, theme }) =>
-    color || theme.palette.background.default || "white"};
+    color || theme.palette.background.paper || "white"};
   box-shadow: 0px 0px 50px 0px rgb(0, 0, 0, 0.5);
 `)({
   show: {

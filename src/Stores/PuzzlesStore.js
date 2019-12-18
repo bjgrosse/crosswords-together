@@ -62,7 +62,19 @@ const PuzzlesStore = types
       return data.map(x => Template.create(x));
     }
     function mapPuzzleData(data) {
-      data.sort((x, y) => (x.lastActivityDate > y.lastActivityDate ? 0 : -1));
+      data.sort((x, y) => {
+        if (x.percentComplete < 100 && y.percentComplete === 100) {
+          return -1;
+        } else if (y.percentComplete < 100 && x.percentComplete === 100) {
+          return 1;
+        } else {
+          if (x.lastActivityDate > y.lastActivityDate || !y.lastActivityDate) {
+            return -1;
+          } else {
+            return 1;
+          }
+        }
+      });
       return data.map(x => Puzzle.create(x));
     }
     const fetch = flow(function*(id) {
