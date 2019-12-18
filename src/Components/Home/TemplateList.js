@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import AddIcon from "@material-ui/icons/OpenInBrowser";
 import List from "@material-ui/core/List";
@@ -14,6 +14,7 @@ import CreateNewTemplate from "../EditTemplate/CreateNewTemplate";
 import { levelColors } from "Theme/Colors";
 import { Avatar } from "UI/MaterialComponents/MaterialComponents";
 import styled from "styled-components";
+import { AppContext } from "AppFrame/AppContext";
 
 const LevelLabel = styled.span`
   background: ${p => levelColors[p.level][100]};
@@ -71,6 +72,7 @@ const TemplateListItem = props => {
 
 export default observer(props => {
   const [showCreateNew, setShowCreateNew] = useState(false);
+  const context = useContext(AppContext);
 
   const history = useHistory();
 
@@ -91,9 +93,14 @@ export default observer(props => {
                 " found"}
           </SubTitle1>
         </Div>
-        <Button startIcon={<AddIcon />} onClick={() => setShowCreateNew(true)}>
-          Create
-        </Button>
+        {context.appState.user.isAdmin && (
+          <Button
+            startIcon={<AddIcon />}
+            onClick={() => setShowCreateNew(true)}
+          >
+            Create
+          </Button>
+        )}
       </Div>
       <Paper>
         <List component="nav" aria-labelledby="nested-list-subheader">

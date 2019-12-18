@@ -18,11 +18,6 @@ const Puzzle = types
     percentComplete: 0
   })
   .actions(self => ({
-    acceptInvitation: () => {
-      let promise = db.acceptInvitation(self.pendingInvitationId);
-      self.players.find(x => x.id === db.getCurrentUserId()).pending = false;
-      return promise;
-    },
     delete: () => {
       getParentOfType(self, PuzzlesStore).removePuzzle(self);
       return db.leaveGame(self.id);
@@ -80,11 +75,7 @@ const PuzzlesStore = types
     const fetch = flow(function*(id) {
       if (self.initialized) return;
 
-      yield Promise.all([
-        fetchPuzzles(),
-        fetchMyTemplates(),
-        fetchPublicTemplates()
-      ]);
+      yield Promise.all([fetchPuzzles()]);
       self.initialized = true;
     });
 
@@ -92,23 +83,7 @@ const PuzzlesStore = types
       let data = yield db.getMyPuzzles(self.updatePuzzles);
       self.puzzles = mapPuzzleData(data);
     });
-    const fetchMyTemplates = flow(function*() {
-      let templateData = yield db.getMyTemplates(self.updateMyTemplates);
-      self.myTemplates = mapTemplateData(templateData);
-    });
-    const fetchPublicTemplates = flow(function*() {
-      let templateData = yield db.getPublicTemplates(
-        self.updatePublicTemplates
-      );
-      self.publicTemplates = mapTemplateData(templateData);
-    });
 
-    const updatePublicTemplates = data => {
-      self.publicTemplates = mapTemplateData(data);
-    };
-    const updateMyTemplates = data => {
-      self.myTemplates = mapTemplateData(data);
-    };
     const updatePuzzles = data => {
       self.puzzles = mapPuzzleData(data);
     };
@@ -116,12 +91,15 @@ const PuzzlesStore = types
       self.puzzles.remove(puzzle);
     };
 
+    const reset = () => {
+      self.initialized = false;
+      self.puzzles = [];
+    };
     return {
       fetch,
       updatePuzzles,
-      updateMyTemplates,
-      updatePublicTemplates,
-      removePuzzle
+      removePuzzle,
+      reset
     };
   })
   .views(self => ({

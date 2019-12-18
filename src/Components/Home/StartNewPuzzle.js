@@ -108,7 +108,7 @@ const store = TemplatesStore.create();
 
 const StartNewPuzzle = observer(props => {
   return (
-    <AppFrameConfig appBarContent="Start a new puzzle">
+    <AppFrameConfig appBarContent="Select a puzzle">
       <LoadingContainer provideWorkPromise={store.fetch}>
         <FilterContainer>
           {store.filters.map(x => (

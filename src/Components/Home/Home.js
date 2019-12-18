@@ -13,13 +13,12 @@ import WelcomeMessage from "./WelcomeMessage";
 import NewPuzzleMessage from "./NewPuzzleMessage";
 import { Typography } from "@material-ui/core";
 import InlineLogo from "./InlineLogo";
-const store = PuzzlesStore.create();
 
 function Home(props) {
   const context = useContext(AppContext);
 
   const loadPuzzles = async () => {
-    await store.fetch();
+    await context.appState.puzzlesStore.fetch();
   };
 
   let content;
@@ -28,24 +27,24 @@ function Home(props) {
       <LoadingContainer provideWorkPromise={loadPuzzles}>
         <Fragment>
           <Div fullWidth>
-            {store.puzzles.length == 0 ? (
+            {context.appState.puzzlesStore.puzzles.length == 0 ? (
               <WelcomeMessage />
             ) : (
               <NewPuzzleMessage />
             )}
 
-            {store.pendingInvitations.length > 0 && (
+            {context.appState.puzzlesStore.pendingInvitations.length > 0 && (
               <PuzzleList
                 key="invites"
-                puzzles={store.pendingInvitations}
+                puzzles={context.appState.puzzlesStore.pendingInvitations}
                 title="Pending invitations..."
               />
             )}
 
-            {store.activePuzzles.length > 0 && (
+            {context.appState.puzzlesStore.activePuzzles.length > 0 && (
               <PuzzleList
                 key="active"
-                puzzles={store.activePuzzles}
+                puzzles={context.appState.puzzlesStore.activePuzzles}
                 title="My puzzles..."
               />
             )}

@@ -1,10 +1,13 @@
 import { types, flow } from "mobx-state-tree";
 import GetTheme from "Theme/Theme";
 import db from "Database";
+import PuzzlesStore from "./PuzzlesStore";
+
 const User = types.model("User", {
   displayName: types.maybe(types.string),
   email: types.maybe(types.string),
-  preferredColors: types.maybe(types.array(types.string))
+  preferredColors: types.maybe(types.array(types.string)),
+  isAdmin: false
 });
 
 const GetUseLightTheme = function() {
@@ -20,9 +23,14 @@ const GetUseLightTheme = function() {
 const ApplicationStore = types
   .model("ApplicationStore", {
     user: types.maybe(User),
-    useLightTheme: GetUseLightTheme()
+    useLightTheme: GetUseLightTheme(),
+    puzzlesStore: types.maybe(PuzzlesStore)
   })
   .actions(self => {
+    function afterCreate() {
+      self.puzzlesStore = PuzzlesStore.create();
+    }
+
     const updateUser = userData => {
       self.user = User.create(userData);
     };
@@ -30,6 +38,7 @@ const ApplicationStore = types
     const setUser = flow(function*(user) {
       if (!user) {
         self.user = undefined;
+        if (self.puzzlesStore) self.puzzlesStore.reset();
       } else {
         self.updateUser(yield db.getUser(user.uid, self.updateUser));
       }
@@ -45,7 +54,7 @@ const ApplicationStore = types
       window.localStorage.setItem("useLightTheme", value ? "1" : "0");
     };
 
-    return { setUser, saveSettings, setUseLightTheme, updateUser };
+    return { setUser, saveSettings, setUseLightTheme, updateUser, afterCreate };
   })
   .views(self => ({
     get Theme() {

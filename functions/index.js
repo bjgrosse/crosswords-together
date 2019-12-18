@@ -157,13 +157,9 @@ const acceptInvitation = async (data, context) => {
 
   const puzzleRef = db.collection("puzzles").doc(invitation.puzzleId);
   const puzzle = (await puzzleRef.get()).data();
+  const userRef = db.collection("users").doc(acceptingUserId);
 
-  const user = (
-    await db
-      .collection("users")
-      .doc(acceptingUserId)
-      .get()
-  ).data();
+  const user = (await userRef.get()).data();
 
   let player = puzzle.players.find(x => x.id === acceptingUserId);
 
@@ -184,6 +180,10 @@ const acceptInvitation = async (data, context) => {
       ...player,
       ...{ id: acceptingUserId, pending: false, color: newColor }
     };
+
+    batch.set(userRef.collection("usedTemplateIds").doc(puzzle.templateId), {
+      date: Date.now()
+    });
 
     if (needToAddPlayerId) {
       let user = await admin.auth().getUser(acceptingUserId);
@@ -267,9 +267,6 @@ const connectInvitation = async (data, context) => {
 
   const batch = db.batch();
 
-  batch.create(userRef.collection("usedTemplateIds").doc(templateId), {
-    date: Date.now()
-  });
   batch.update(puzzleRef, {
     players: admin.firestore.FieldValue.arrayUnion(player),
     playerIds: admin.firestore.FieldValue.arrayUnion(acceptingUserId)

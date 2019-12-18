@@ -119,7 +119,7 @@ export default observer(props => {
   };
 
   const handleDecline = () => {
-    context.store.setSnackBarMessage("Invitation declined");
+    context.appFrameState.setSnackBarMessage("Invitation declined");
     store.puzzle.leaveGame();
     navigateTo("/");
   };
@@ -242,8 +242,12 @@ export default observer(props => {
     }
   }
 
+  const currentPlayerPending =
+    store.puzzle &&
+    (!store.puzzle.currentPlayer || store.puzzle.currentPlayer.pending);
   const playersButton =
-    store.puzzle && store.puzzle.players.length > 1 ? (
+    store.puzzle &&
+    (store.puzzle.players.length > 1 || currentPlayerPending) ? (
       <IconButton
         key="players"
         display={{ xs: "block", md: "none" }}
@@ -263,15 +267,17 @@ export default observer(props => {
       </IconButton>
     );
 
+  const playerColorButton = store.puzzle &&
+    store.puzzle.currentPlayer &&
+    !store.puzzle.currentPlayer.pending && (
+      <PlayerColorPicker player={store.puzzle.currentPlayer} />
+    );
   return (
     <LoadingContainer key="loadingPuzzle" provideWorkPromise={fetchPuzzle}>
       {store.puzzle && (
         <AppFrameConfig
           appBarContent={store.puzzle && store.puzzle.title}
-          appBarActions={[
-            <PlayerColorPicker player={store.puzzle.currentPlayer} />,
-            playersButton
-          ]}
+          appBarActions={[playerColorButton, playersButton]}
           banners={[
             {
               show: showNotificationBanner,
