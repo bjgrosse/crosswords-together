@@ -45,7 +45,7 @@ const CellDiv = styled.div`
     if (props.isBlocked) {
       return props.useLightTheme ? "lightgray" : "black";
     } else if (props.isFocused) {
-      return props.useLightTheme ? "#dbd68e" : "rgb(151,151,0)";
+      return props.useLightTheme ? "#fff126" : "rgb(151,151,0)";
     } else if (props.isSelected) {
       return props.useLightTheme ? "#fffcd9" : "rgb(101,101,0)";
     } else if (props.userColor) {

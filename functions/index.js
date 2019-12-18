@@ -89,6 +89,53 @@ const onStartPuzzle = async (snapshot, context) => {
     .doc(templateId)
     .set({ date: Date.now() });
 };
+
+/**
+ * When an invitation record gets created, this function adds a placeholder
+ * player value to the puzzle and sends a notification to the recipient
+ */
+const onUserUpdated = async (snapshot, context) => {
+  const previousName = snapshot.before.data().displayName;
+  const currentName = snapshot.after.data().displayName;
+  const userId = snapshot.before.ref.id;
+
+  console.log("user name change?", userId, previousName, currentName);
+
+  if (previousName !== currentName) {
+    const batch = db.batch();
+    let resp = await db
+      .collection("puzzles")
+      .where("playerIds", "array-contains", userId)
+      .get();
+
+    await Promise.all(
+      resp.docs.map(doc => {
+        return updatePuzzlePlayer(
+          doc.ref,
+          userId,
+          { name: currentName },
+          null,
+          batch,
+          player => player && player.name !== currentName
+        );
+      })
+    );
+
+    resp = await db
+      .collection("invitations")
+      .where("senderId", "==", userId)
+      .get();
+
+    await Promise.all(
+      resp.docs.map(doc => {
+        return batch.update(doc.ref, { senderName: currentName });
+      })
+    );
+
+    return batch.commit();
+  }
+};
+
 /**
  * When an invitation record gets created, this function adds a placeholder
  * player value to the puzzle and sends a notification to the recipient
@@ -143,6 +190,61 @@ const getOptimalColor = (preferredColors, takenColors) => {
   return bestColor;
 };
 
+async function updatePuzzlePlayer(
+  puzzleRef,
+  playerId,
+  data,
+  puzzleData,
+  batch,
+  checkPlayer
+) {
+  if (!puzzleData) {
+    puzzleData = (await puzzleRef.get()).data();
+  }
+
+  let player = puzzleData.players.find(x => x.id === playerId);
+
+  if (checkPlayer && !checkPlayer(player)) {
+    return;
+  }
+
+  let commitBatch = false;
+  if (!batch) {
+    batch = db.batch();
+    commitBatch = true;
+  }
+  if (player) {
+    batch.update(puzzleRef, {
+      players: admin.firestore.FieldValue.arrayRemove(player)
+    });
+  }
+  let needToAddPlayerId = !player || !player.id;
+
+  if (needToAddPlayerId) {
+    let user = await admin.auth().getUser(acceptingUserId);
+    player = { id: playerId, name: user.displayName };
+  }
+
+  let newPlayer = {
+    ...player,
+    ...data
+  };
+
+  let updateData = {
+    players: admin.firestore.FieldValue.arrayUnion(newPlayer)
+  };
+
+  if (needToAddPlayerId) {
+    updateData.playerIds = admin.firestore.FieldValue.arrayUnion(playerId);
+  }
+
+  batch.update(puzzleRef, updateData);
+
+  if (commitBatch) {
+    await batch.commit();
+  }
+}
+
 /**
  * When an invitation record gets created, this function adds a placeholder
  * player value to the puzzle and sends a notification to the recipient
@@ -166,34 +268,22 @@ const acceptInvitation = async (data, context) => {
   if (player) {
     let batch = db.batch();
 
-    batch.update(puzzleRef, {
-      players: admin.firestore.FieldValue.arrayRemove(player)
-    });
-
-    let needToAddPlayerId = !player.id;
     let existingColors = puzzle.players.map(x => x.color);
     let availableColors = user.preferredColors || colors;
-
     let newColor = getOptimalColor(availableColors, existingColors);
+    let playerData = { id: acceptingUserId, pending: false, color: newColor };
 
-    let newPlayer = {
-      ...player,
-      ...{ id: acceptingUserId, pending: false, color: newColor }
-    };
+    await updatePuzzlePlayer(
+      puzzleRef,
+      acceptingUserId,
+      playerData,
+      puzzle,
+      batch
+    );
 
     batch.set(userRef.collection("usedTemplateIds").doc(puzzle.templateId), {
       date: Date.now()
     });
-
-    if (needToAddPlayerId) {
-      let user = await admin.auth().getUser(acceptingUserId);
-      player.name = user.displayName;
-    }
-    batch.update(puzzleRef, {
-      players: admin.firestore.FieldValue.arrayUnion(newPlayer),
-      playerIds: admin.firestore.FieldValue.arrayUnion(acceptingUserId)
-    });
-
     await batch.commit();
   }
 };
@@ -201,29 +291,9 @@ const acceptInvitation = async (data, context) => {
 const updatePlayerColor = async (data, context) => {
   let { id, puzzleId, color } = data;
 
-  const puzzleRef = db.collection("puzzles").doc(puzzleId);
-  const puzzle = (await puzzleRef.get()).data();
-
-  let player = puzzle.players.find(x => x.id === id);
-
-  if (player) {
-    let batch = db.batch();
-
-    batch.update(puzzleRef, {
-      players: admin.firestore.FieldValue.arrayRemove(player)
-    });
-
-    let newPlayer = {
-      ...player,
-      ...{ color: color }
-    };
-
-    batch.update(puzzleRef, {
-      players: admin.firestore.FieldValue.arrayUnion(newPlayer)
-    });
-
-    await batch.commit();
-  }
+  await updatePuzzlePlayer(db.collection("puzzles").doc(puzzleId), id, {
+    color: color
+  });
 };
 /**
  * When a player declines an invitation
@@ -524,6 +594,9 @@ module.exports = {
   onStartPuzzle: functions.firestore
     .document("/puzzles/{uid}")
     .onCreate(onStartPuzzle),
+  onUserUpdated: functions.firestore
+    .document("/users/{uid}")
+    .onUpdate(onUserUpdated),
   acceptInvitation: functions.https.onCall(acceptInvitation),
   saveFcmToken: functions.https.onCall(saveFcmToken),
   sendMessage: functions.https.onCall(sendMessage),

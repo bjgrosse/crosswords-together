@@ -45,7 +45,13 @@ const ApplicationStore = types
     });
 
     const saveSettings = flow(function*(settings) {
+      const nameChanged = settings.displayName !== self.user.displayName;
       self.user = { ...self.user, ...settings };
+
+      if (self.puzzlesStore && nameChanged) {
+        self.puzzlesStore.updateUserName(self.user.displayName);
+      }
+
       yield db.saveUser(settings);
     });
 

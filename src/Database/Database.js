@@ -172,13 +172,18 @@ export default {
       .doc(puzzleId)
       .update(data);
   },
-  savePuzzle: (id, data) => {
+  savePuzzle: (id, data, listenForChanges) => {
     console.log("saving puzzle: ", data);
-    return firebase
+    const ref = firebase
       .firestore()
       .collection("puzzles")
-      .doc(id)
-      .set(data);
+      .doc(id);
+
+    ref.onSnapshot(snapshot => {
+      listenForChanges(snapshot.data());
+    });
+
+    return ref.set(data);
   },
   saveTemplate: (templateId, data, onGotId) => {
     console.log("saving template: ", templateId, data);

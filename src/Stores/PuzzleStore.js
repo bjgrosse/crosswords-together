@@ -288,7 +288,7 @@ const Puzzle = types
         playerIds: self.players.map(x => x.id)
       };
 
-      yield db.savePuzzle(self.id, data);
+      yield db.savePuzzle(self.id, data, self.update);
 
       self.isNew = false;
     });
@@ -455,6 +455,16 @@ const Puzzle = types
       return link;
     });
 
+    const update = puzzleData => {
+      console.log("updating from database");
+      for (const cellId in puzzleData.squares) {
+        let [rowIdx, cellIdx] = cellId.split("|");
+        self.squares[rowIdx][cellIdx].update(puzzleData.squares[cellId]);
+      }
+
+      self.players = puzzleData.players.map(x => Player.create(x));
+    };
+
     return {
       selectCell,
       selectWord,
@@ -468,7 +478,8 @@ const Puzzle = types
       acceptInvitation,
       leaveGame,
       loadActivity,
-      setDefaultWordDirection
+      setDefaultWordDirection,
+      update
     };
   })
   .views(self => ({
@@ -688,14 +699,7 @@ const PuzzleStore = types
 
     function updatePuzzle(puzzleData) {
       if (!self.puzzle) return;
-      console.log("updating from database");
-      for (const cellId in puzzleData.squares) {
-        let [rowIdx, cellIdx] = cellId.split("|");
-        console.log("updating cell: ", rowIdx, cellIdx);
-        self.puzzle.squares[rowIdx][cellIdx].update(puzzleData.squares[cellId]);
-      }
-
-      self.puzzle.players = puzzleData.players.map(x => Player.create(x));
+      self.puzzle.update(puzzleData);
     }
 
     return {

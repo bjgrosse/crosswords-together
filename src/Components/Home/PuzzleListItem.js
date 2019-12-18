@@ -108,6 +108,7 @@ const PuzzleListItem = observer(props => {
         </ListItemAvatar>
         <ListItemText
           color="text.primary"
+          style={{ marginRight: "40px" }}
           primary={
             <Div
               component="span"

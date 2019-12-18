@@ -1,13 +1,19 @@
 import { types, flow, getParentOfType } from "mobx-state-tree";
 import db from "../Database/Database";
 
-const Player = types.model("Player", {
-  id: types.maybe(types.string),
-  name: types.string,
-  color: "Grey",
-  pending: false,
-  invitationId: types.maybe(types.string)
-});
+const Player = types
+  .model("Player", {
+    id: types.maybe(types.string),
+    name: types.string,
+    color: "Grey",
+    pending: false,
+    invitationId: types.maybe(types.string)
+  })
+  .actions(self => ({
+    setDisplayName: name => {
+      self.name = name;
+    }
+  }));
 
 const Puzzle = types
   .model("Puzzle", {
@@ -95,11 +101,26 @@ const PuzzlesStore = types
       self.initialized = false;
       self.puzzles = [];
     };
+
+    const updateUserName = name => {
+      if (self.puzzles) {
+        const currentUserId = db.getCurrentUserId();
+        for (const puzzle of self.puzzles) {
+          puzzle.players.forEach(player => {
+            if (player.id === currentUserId) {
+              player.setDisplayName(name);
+            }
+          });
+        }
+      }
+    };
+
     return {
       fetch,
       updatePuzzles,
       removePuzzle,
-      reset
+      reset,
+      updateUserName
     };
   })
   .views(self => ({
