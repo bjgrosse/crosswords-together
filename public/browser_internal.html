@@ -13,7 +13,9 @@
         console.log("bad browser");
         window.location.replace("/browser.html");
       } else if (!internalBrowsers.test(navigator.userAgent)) {
-        window.location.replace(window.location.search.substr(1));
+        window.location.replace(
+          decodeURIComponent(window.location.search).substr(1)
+        );
       } else {
         var arrowLeft = /Snapchat/.test(navigator.userAgent);
         var arrowRight = /Instagram|FBAV|FB_IAB/.test(navigator.userAgent);

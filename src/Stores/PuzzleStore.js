@@ -682,7 +682,7 @@ const PuzzleStore = types
       return puzzle;
     });
 
-    const fetchInvitation = flow(function*(id) {
+    const fetchInvitation = flow(function*(id, preferredColor) {
       self.invitation = Invitation.create({
         ...(yield db.getInvitation(id)),
         id: id
@@ -692,6 +692,15 @@ const PuzzleStore = types
         yield self.fetch(self.invitation.puzzleId);
 
         if (!self.puzzle.players.find(x => x.id === db.getCurrentUserId())) {
+          let user = db.getCurrentUser();
+          self.puzzle.players.push(
+            Player.create({
+              id: user.uid,
+              name: user.displayName,
+              color: preferredColor,
+              pending: true
+            })
+          );
           db.connectInvitation(id, self.puzzle.id);
         }
       }

@@ -12,7 +12,6 @@ import "../Theme/Theme.css";
 import { AppRoot, AppCanvas, PageContainer } from "Theme/AppFrameComponents";
 import { Div } from "UI/StyledComponents";
 import Placeholder from "UI/Placeholder";
-
 import AppSnackBar from "./AppSnackBar";
 import LoadingContainer from "./LoadingContainer";
 import AppBar from "./AppBar";
@@ -54,20 +53,17 @@ class AppFrame extends React.Component {
     window.onpopstate = this.handlePopState;
   }
 
-  // Make sure we un-register Firebase observers when the component unmounts.
   componentWillUnmount() {
     if (this.unregisterAuthObserver) {
       this.unregisterAuthObserver();
     }
   }
 
-  handlePopState(event) {
-    // console.log(event);
-  }
+  handlePopState(event) {}
 
   logout = () => {
     if (this.context.appState.user) {
-      firebase.auth().signOut(); //.then(()=> this.props.history.push('/login'));
+      firebase.auth().signOut();
       return <div>Logging out...</div>;
     } else {
       return <Redirect to="/" />;
@@ -113,6 +109,7 @@ class AppFrame extends React.Component {
                 />
 
                 <Placeholder onDomNodeLoaded={context.setBannerNode} />
+
                 <Div grow relative>
                   <RouteContainer key={this.props.location.key}>
                     <Switch>{routes}</Switch>

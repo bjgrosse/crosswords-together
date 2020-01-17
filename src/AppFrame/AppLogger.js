@@ -1,8 +1,8 @@
 import { format, transports } from "winston";
 import * as StackTrace from "stacktrace-js";
-import { createThrottledLogger } from "../Logging/ThrottledLogger";
+import { createThrottledLogger } from "./Logging/ThrottledLogger";
 
-import FirebaseTransport from "../Logging/FirebaseTransport";
+import FirebaseTransport from "./Logging/FirebaseTransport";
 
 const { combine, timestamp, json } = format;
 

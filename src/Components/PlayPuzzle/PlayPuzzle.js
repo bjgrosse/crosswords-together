@@ -73,7 +73,10 @@ export default observer(props => {
   const fetchPuzzle = async () => {
     if (id) {
       if (props.isInvitation) {
-        await store.fetchInvitation(id);
+        await store.fetchInvitation(
+          id,
+          context.appState.user.preferredColors[0]
+        );
       } else {
         await store.fetch(id);
       }

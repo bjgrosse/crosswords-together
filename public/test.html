@@ -17,17 +17,15 @@ limitations under the License.
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Firebase Cloud Messaging Example</title>
 
-  <!-- Material Design Theming -->
-  <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.orange-indigo.min.css">
-  <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-  <script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
-
-  <link rel="stylesheet" href="main.css"> -->
-
-  <link rel="manifest" href="/manifest.json">
 </head>
 <body style="height: 100%; box-sizing: border-box;">
   <div
   style="height:100%; border: 10px solid red; box-sizing: border-box;"
-  ></div>
+  >
+<script>
+  window.alert(window.location.pathname);
+  document.write("<br/>UA: " + navigator.userAgent);
+  document.write("<br/>searc: " + window.location.search);
+  document.write("<br/>path: " + window.location.pathname);
+</script></div>
 </html>

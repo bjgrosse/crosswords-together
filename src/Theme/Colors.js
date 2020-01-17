@@ -48,14 +48,24 @@ export const colors = {
   "Blue Grey": blueGrey
 };
 
-export const playerColors = (() => {
-  let newColors = { ...colors };
-  delete newColors["Grey"];
-  delete newColors["Blue Grey"];
-  delete newColors["Brown"];
-  return newColors;
-})();
-
+export const playerColors = {
+  //Red: red,
+  Pink: pink,
+  //Purple: purple,
+  "Deep Purple": deepPurple,
+  //Indigo: indigo,
+  Blue: blue,
+  //"Light Blue": lightBlue,
+  Cyan: cyan,
+  // Teal: teal,
+  Green: green,
+  //"Light Green": lightGreen,
+  Lime: lime,
+  //Yellow: yellow,
+  Amber: amber,
+  //Orange: orange,
+  "Deep Orange": deepOrange
+};
 export const getRandomPlayerColor = () => {
   return playerColors[Math.floor(Math.random() * playerColors.length)];
 };

@@ -10,7 +10,8 @@
         window.location.replace("/browser.html");
       } else if (internalBrowsers.test(navigator.userAgent)) {
         window.location.replace(
-          "/browser_internal.html?" + window.location.pathname
+          "/browser_internal.html?" +
+            encodeURIComponent(window.location.pathname)
         );
       }
     </script>

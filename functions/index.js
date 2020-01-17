@@ -465,7 +465,8 @@ const saveFcmToken = async (data, context) => {
   const instance = axios.create({
     headers: {
       "Content-Type": "application/json",
-      Authorization: "key=AIzaSyBNIXv7rYW48wCmyIIZK_tXAXdFGW9ylOg",
+      Authorization:
+        "key=AAAAxV1iGb8:APA91bFPOPR8Rqtg6Om5wsWINhT8Tf5R8-lfJKvwbfbnNFUrOERuR7V19ruyNvx4mfeb0WKE3J8-11VR6d3FcEoj6IOFOlRuyXs7d3b_YM9-7m_rm7WaKkTkmQUm9CvjkVAXeJIxb_3D",
       project_id: "847675267519"
     }
   });

@@ -96,7 +96,12 @@ export default {
       .get();
     return {
       ...doc.data(),
-      ...{ id: doc.id, dateAdded: doc.data().dateAdded.toDate() }
+      ...{
+        id: doc.id,
+        dateAdded: doc.data().dateAdded
+          ? doc.data().dateAdded.toDate()
+          : new Date(2000, 1, 1)
+      }
     };
   },
   getPuzzle: async (id, listenForChanges) => {

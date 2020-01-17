@@ -16,7 +16,7 @@ import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
 import Input from "@material-ui/core/Input";
 import CheckIcon from "@material-ui/icons/Check";
-import { playerColors as colors } from "Theme/Colors";
+import { colors, playerColors } from "Theme/Colors";
 import useSafeHandler, { useSafeHandlerWarn } from "Utility/useSafeHandler";
 import Switch from "@material-ui/core/Switch";
 
@@ -140,7 +140,7 @@ const Settings = observer(props => {
               }}
               renderValue={selected => <ChipContainer items={selected} />}
             >
-              {Object.keys(colors).map(name => (
+              {Object.keys(playerColors).map(name => (
                 <ColorMenuItem
                   key={name}
                   component="div"
