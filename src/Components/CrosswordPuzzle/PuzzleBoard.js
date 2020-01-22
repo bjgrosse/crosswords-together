@@ -92,7 +92,7 @@ const Square = observer(props => {
       userColor={
         props.item.value && props.item.playerColor
           ? Colors[props.item.playerColor][
-              context.appState.useLightTheme ? 500 : 900
+              context.appState.useLightTheme ? 500 : 400
             ]
           : null
       }

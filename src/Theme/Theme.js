@@ -76,7 +76,7 @@ const darkPalette = {
     alert: "#888148"
   },
   text: {
-    primary: "rgb(95, 121, 169)",
+    primary: "rgb(136, 156, 193)",
     subtle: "rgba(0,0,0,.25)",
     secondary: "rgba(255,255,255,.4)",
     secondarySubtle: "rgba(255,255,255,.25)",

@@ -250,7 +250,7 @@ class Page extends React.Component {
                 alignContent: "stretch"
               }}
             >
-              <Div grow px={[0, 0, 1, 2]} relative minWidth="330px">
+              <Div grow px={[0, 0, 1, 1]} relative minWidth="330px">
                 <>
                   <Div
                     scroll
@@ -262,7 +262,7 @@ class Page extends React.Component {
                     mt="-5px"
                     pb="5px"
                     mb="-5px"
-                    pr={[1, 1, 2]}
+                    pr={[1, 1, 1]}
                   >
                     {/* <Div as={HideScrollBars} scrollVisible full> */}
                     {puzzleBoard}

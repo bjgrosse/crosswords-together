@@ -304,11 +304,7 @@ export default observer(props => {
           ]}
         >
           <Div id="PlayPuzzle" full flex>
-            <Div
-              display={{ xs: "none", md: "block" }}
-              mr={[1, 1, 2]}
-              width={200}
-            >
+            <Div display={{ xs: "none", md: "block" }} mr={[1]} width={250}>
               <Paper column>
                 <SubTitle2>Players</SubTitle2>
                 <Divider />

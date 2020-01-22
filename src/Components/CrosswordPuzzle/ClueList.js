@@ -24,7 +24,12 @@ const ClueListItem = styled(({ isCompleted, ...rest }) => (
     vertical-align: top;
     padding: 0px;
     color: ${p => p.theme.palette.text.primary};
+    transition: opacity 250ms;
     text-decoration: ${p => (p.isCompleted ? "line-through" : null)};
+    opacity: ${p => (p.isCompleted ? 0.7 : 1)};
+  }
+  &&:hover {
+    opacity: 1;
   }
 `;
 const WordNumber = styled.div`

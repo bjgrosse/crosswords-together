@@ -20,12 +20,12 @@ export const AppCanvas = styled(Div).attrs(props => ({
   fullHeight: true
 }))`
   ${({ theme }) => `
-    max-width: 1280px;
+    max-width: 960px;
 `}
 `;
 
 export const PageContainer = styled(Div).attrs(props => ({
-  p: [1, 1, 2],
+  p: [1, 1, 1],
   absolute: true,
   full: true,
   scroll: true
