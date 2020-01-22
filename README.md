@@ -2,7 +2,7 @@
 
 This is a pet personal project. I enjoy solving the occasional crossword puzzle, but I've often thought that it would be even more fun to solve them collaboratively with friends.
 
-This project is the result of that idea. Check it out at (crosswordstogether.com)[https://crosswordstogether.com]
+This project is the result of that idea. Check it out at [crosswordstogether.com](https://crosswordstogether.com)
 
 ## Technology
 
