@@ -10,4 +10,4 @@ This is a **progressive web app** (PWA) that supports **push notifications** and
 
 The application is completely serverless. It uses Googles **Firebase** application platform for authentication, push messaging, static file hosting. It uses **Firestore** as the primary data store.
 
-It's a **React** application bootstrapped with **create-react-app**. The application state system is **mobx-state-tree**. The UI design system is **Material UI**.
+It's a **React** application bootstrapped with **create-react-app**. The application state system is **mobx-state-tree**. The UI design system is **Material UI** with **styled-components**.
