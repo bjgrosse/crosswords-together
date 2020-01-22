@@ -8,6 +8,6 @@ This project is the result of that idea. Check it out at [crosswordstogether.com
 
 This is a **progressive web app** (PWA) that supports **push notifications** and **offline caching** and can be added to the home screen of a phone or tablet like a native app. It's **fully cross-platform compatible**: one code base for web and mobile, iOS and Android.
 
-The application is a serverless, single-page-application. It uses Google's **Firebase** application platform for authentication, push messaging, and static file hosting. **Firestore** is the primary data store.
+A serverless, single-page-application, it uses Google's **Firebase** application platform for authentication, push messaging, and static file hosting. **Firestore** is the primary data store.
 
-It's a **React** application bootstrapped with **create-react-app**. The state manageent system is **mobx-state-tree**. The UI design system is **Material UI** with **styled-components**.
+It's a **React** application bootstrapped with **create-react-app**. The state management system is **mobx-state-tree**. The UI design system is **Material UI** with **styled-components**.
