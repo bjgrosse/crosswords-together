@@ -1,5 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
-import { useTheme } from "@material-ui/styles";
+import React from "react";
 import Fab from "@material-ui/core/Fab";
 import KeyboardIcon from "@material-ui/icons/Keyboard";
 import styled from "styled-components";
@@ -12,7 +11,6 @@ const StyledFab = styled(Fab)`
   }
 `;
 const KeyboardFab = props => {
-  const theme = useTheme();
   return (
     props.show && (
       <StyledFab

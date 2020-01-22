@@ -2,17 +2,13 @@ import React, { Fragment, useContext } from "react";
 import { observer } from "mobx-react";
 import { AppContext } from "AppFrame/AppContext";
 
-import PuzzlesStore from "Stores/PuzzlesStore";
 import PuzzleList from "./PuzzleList";
-import TemplateList from "./TemplateList";
 import LoadingContainer from "AppFrame/LoadingContainer";
 import AppFrameConfig from "AppFrame/AppFrameConfig";
-import Login from "AppFrame/Login";
+import Login from "Components/Login/Login";
 import { Div } from "UI/StyledComponents/StyledComponents";
 import WelcomeMessage from "./WelcomeMessage";
 import NewPuzzleMessage from "./NewPuzzleMessage";
-import { Typography } from "@material-ui/core";
-import InlineLogo from "./InlineLogo";
 
 function Home(props) {
   const context = useContext(AppContext);
@@ -27,7 +23,7 @@ function Home(props) {
       <LoadingContainer provideWorkPromise={loadPuzzles}>
         <Fragment>
           <Div fullWidth>
-            {context.appState.puzzlesStore.puzzles.length == 0 ? (
+            {context.appState.puzzlesStore.puzzles.length === 0 ? (
               <WelcomeMessage />
             ) : (
               <NewPuzzleMessage />

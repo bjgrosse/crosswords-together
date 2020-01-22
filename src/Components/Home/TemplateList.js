@@ -74,8 +74,6 @@ export default observer(props => {
   const [showCreateNew, setShowCreateNew] = useState(false);
   const context = useContext(AppContext);
 
-  const history = useHistory();
-
   if (showCreateNew) {
     return <CreateNewTemplate handleCancel={() => setShowCreateNew(false)} />;
   }

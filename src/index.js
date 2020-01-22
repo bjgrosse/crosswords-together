@@ -5,7 +5,6 @@ import { BrowserRouter } from "react-router-dom";
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
-import Temp from "./Temp/Temp";
 import "./FirebaseInit.js";
 
 ReactDOM.render(

@@ -1,4 +1,4 @@
-import { createLogger, format, transports } from "winston";
+import { createLogger } from "winston";
 
 import * as StackTrace from "stacktrace-js";
 const Bottleneck = require("bottleneck");

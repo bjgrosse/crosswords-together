@@ -1,7 +1,6 @@
 import MatIconButton from "@material-ui/core/IconButton";
 import MatButton from "@material-ui/core/Button";
 import MatListItem from "@material-ui/core/ListItem";
-import MatAvatar from "@material-ui/core/Avatar";
 import MatMenuItem from "@material-ui/core/MenuItem";
 
 import styled from "styled-components";
@@ -10,12 +9,9 @@ import {
   spacing,
   borders,
   display,
-  positions,
-  shadows,
   sizing,
   typography
 } from "@material-ui/system";
-import is, { isNot } from "styled-is";
 import { Div } from "../StyledComponents/StyledComponents";
 
 export const IconButton = styled(MatIconButton).attrs(props => ({

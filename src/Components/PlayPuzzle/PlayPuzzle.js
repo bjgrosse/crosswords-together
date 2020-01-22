@@ -9,7 +9,6 @@ import db from "Database/Database";
 
 // MUI
 import LoadingContainer from "AppFrame/LoadingContainer";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
@@ -22,13 +21,12 @@ import AddPeopleIcon from "@material-ui/icons/GroupAdd";
 import { Div, Paper, SubTitle2, Span } from "UI/StyledComponents";
 import { IconButton, Button } from "UI/MaterialComponents";
 import Drawer from "UI/Drawer/Drawer";
-import MenuButton from "UI/MenuButton";
 import { getRandomPlayerColor } from "Theme/Colors";
 
 // App Frame
 import AppFrameConfig from "AppFrame/AppFrameConfig";
 import { AppContext } from "AppFrame/AppContext";
-import Login from "AppFrame/Login";
+import Login from "Components/Login/Login";
 import PuzzleStore from "Stores/PuzzleStore";
 
 import Puzzle from "../CrosswordPuzzle/CrosswordPuzzle";
@@ -284,8 +282,6 @@ export default observer(props => {
           banners={[
             {
               show: showNotificationBanner,
-              content:
-                "Turn on notifications to be alerted when a teammate makes progress or sends a message",
               content: "Do you want notifications of activity from teammates?",
               actions: [
                 <Button

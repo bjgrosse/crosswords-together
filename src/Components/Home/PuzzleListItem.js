@@ -3,7 +3,6 @@ import { useHistory } from "react-router-dom";
 import { observer } from "mobx-react";
 import { Div } from "UI/StyledComponents/StyledComponents";
 import { ListItem, Avatar } from "UI/MaterialComponents/MaterialComponents";
-import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
@@ -23,14 +22,6 @@ const Progress = styled(CircularProgress)`
     color: ${theme.palette.secondary.main} !important;
     position: absolute;
 }`}
-`;
-const ProgressBackground = styled(CircularProgress)`
-  ${({ theme }) => `
-& {
-    color: ${theme.palette.secondary.light} !important;
-    position: absolute;
-}
-`}
 `;
 
 const CompletedIcon = styled(CheckIcon)`
@@ -57,10 +48,6 @@ const PuzzleListItem = observer(props => {
     } else {
       navigateTo(`/puzzle/${props.puzzle.id}`);
     }
-  });
-
-  const handleAccept = useSafeHandler(() => {
-    props.puzzle.acceptInvitation();
   });
 
   const handleCancelDelete = useSafeHandler(() => {
@@ -91,7 +78,7 @@ const PuzzleListItem = observer(props => {
             color="common.white"
           >
             {props.puzzle.percentComplete < 100 ? (
-              props.puzzle.percentComplete == 0 ? (
+              props.puzzle.percentComplete === 0 ? (
                 <Div>NEW</Div>
               ) : (
                 <Progress

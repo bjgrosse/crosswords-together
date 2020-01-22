@@ -1,14 +1,6 @@
-import React, {
-  useContext,
-  useState,
-  useEffect,
-  useRef,
-  useCallback
-} from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams, useHistory } from "react-router-dom";
-import { observer } from "mobx-react";
 import PuzzleStore from "Stores/PuzzleStore";
-import AppContext from "AppFrame/AppContext";
 import Button from "@material-ui/core/Button";
 import Puzzle from "../CrosswordPuzzle/CrosswordPuzzle";
 import LoadingContainer from "AppFrame/LoadingContainer";
@@ -19,7 +11,6 @@ import AppFrameConfig from "AppFrame/AppFrameConfig";
 import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
-import { Div } from "UI/StyledComponents/StyledComponents";
 import { IconButton } from "UI/MaterialComponents/MaterialComponents";
 import { AppBarTitle } from "Theme/AppFrameComponents";
 import { useSafeHandlerWarn } from "Utility/useSafeHandler";
@@ -29,11 +20,8 @@ const EditTemplate = props => {
   const notesRef = useRef();
   const sourceRef = useRef();
   const levelRef = useRef();
-  const storeRef = useRef();
 
   const history = useHistory();
-
-  const isInitialized = useRef();
 
   let { id, rows, columns } = useParams();
   const [loadingPromise, setLoadingPromise] = useState();
@@ -44,12 +32,7 @@ const EditTemplate = props => {
   const [level, setLevel] = useState("easy");
   const [puzzle, setPuzzle] = useState();
 
-  const infoValue = useRef([title, source, notes]);
-
-  const appContext = useContext(AppContext);
-
   const handleSave = useSafeHandlerWarn(() => {
-    let store = storeRef.current;
     let data = {
       title: title,
       source: source || "",
@@ -99,7 +82,7 @@ const EditTemplate = props => {
       store.createNewPuzzle(Number(rows), Number(columns));
       setPuzzle(store.puzzle);
     }
-  }, []);
+  }, [rows, columns, id]);
 
   // useEffect(() => {
   //     if (!isInitialized.current) {

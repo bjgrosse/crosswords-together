@@ -1,17 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 
-import AppFrameConfig from "./AppFrameConfig";
-import { Div } from "../UI/StyledComponents";
+import AppFrameConfig from "../../AppFrame/AppFrameConfig";
+import { Div } from "../../UI/StyledComponents/StyledComponents";
 import Typography from "@material-ui/core/Typography";
-import Box from "@material-ui/core/Box";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
 import * as firebase from "firebase/app";
 import "firebase/auth";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
-
-// const firebaseAppAuth = firebaseApp.auth();
 
 const providers = {
   googleProvider: new firebase.auth.GoogleAuthProvider(),
@@ -20,12 +17,7 @@ const providers = {
 };
 
 const Login = props => {
-  const [loggedIn, setLoggedIn] = useState();
   const isPortrait = useMediaQuery("(orientation: portrait)");
-
-  const onLoggedIn = () => {
-    setLoggedIn(true);
-  };
 
   // Configure FirebaseUI.
   let uiConfig = {
@@ -52,11 +44,11 @@ const Login = props => {
       <Div flex column={isPortrait} full flexCenter>
         <Div flex column={isPortrait} justifyEnd grow>
           <Div maxWidth="256px" maxHeight="256px">
-            <img width="100%" src="/logo.svg" />
+            <img width="100%" src="/logo.svg" alt="Crosswords Together" />
           </Div>
         </Div>
         {isPortrait && (
-          <Div flex row alignCenter alignCenter={isPortrait}>
+          <Div flex row alignCenter={isPortrait}>
             <Div mt={2} maxWidth="300px">
               <Typography variant="h6" color="primary" align="center">
                 It's more fun together!

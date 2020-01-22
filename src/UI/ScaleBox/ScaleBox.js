@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import ere from "element-resize-event";
 import ResizeObserver from "resize-observer-polyfill";
 import debounce from "lodash.debounce";
 
@@ -27,8 +26,6 @@ export default class ScaleBox extends Component {
       contentSize: { width: 0, height: 0 },
       scale: 1
     };
-
-    //this.updateScale = debounce(this.updateScale, 10).bind(this);
   }
 
   sizeChanged = new ResizeObserver(
@@ -39,26 +36,8 @@ export default class ScaleBox extends Component {
   );
 
   componentDidMount() {
-    const { wrapper, content } = this.refs;
-    const actualContent = content.children[0];
-
+    const { wrapper } = this.refs;
     this.sizeChanged.observe(wrapper);
-    //this.sizeChanged.observe(actualContent);
-    // ere(actualContent, () => {
-    //   console.log("content width", actualContent.offsetWidth);
-    //   this.updateState({
-    //     ...this.state,
-    //     contentSize: { width: actualContent.offsetWidth, height: actualContent.offsetHeight },
-    //   });
-    // });
-
-    // ere(wrapper, () => {
-    //   console.log("wrapper width", wrapper.offsetWidth);
-    //   this.updateState({
-    //     ...this.state,
-    //     wrapperSize: { width: wrapper.offsetWidth, height: wrapper.offsetHeight },
-    //   });
-    // });
 
     this.refreshScale();
   }
@@ -96,54 +75,15 @@ export default class ScaleBox extends Component {
       return;
     }
 
-    console.log(scale);
     if (this.recentScales.current.length > 10) {
       this.recentScales.current.shift();
     }
     this.recentScales.current.push(this.state.scale);
 
-    this.updateScale({ contentSize: contentSize, scale: scale });
+    this.setState({ contentSize: contentSize, scale: scale });
   }
-
-  updateScale(newState) {
-    // // If this preferred scale is going to cause us to overflow the
-    // // parent container in either direction, then we need to make adjustments
-    // // for the width of the scroll bar(s) that will be appearing
-    // let overY = (this.state.contentSize.height * scale) >= wrapperSize.height
-    // let overX = (this.state.contentSize.width * scale) >= wrapperSize.width
-    // if (overY || overX) {
-    //     // If it's going to overflow height, then we need to account for vertical scroll bar
-    //     if (overY && !vscrollVisible) {
-    //       scale = ((wrapperSize.width-14) / this.props.baseWidth);
-    //     } else if (!hscrollVisible) {
-    //       overY = (this.state.contentSize.height * scale) >= wrapperSize.height-14
-    //       if (overY && !vscrollVisible) {
-    //         scale = ((wrapperSize.width-14) / this.props.baseWidth);
-    //       }
-    //     }
-
-    //     overY = (this.state.contentSize.height * scale) >= wrapperSize.height
-    //     overX = (this.state.contentSize.width * scale) >= wrapperSize.width
-    //    //scale = ((wrapperSize.width-16) / this.props.baseWidth);
-    // }
-
-    // const increment = Math.abs(this.state.scale - scale);
-
-    // if (increment < minIncrement) {
-    //   if (this.props.baseWidth * this.state.scale <= wrapperSize.width) {
-    //     return;
-    //   } else {
-    //     scale = this.state.scale - minIncrement
-    //   }
-
-    //   //scale = this.state.scale - minIncrement
-    // }
-
-    this.setState(newState);
-  }
-
   render() {
-    const { scale, contentSize } = this.state;
+    const { scale } = this.state;
     const { children, wrapperClass, contentClass } = this.props;
     return (
       <div ref="wrapper" className={wrapperClass}>

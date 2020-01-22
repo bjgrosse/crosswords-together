@@ -12,7 +12,7 @@ import styled from "styled-components";
 import { observer } from "mobx-react";
 
 import LoadingContainer from "AppFrame/LoadingContainer";
-import { Paper, Div, SubTitle2 } from "UI/StyledComponents/StyledComponents";
+import { Div, SubTitle2 } from "UI/StyledComponents/StyledComponents";
 
 import TextField from "@material-ui/core/TextField";
 
@@ -36,9 +36,6 @@ const WordNumber = styled.div`
   padding-left: 5px;
 `;
 
-const ClueText = styled.div`
-  display: table-cell;
-`;
 const Clue = observer(props => {
   let ref = useRef(null);
 

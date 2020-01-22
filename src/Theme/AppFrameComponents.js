@@ -1,7 +1,6 @@
 import styled from "styled-components";
-import { palette, spacing } from "@material-ui/system";
-import is from "styled-is";
-import { Div, Paper } from "../UI/StyledComponents/StyledComponents";
+import { spacing } from "@material-ui/system";
+import { Div } from "../UI/StyledComponents/StyledComponents";
 import Typography from "@material-ui/core/Typography";
 import Banner from "../UI/Banner/Banner";
 

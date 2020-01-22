@@ -1,4 +1,4 @@
-import React, { useContext, useState, useRef } from "react";
+import React, {  useState, useRef } from "react";
 import Menu from "@material-ui/core/Menu";
 
 const MenuButton = props => {

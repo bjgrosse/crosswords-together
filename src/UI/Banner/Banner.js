@@ -1,7 +1,7 @@
-import React, { useContext, useState, useEffect } from "react";
-import { Div, Paper } from "../StyledComponents";
+import React  from "react";
+import { Div } from "../StyledComponents";
 import CloseButton from "../CloseButton";
-import posed, { PoseGroup } from "react-pose";
+import posed from "react-pose";
 
 const BannerDiv = posed(Div)({
   show: {

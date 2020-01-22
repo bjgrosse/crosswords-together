@@ -607,7 +607,6 @@ export default class PinchZoomPan extends React.Component {
   //lifecycle methods
   render() {
     const childElement = React.Children.only(this.props.children);
-    const { scale } = this.state;
 
     const touchAction = this.controlOverscrollViaCss
       ? browserPanActions(this.state) || "none"

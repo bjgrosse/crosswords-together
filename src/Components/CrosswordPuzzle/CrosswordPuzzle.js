@@ -3,10 +3,9 @@ import { observer } from "mobx-react";
 import Split from "react-split";
 import MediaQuery from "react-responsive";
 import Debounce from "lodash.debounce";
-import Fab from "@material-ui/core/Fab";
 import { withTheme } from "@material-ui/core/styles";
 
-import { Div, Paper } from "UI/StyledComponents/StyledComponents";
+import { Div } from "UI/StyledComponents/StyledComponents";
 
 import PuzzleBoard from "./PuzzleBoard";
 import Keyboard from "./Keyboard";
@@ -15,8 +14,6 @@ import ClueLists from "./ClueLists";
 import "./CrosswordPuzzle.css";
 
 import { safeHandlerWarn } from "Utility/useSafeHandler";
-import HideScrollBars from "UI/HideScrollBars/HideScrollBars";
-import { Button } from "UI/MaterialComponents/MaterialComponents";
 import KeyboardFab from "./KeyboardFab";
 
 class Page extends React.Component {

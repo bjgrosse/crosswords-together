@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext } from "react";
 import { observer } from "mobx-react";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -7,7 +7,7 @@ import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import PersonIcon from "@material-ui/icons/Person";
 import MailIcon from "@material-ui/icons/Mail";
 import styled from "styled-components";
-import { colors, playerColors } from "Theme/Colors";
+import { colors } from "Theme/Colors";
 import { useTheme } from "@material-ui/core/styles";
 import AppContext from "AppFrame/AppContext";
 

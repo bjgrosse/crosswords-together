@@ -1,6 +1,6 @@
-import React, { useContext, useState, useEffect } from "react";
+import React from "react";
 import AppFrameConfig from "AppFrame/AppFrameConfig";
-import { Div, Paper } from "UI/StyledComponents/StyledComponents";
+import { Paper } from "UI/StyledComponents/StyledComponents";
 import { useTheme } from "@material-ui/core/styles";
 
 const ThemePlayground = props => {

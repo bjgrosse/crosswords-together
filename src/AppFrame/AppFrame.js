@@ -7,15 +7,13 @@ import "firebase/auth";
 
 import { AppContext } from "./AppContext";
 
-import "./AppFrame.css";
-import "../Theme/Theme.css";
 import { AppRoot, AppCanvas, PageContainer } from "Theme/AppFrameComponents";
 import { Div } from "UI/StyledComponents";
 import Placeholder from "UI/Placeholder";
 import AppSnackBar from "./AppSnackBar";
 import LoadingContainer from "./LoadingContainer";
 import AppBar from "./AppBar";
-import Login from "./Login";
+import Login from "../Components/Login/Login";
 
 import posed from "react-pose";
 

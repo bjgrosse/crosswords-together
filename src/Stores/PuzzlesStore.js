@@ -36,6 +36,8 @@ const Puzzle = types
       if (playerRecord && playerRecord.pending) {
         return playerRecord.invitationId;
       }
+
+      return null;
     }
   }));
 
@@ -59,9 +61,6 @@ const PuzzlesStore = types
     initialized: false
   })
   .actions(self => {
-    function mapTemplateData(data) {
-      return data.map(x => Template.create(x));
-    }
     function mapPuzzleData(data) {
       data.sort((x, y) => {
         if (x.percentComplete < 100 && y.percentComplete === 100) {

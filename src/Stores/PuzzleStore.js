@@ -163,13 +163,13 @@ const Invitation = types.model("Invitation", {
   senderName: types.string
 });
 
-const ActivityEntry = types.model("ActivityEntry", {
-  id: types.identifier,
-  userId: types.string,
-  userName: types.string,
-  message: types.string,
-  type: types.string
-});
+// const ActivityEntry = types.model("ActivityEntry", {
+//   id: types.identifier,
+//   userId: types.string,
+//   userName: types.string,
+//   message: types.string,
+//   type: types.string
+// });
 
 const Puzzle = types
   .model("Puzzle", {
@@ -212,7 +212,7 @@ const Puzzle = types
           // If we have the horizontal word already selected, or the currently selected word is vertical,
           // then select the vertical
           if (
-            currentWordId == cell.horizontalWord ||
+            currentWordId === cell.horizontalWord ||
             !cell.horizontalWord ||
             (self.defaultWordDirection === "v" &&
               currentWordId !== cell.verticalWord)

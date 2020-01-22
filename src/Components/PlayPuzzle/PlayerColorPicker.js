@@ -1,11 +1,9 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import ColorLensIcon from "@material-ui/icons/Brush";
 import CheckIcon from "@material-ui/icons/Check";
 import { colors, playerColors } from "Theme/Colors";
-import { IconButton, ColorMenuItem } from "UI/MaterialComponents";
-import { Div } from "UI/StyledComponents";
-import Avatar from "@material-ui/core/Avatar";
+import { ColorMenuItem } from "UI/MaterialComponents";
 import MenuButton from "UI/MenuButton/MenuButton";
 import AppContext from "AppFrame/AppContext";
 

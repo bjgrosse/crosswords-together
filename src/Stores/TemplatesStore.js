@@ -1,6 +1,5 @@
-import { types, flow, getParentOfType } from "mobx-state-tree";
+import { types, flow } from "mobx-state-tree";
 import db from "../Database/Database";
-import { observable } from "mobx";
 
 const Filter = types
   .model("Filter", {

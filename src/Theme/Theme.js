@@ -1,14 +1,7 @@
-import {
-  createMuiTheme,
-  responsiveFontSizes,
-  rgbToHex
-} from "@material-ui/core/styles";
+import { createMuiTheme, responsiveFontSizes } from "@material-ui/core/styles";
 
-import indigo from "@material-ui/core/colors/indigo";
-import blueGrey from "@material-ui/core/colors/blueGrey";
 import yellow from "@material-ui/core/colors/yellow";
 import deepOrange from "@material-ui/core/colors/deepOrange";
-import { lineHeight } from "@material-ui/system";
 
 const lightPalette = {
   primary: {
@@ -31,7 +24,7 @@ const lightPalette = {
   text: {
     subtle: "rgba(0,0,0,.25)",
     secondarySubtle: "#c5cae9",
-    primary: "#6388cb",
+    primary: "#395D9E",
     secondary: "#b47200",
     alert: "#847700"
   },
@@ -105,6 +98,7 @@ const GetTheme = useLightTheme => {
         fontFamily: "Rubik, sans-serif"
       },
       overrides: {
+        MuiChip: { outlinedPrimary: { color: "#395D9E" } },
         MuiButton: {
           root: {
             fontWeight: "bold",

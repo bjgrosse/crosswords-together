@@ -1,7 +1,5 @@
-import React, { useContext, useState, useEffect } from "react";
-import { Div, Paper } from "../StyledComponents";
-import CloseButton from "../CloseButton";
-import posed, { PoseGroup } from "react-pose";
+import React from "react";
+import posed from "react-pose";
 import Scrum from "../Scrum/Scrum";
 import styled from "styled-components";
 

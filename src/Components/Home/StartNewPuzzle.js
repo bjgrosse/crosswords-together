@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useRef } from "react";
+import React, { useContext } from "react";
 import { observer } from "mobx-react";
 import styled from "styled-components";
 
@@ -13,7 +13,7 @@ import TemplatesStore from "Stores/TemplatesStore";
 
 import TemplateList from "./TemplateList";
 import AppContext from "AppFrame/AppContext";
-const filterColors = { Levels: levelColors };
+const filterColors = {};
 
 const FilterContainer = styled(Div)`
     width: 100%;
@@ -37,7 +37,7 @@ const FilterOptions = styled(Div)`
 `;
 
 const FilterLabel = styled(Div).attrs(p => ({
-  fontSize: ".9rem",
+  fontSize: "1rem",
   mr: 1
 }))`
   && {
@@ -50,7 +50,10 @@ const FilterChip = styled(Chip).attrs(p => ({
   variant: p.isSelected ? "default" : "outlined",
   mr: 1
 }))`
-  &&,
+  && {
+    font-size: 1rem;
+  }
+  ,
   &&:active,
   &&:focus,
   &&:hover {

@@ -2,10 +2,6 @@ import firebase from "firebase";
 const Transport = require("winston-transport");
 
 export default class FirebaseTransport extends Transport {
-  constructor(opts) {
-    super(opts);
-  }
-
   log(info, callback) {
     setImmediate(() => {
       this.emit("logged", info);

@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import { observer } from "mobx-react";
 import styled from "styled-components";
 import TextField from "@material-ui/core/TextField";
@@ -11,10 +11,8 @@ import {
   ColorMenuItem
 } from "UI/MaterialComponents/MaterialComponents";
 import AppFrameConfig from "AppFrame/AppFrameConfig";
-import AppDialog from "AppFrame/AppDialog";
 import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
-import Input from "@material-ui/core/Input";
 import CheckIcon from "@material-ui/icons/Check";
 import { colors, playerColors } from "Theme/Colors";
 import useSafeHandler, { useSafeHandlerWarn } from "Utility/useSafeHandler";

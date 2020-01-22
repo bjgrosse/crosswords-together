@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 
 const handleError = function(error, severity, setState) {
   error.severity = severity;
@@ -18,13 +18,16 @@ export const useSafeHandler = (...args) => {
 
   let [errorState, setErrorState] = useState();
 
-  return (...args) => {
-    try {
-      fn(...args);
-    } catch (error) {
-      handleError(error, severity, setErrorState);
-    }
-  };
+  return useCallback(
+    (...args) => {
+      try {
+        fn(...args);
+      } catch (error) {
+        handleError(error, severity, setErrorState);
+      }
+    },
+    [fn, severity]
+  );
 };
 
 export const useSafeHandlerWarn = (...args) => useSafeHandler("warn", ...args);
