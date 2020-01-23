@@ -6,7 +6,9 @@ This project is the result of that idea. Check it out at [crosswordstogether.com
 
 ## Technology
 
-This is a **progressive web app** (PWA) that supports **push notifications** and **offline caching** and can be added to the home screen of a phone or tablet like a native app. It's **fully cross-platform compatible**: one code base for web and mobile, iOS and Android.
+This is a **progressive web app** (PWA) that supports **push notifications** and **offline caching** and can be added to the home screen of a phone or tablet like a native app. Push notifications are multi-device supported so if a user connects from multiple devices push notifications will be delivered to each.
+
+The application is **fully cross-platform compatible**: one code base for web and mobile, iOS and Android.
 
 A serverless, single-page-application, it uses Google's **Firebase** application platform for authentication, push messaging, and static file hosting. **Firestore** is the primary data store.
 

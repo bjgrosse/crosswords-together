@@ -1,6 +1,6 @@
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
-const nodemailer = require("nodemailer");
+const credentials = require("./.credentials.json");
 const colors = [
   "Red",
   "Pink",
@@ -450,49 +450,23 @@ const updateCompletedWord = async (data, context) => {
   await sendNotificationForPuzzle(puzzleId, userId, notification);
 };
 
-/**
- * When an invitation record gets created, this function adds a placeholder
- * player value to the puzzle and sends a notification to the recipient
- */
-const saveFcmToken = async (data, context) => {
-  let { userId, token } = data;
+const getExistingGroupKey = async (userId, axiosInstance) => {
+  return axiosInstance
+    .get(
+      "https://fcm.googleapis.com/fcm/notification?notification_key_name=" +
+        userId
+    )
+    .then(res => {
+      console.log(res);
+      return res.data.notification_key;
+    })
+    .catch(error => {
+      console.error(error);
+      console.log(error.response.data);
+    });
+};
 
-  const userRef = db.collection("users").doc(userId);
-  const user = await userRef.get();
-  let groupKey = user.data().FCMGroupKey;
-  let newGroupKey;
-
-  const instance = axios.create({
-    headers: {
-      "Content-Type": "application/json",
-      Authorization:
-        "key=AAAAxV1iGb8:APA91bFPOPR8Rqtg6Om5wsWINhT8Tf5R8-lfJKvwbfbnNFUrOERuR7V19ruyNvx4mfeb0WKE3J8-11VR6d3FcEoj6IOFOlRuyXs7d3b_YM9-7m_rm7WaKkTkmQUm9CvjkVAXeJIxb_3D",
-      project_id: "847675267519"
-    }
-  });
-
-  if (!groupKey) {
-    await instance
-      .get(
-        "https://fcm.googleapis.com/fcm/notification?notification_key_name=" +
-          userId
-      )
-      .then(res => {
-        console.log(res);
-        if (!groupKey) {
-          newGroupKey = res.data.notification_key;
-          groupKey = newGroupKey;
-        }
-
-        return true;
-      })
-      .catch(error => {
-        console.error(error);
-        console.log(error.response.data);
-        //throw error;
-      });
-  }
-
+const registerToken = async (userId, groupKey, token, axiosInstance) => {
   let body;
 
   if (groupKey) {
@@ -510,25 +484,90 @@ const saveFcmToken = async (data, context) => {
     };
   }
 
-  await instance
+  return axiosInstance
     .post("https://fcm.googleapis.com/fcm/notification", body)
     .then(res => {
       console.log(`statusCode: ${res.statusCode}`);
       console.log(res);
+
       if (!groupKey) {
-        newGroupKey = res.data.notification_key;
+        return res.data.notification_key;
       }
-
-      return true;
-    })
-    .catch(error => {
-      console.error(error);
-      console.log(error.response.data);
-      throw error;
+      return null;
     });
+};
+/**
+ * When an invitation record gets created, this function adds a placeholder
+ * player value to the puzzle and sends a notification to the recipient
+ */
+const saveFcmToken = async (data, context) => {
+  let { userId, token } = data;
 
-  if (newGroupKey) {
-    await userRef.update({ FCMGroupKey: newGroupKey });
+  const userRef = db.collection("users").doc(userId);
+  const user = await userRef.get();
+  let groupKey = user.data().FCMGroupKey;
+  let existingGroupKey;
+
+  console.log(credentials.google_api_key);
+  const instance = axios.create({
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "key=" + credentials.google_api_key,
+      project_id: "847675267519"
+    }
+  });
+
+  if (!groupKey) {
+    existingGroupKey = await getExistingGroupKey(userId, instance);
+    groupKey = existingGroupKey;
+  }
+
+  let retry = false;
+  let finalKey;
+
+  try {
+    finalKey = await registerToken(userId, groupKey, token, instance);
+  } catch (error) {
+    console.error(error);
+
+    let { data } = error.response;
+    console.log(data);
+    // If we get this error, it means that we have a group key that isn't registered
+    // with the FCM system. Not sure how that can happen, but we need to try to create a
+    // new group key
+    if (
+      data &&
+      data.error &&
+      data.error.includes("notification_key not found")
+    ) {
+      retry = true;
+    } else {
+      throw error;
+    }
+  }
+
+  if (retry) {
+    // If we didn't get our group key from the FCM server above, then
+    // try to get any existing group key from the server now
+    if (!existingGroupKey) {
+      existingGroupKey = await getExistingGroupKey(userId, instance);
+      groupKey = existingGroupKey;
+    }
+    // try registering again with this new (or non-existant)
+    finalKey = await registerToken(userId, groupKey, token, instance).catch(
+      error => {
+        console.error(error);
+        console.log(error.response.data);
+        throw error;
+      }
+    );
+  }
+
+  finalKey = finalKey || existingGroupKey;
+  // If the token registration process returned a new group key, and it's
+  // different than the one we have on file, then update.
+  if (finalKey && finalKey !== groupKey) {
+    await userRef.update({ FCMGroupKey: finalKey });
   }
 };
 
@@ -565,7 +604,6 @@ const sendMessage = async (data, context) => {
     .get();
   const token = user.data().FCMGroupKey;
 
-  //const token = 'eggA5XgTAFmb7zYWQMMyy6:APA91bHyEZAyLHR4t6V17N6lVfpNzCayEkoCF9bR3JHO6qDcNoyE69FXurdL-Q-cbH0P37AzIILdoxmw_ZQzpz8v2oNapTuW43Lz4dN50v12CxJWHZPaQ_ZQ_6klxCa6Bu9G1OeLuH4t'
   var message = {
     data: messageData
   };
