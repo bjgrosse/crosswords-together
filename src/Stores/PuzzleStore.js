@@ -1,7 +1,7 @@
 import { types, flow, getParentOfType } from "mobx-state-tree";
 import db from "../Database/Database";
 import { reaction } from "mobx";
-
+import colors from "common/colors"
 const TemplateSquare = types.model("TemplateSquare", {
   isBlocked: false,
   value: types.maybe(types.string)
@@ -682,7 +682,7 @@ const PuzzleStore = types
       return puzzle;
     });
 
-    const fetchInvitation = flow(function*(id, preferredColor) {
+    const fetchInvitation = flow(function*(id, preferredColors) {
       self.invitation = Invitation.create({
         ...(yield db.getInvitation(id)),
         id: id
@@ -693,11 +693,15 @@ const PuzzleStore = types
 
         if (!self.puzzle.players.find(x => x.id === db.getCurrentUserId())) {
           let user = db.getCurrentUser();
+
+
+          let availableColors = preferredColors || colors;
+
           self.puzzle.players.push(
             Player.create({
               id: user.uid,
               name: user.displayName,
-              color: preferredColor,
+              color: availableColors[0],
               pending: true
             })
           );
